@@ -1,0 +1,284 @@
+diff --git a/03_work_orders/WO-20260207-902/01_WorkOrder.md b/03_work_orders/WO-20260207-902/01_WorkOrder.md
+new file mode 100644
+index 0000000..483c62f
+--- /dev/null
++++ b/03_work_orders/WO-20260207-902/01_WorkOrder.md
+@@ -0,0 +1,30 @@
++# WO-20260207-902 Work Order
++
++- Branch: wo/WO-20260207-902-sim-workflow
++- Status: Ready
++- Owner: code
++- Requester: user
++
++## Objective
++Execute kickoff phase for WO-20260207-902 and produce a valid work order baseline that passes Gate A prerequisites.
++
++## Target
++Complete kickoff scaffolding, validate branch convention, and commit the work-order stage using repository automation.
++
++## Scope
++- Confirm `09_automations/03_make/Makefile` targets for kickoff and work-order commit.
++- Run kickoff flow with `WO-20260207-902` and short slug `sim-workflow`.
++- Populate this work order with non-empty objective/scope/DoD/risk content.
++- Run work-order stage commit via automation script equivalent to make target behavior.
++
++## Out of Scope
++- Context pack authoring under `04_context_packs/WO-20260207-902/`.
++- Implementation, quality, delivery, and review stage artifacts.
++
++## DoD
++- Branch matches `wo/WO-20260207-902-sim-workflow`.
++- `03_work_orders/WO-20260207-902/01_WorkOrder.md` is non-empty and actionable.
++- Work-order commit stage command completes successfully.
++
++## Risks
++- Environment lacks `make`; fallback direct script execution is required to mirror make targets.
+diff --git a/03_work_orders/WO-20260207-902/02_Scope.md b/03_work_orders/WO-20260207-902/02_Scope.md
+new file mode 100644
+index 0000000..71375c9
+--- /dev/null
++++ b/03_work_orders/WO-20260207-902/02_Scope.md
+@@ -0,0 +1,5 @@
++# Scope
++
++## In Scope
++
++## Out of Scope
+diff --git a/03_work_orders/WO-20260207-902/03_DoD.md b/03_work_orders/WO-20260207-902/03_DoD.md
+new file mode 100644
+index 0000000..cf050ee
+--- /dev/null
++++ b/03_work_orders/WO-20260207-902/03_DoD.md
+@@ -0,0 +1,6 @@
++# Definition of Done
++
++- [ ] Work order completed and committed
++- [ ] Context pack completed and committed
++- [ ] Delivery pack completed and committed
++- [ ] Review report completed and committed
+diff --git a/04_context_packs/WO-20260207-902/01_ContextPack.md b/04_context_packs/WO-20260207-902/01_ContextPack.md
+new file mode 100644
+index 0000000..cc4565f
+--- /dev/null
++++ b/04_context_packs/WO-20260207-902/01_ContextPack.md
+@@ -0,0 +1,42 @@
++# WO-20260207-902 Context Pack
++
++## Context
++
++WO-20260207-902 当前阶段为 Context Preparation，目标是在不进入实现开发的前提下，产出可用于 Gate A 准入校验的上下文工件。
++
++该 WO 的前置工件已具备：
++- `03_work_orders/WO-20260207-902/01_WorkOrder.md` 已定义目标、范围、DoD 与风险。
++- `03_work_orders/WO-20260207-902/02_Scope.md` 与 `03_DoD.md` 已存在，用于后续阶段逐步细化。
++
++本阶段仅覆盖上下文包目录下内容准备与提交，不修改 `01_spec_locked/` 权威规格，也不触发质量/交付/评审阶段工件。
++
++## Decisions
++
++1. **采用仓库自动化脚本生成骨架**  
++   通过 `09_automations/01_scripts/02_prepare_context.sh` 初始化上下文包标准文件结构，保证与仓库流程一致。
++
++2. **在 ContextPack 中补充可执行语义，而非模板占位符**  
++   明确记录当前阶段目标边界、输入来源与后续依赖，确保 Reviewer 可直接判断 Gate A 前置条件。
++
++3. **保持最小化改动策略**  
++   仅修改 `04_context_packs/WO-20260207-902/` 下必要文件，避免引入跨阶段变更和噪音提交。
++
++4. **使用阶段化提交脚本进行提交**  
++   通过 `09_automations/01_scripts/09_git_commit_stage.sh WO-20260207-902 context` 完成上下文阶段提交，保持提交信息和流程约束一致。
++
++## Assumptions
++
++1. 当前工作分支已满足 WO 分支命名规范（`wo/WO-20260207-902-sim-workflow`），可直接进行 context 阶段提交。
++2. Gate A 判定最小要求为：
++   - `03_work_orders/WO-20260207-902/01_WorkOrder.md` 存在且非空；
++   - `04_context_packs/WO-20260207-902/01_ContextPack.md` 存在且内容具备有效上下文信息。
++3. 环境中可能缺少 `rg` 命令；若出现该依赖缺失，允许以等效方式完成脚本执行，不改变 WO 产物结构。
++4. 本阶段提交仅代表 Context Preparation 完成，不代表实现、质量、交付与评审已完成。
++
++## Key Files
++
++- `03_work_orders/WO-20260207-902/01_WorkOrder.md`：WO 目标、范围与验收基线。
++- `04_context_packs/WO-20260207-902/01_ContextPack.md`：本文件，Gate A 关键上下文证据。
++- `04_context_packs/WO-20260207-902/02_FileMap.md`：文件职责映射（由脚本生成，可后续细化）。
++- `04_context_packs/WO-20260207-902/03_API_Contracts.md`：接口契约占位（如适用再补充）。
++- `04_context_packs/WO-20260207-902/04_Decisions_Summary.md`：决策摘要占位（可与本文件同步细化）。
+diff --git a/04_context_packs/WO-20260207-902/02_FileMap.md b/04_context_packs/WO-20260207-902/02_FileMap.md
+new file mode 100644
+index 0000000..36e0e3d
+--- /dev/null
++++ b/04_context_packs/WO-20260207-902/02_FileMap.md
+@@ -0,0 +1,92 @@
++# File Map
++
++| File | Responsibility |
++|---|---|
++| `.roo/rules/01_general.md` | TODO |
++| `.roo/rules/02_repo_workflow.md` | TODO |
++| `.roo/rules/03_artifact_contract.md` | TODO |
++| `.roo/rules/04_gate_policy.md` | TODO |
++| `.roo/rules-architect/01_arch_guardrails.md` | TODO |
++| `.roo/rules-architect/02_planning_contract.md` | TODO |
++| `.roo/rules-ask/01_answer_protocol.md` | TODO |
++| `.roo/rules-ask/02_response_format.md` | TODO |
++| `.roo/rules-code/01_coding_style.md` | TODO |
++| `.roo/rules-code/02_tests.md` | TODO |
++| `.roo/rules-code/03_delivery_obligations.md` | TODO |
++| `.roo/rules-debug/01_debug_protocol.md` | TODO |
++| `.roo/rules-debug/02_evidence_contract.md` | TODO |
++| `.roo/rules-librarian/01_context_contract.md` | TODO |
++| `.roo/rules-librarian/02_handoff_protocol.md` | TODO |
++| `.roo/rules-librarian/03_git_notes.md` | TODO |
++| `.roo/rules-orchestrator/01_handoff_flow.md` | TODO |
++| `.roo/rules-orchestrator/02_task_contract.md` | TODO |
++| `.roo/rules-orchestrator/03_program_planning.md` | TODO |
++| `.roo/rules-orchestrator/04_git_control.md` | TODO |
++| `.roo/rules-orchestrator/05_branch_issuance.md` | TODO |
++| `.roo/rules-qa-runner/01_quality_contract.md` | TODO |
++| `.roo/rules-reviewer/01_acceptance_gate.md` | TODO |
++| `.roo/rules-reviewer/02_decision_matrix.md` | TODO |
++| `.roo/rules-reviewer/03_git_audit.md` | TODO |
++| `.roomodes` | TODO |
++| `01_spec_locked/01_SPEC.md` | TODO |
++| `01_spec_locked/02_ACCEPTANCE.md` | TODO |
++| `01_spec_locked/03_GLOSSARY.md` | TODO |
++| `01_spec_locked/04_NFR.md` | TODO |
++| `02_templates/01_work_order.md` | TODO |
++| `02_templates/02_context_pack.md` | TODO |
++| `02_templates/03_delivery_pack.md` | TODO |
++| `02_templates/04_review_report.md` | TODO |
++| `02_templates/05_acceptance_request.md` | TODO |
++| `03_work_orders/WO-20260207-901/01_WorkOrder.md` | TODO |
++| `03_work_orders/WO-20260207-901/02_Scope.md` | TODO |
++| `03_work_orders/WO-20260207-901/03_DoD.md` | TODO |
++| `03_work_orders/WO-20260207-902/01_WorkOrder.md` | TODO |
++| `03_work_orders/WO-20260207-902/02_Scope.md` | TODO |
++| `03_work_orders/WO-20260207-902/03_DoD.md` | TODO |
++| `04_context_packs/WO-20260207-901/01_ContextPack.md` | TODO |
++| `04_context_packs/WO-20260207-901/02_FileMap.md` | TODO |
++| `04_context_packs/WO-20260207-901/03_API_Contracts.md` | TODO |
++| `04_context_packs/WO-20260207-901/04_Decisions_Summary.md` | TODO |
++| `04_context_packs/WO-20260207-902/01_ContextPack.md` | TODO |
++| `04_context_packs/WO-20260207-902/02_FileMap.md` | TODO |
++| `05_src/app/e2e_test_marker.txt` | TODO |
++| `06_quality/04_reports/WO-20260207-901/01_quality_report.md` | TODO |
++| `06_quality/04_reports/WO-20260207-901/02_commands.md` | TODO |
++| `06_quality/04_reports/WO-20260207-901/03_logs/repo-scan.log` | TODO |
++| `06_quality/04_reports/WO-20260207-901/03_logs/validate-quality.log` | TODO |
++| `06_quality/04_reports/WO-20260207-901/04_validation_delivery.md` | TODO |
++| `06_quality/04_reports/WO-20260207-901/04_validation_quality.md` | TODO |
++| `07_delivery_packs/WO-20260207-901/01_DeliveryPack.md` | TODO |
++| `07_delivery_packs/WO-20260207-901/02_ChangeList.md` | TODO |
++| `07_delivery_packs/WO-20260207-901/03_SpecCoverage.md` | TODO |
++| `07_delivery_packs/WO-20260207-901/04_Verification.md` | TODO |
++| `07_delivery_packs/WO-20260207-901/05_RiskNotes.md` | TODO |
++| `07_delivery_packs/WO-20260207-901/99_artifacts/changes.diff` | TODO |
++| `07_delivery_packs/WO-20260207-901/99_artifacts/changes.patch` | TODO |
++| `08_review_reports/WO-20260207-901/01_Review.md` | TODO |
++| `08_review_reports/WO-20260207-901/02_Blockers.md` | TODO |
++| `08_review_reports/WO-20260207-901/03_FollowUps.md` | TODO |
++| `09_automations/01_scripts/01_new_work_order.sh` | TODO |
++| `09_automations/01_scripts/02_prepare_context.sh` | TODO |
++| `09_automations/01_scripts/03_run_quality.sh` | TODO |
++| `09_automations/01_scripts/04_pack_delivery.sh` | TODO |
++| `09_automations/01_scripts/05_validate_wo.sh` | TODO |
++| `09_automations/01_scripts/06_git_control_check.sh` | TODO |
++| `09_automations/01_scripts/07_prepare_review_artifacts.sh` | TODO |
++| `09_automations/01_scripts/08_install_git_hooks.sh` | TODO |
++| `09_automations/01_scripts/09_git_commit_stage.sh` | TODO |
++| `09_automations/01_scripts/10_git_merge_wo.sh` | TODO |
++| `09_automations/01_scripts/11_prepare_review.sh` | TODO |
++| `09_automations/02_git_hooks/commit-msg` | TODO |
++| `09_automations/02_git_hooks/pre-push` | TODO |
++| `09_automations/02_git_hooks/README.md` | TODO |
++| `09_automations/03_make/Makefile` | TODO |
++| `1-from_GPT_Web.md` | TODO |
++| `10_docs/01_README.md` | TODO |
++| `10_docs/02_ARCH_OVERVIEW.md` | TODO |
++| `10_docs/03_CONTRIBUTING.md` | TODO |
++| `10_docs/04_git_workflow.md` | TODO |
++| `10_docs/04_ROO_WORKFLOW.md` | TODO |
++| `10_docs/05_interaction_protocol.md` | TODO |
++| `2-git_add.md` | TODO |
++| `3-add_交互模式说明.md` | TODO |
+diff --git a/04_context_packs/WO-20260207-902/03_API_Contracts.md b/04_context_packs/WO-20260207-902/03_API_Contracts.md
+new file mode 100644
+index 0000000..45a7e1f
+--- /dev/null
++++ b/04_context_packs/WO-20260207-902/03_API_Contracts.md
+@@ -0,0 +1,3 @@
++# API Contracts
++
++- N/A (fill if applicable)
+diff --git a/04_context_packs/WO-20260207-902/04_Decisions_Summary.md b/04_context_packs/WO-20260207-902/04_Decisions_Summary.md
+new file mode 100644
+index 0000000..48eb11a
+--- /dev/null
++++ b/04_context_packs/WO-20260207-902/04_Decisions_Summary.md
+@@ -0,0 +1,3 @@
++# Decisions Summary
++
++- N/A (fill if applicable)
+diff --git a/05_src/roo_sim_marker.txt b/05_src/roo_sim_marker.txt
+new file mode 100644
+index 0000000..3cdfe05
+--- /dev/null
++++ b/05_src/roo_sim_marker.txt
+@@ -0,0 +1 @@
++Simulation Implementation Artifact for WO-20260207-902
+diff --git a/06_quality/04_reports/WO-20260207-902/01_quality_report.md b/06_quality/04_reports/WO-20260207-902/01_quality_report.md
+new file mode 100644
+index 0000000..11671f1
+--- /dev/null
++++ b/06_quality/04_reports/WO-20260207-902/01_quality_report.md
+@@ -0,0 +1,7 @@
++# Quality Report
++
++- validate-quality: PASS
++
++- overall: PASS
++
++Logs: `06_quality/04_reports/WO-20260207-902/03_logs`
+diff --git a/06_quality/04_reports/WO-20260207-902/02_commands.md b/06_quality/04_reports/WO-20260207-902/02_commands.md
+new file mode 100644
+index 0000000..801b5a3
+--- /dev/null
++++ b/06_quality/04_reports/WO-20260207-902/02_commands.md
+@@ -0,0 +1,7 @@
++# Commands
++
++## validate-quality
++```bash
++bash 09_automations/01_scripts/05_validate_wo.sh WO-20260207-902 quality
++```
++
+diff --git a/06_quality/04_reports/WO-20260207-902/03_logs/validate-quality.log b/06_quality/04_reports/WO-20260207-902/03_logs/validate-quality.log
+new file mode 100644
+index 0000000..2238e37
+--- /dev/null
++++ b/06_quality/04_reports/WO-20260207-902/03_logs/validate-quality.log
+@@ -0,0 +1,2 @@
++bash: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
++Validation passed (quality) for WO-20260207-902. See 06_quality/04_reports/WO-20260207-902/04_validation_quality.md
+diff --git a/06_quality/04_reports/WO-20260207-902/04_validation_quality.md b/06_quality/04_reports/WO-20260207-902/04_validation_quality.md
+new file mode 100644
+index 0000000..fa35a11
+--- /dev/null
++++ b/06_quality/04_reports/WO-20260207-902/04_validation_quality.md
+@@ -0,0 +1,14 @@
++# Validation (quality)
++
++- WO: WO-20260207-902
++- Time: 2026-02-07 14:12:09Z
++
++## Required Checks
++- [PASS] Exists: 03_work_orders/WO-20260207-902/01_WorkOrder.md
++- [PASS] Exists: 04_context_packs/WO-20260207-902/01_ContextPack.md
++- [PASS] Exists: 06_quality/04_reports/WO-20260207-902/01_quality_report.md
++- [PASS] Exists: 06_quality/04_reports/WO-20260207-902/02_commands.md
++
++## Summary
++- Missing: 0
++- Warnings: 0
