@@ -1,284 +1,453 @@
 diff --git a/03_work_orders/WO-20260207-902/01_WorkOrder.md b/03_work_orders/WO-20260207-902/01_WorkOrder.md
-new file mode 100644
-index 0000000..483c62f
---- /dev/null
+index 483c62f..e7d1bd6 100644
+--- a/03_work_orders/WO-20260207-902/01_WorkOrder.md
 +++ b/03_work_orders/WO-20260207-902/01_WorkOrder.md
-@@ -0,0 +1,30 @@
-+# WO-20260207-902 Work Order
+@@ -1,30 +1,30 @@
+ # WO-20260207-902 Work Order
+ 
+-- Branch: wo/WO-20260207-902-sim-workflow
+-- Status: Ready
+-- Owner: code
+-- Requester: user
++- Branch: wo/WO-20260207-902-roo-sim-flow
++- Status: In Progress
++- Owner: Orchestrator
++- Requester: User
+ 
+ ## Objective
+-Execute kickoff phase for WO-20260207-902 and produce a valid work order baseline that passes Gate A prerequisites.
+ 
+-## Target
+-Complete kickoff scaffolding, validate branch convention, and commit the work-order stage using repository automation.
++完成一次本地 Git 交付闭环演练：从 WO 开工、上下文准备、实现、质检、交付归档、独立评审到合并主分支，且全流程通过脚本化 gate。
+ 
+ ## Scope
+-- Confirm `09_automations/03_make/Makefile` targets for kickoff and work-order commit.
+-- Run kickoff flow with `WO-20260207-902` and short slug `sim-workflow`.
+-- Populate this work order with non-empty objective/scope/DoD/risk content.
+-- Run work-order stage commit via automation script equivalent to make target behavior.
+ 
+-## Out of Scope
+-- Context pack authoring under `04_context_packs/WO-20260207-902/`.
+-- Implementation, quality, delivery, and review stage artifacts.
++- 执行并记录 `kickoff-wo`、`prepare-context`、`quality`、`prepare-review`、`git-check-merge`、`merge-wo`。
++- 使用阶段提交脚本完成 `work-order/context/implementation/quality/delivery/review` 提交。
++- 在 `05_src/app/` 新增最小实现标记文件。
++- 生成并核对本 WO 的质量报告与交付工件（含 diff/patch）。
+ 
+ ## DoD
+-- Branch matches `wo/WO-20260207-902-sim-workflow`.
+-- `03_work_orders/WO-20260207-902/01_WorkOrder.md` is non-empty and actionable.
+-- Work-order commit stage command completes successfully.
 +
-+- Branch: wo/WO-20260207-902-sim-workflow
-+- Status: Ready
-+- Owner: code
-+- Requester: user
++- 当前分支满足 `wo/WO-20260207-902-roo-sim-flow`。
++- 产物目录齐备：`03_work_orders/WO-20260207-902/` 与 `04_context_packs/WO-20260207-902/`。
++- 质量报告齐备：`06_quality/04_reports/WO-20260207-902/`。
++- 交付包齐备：`07_delivery_packs/WO-20260207-902/01_DeliveryPack.md` 至 `05_RiskNotes.md`。
++- 审查报告存在且 `Verdict: PASS`。
+ 
+ ## Risks
+-- Environment lacks `make`; fallback direct script execution is required to mirror make targets.
 +
-+## Objective
-+Execute kickoff phase for WO-20260207-902 and produce a valid work order baseline that passes Gate A prerequisites.
-+
-+## Target
-+Complete kickoff scaffolding, validate branch convention, and commit the work-order stage using repository automation.
-+
-+## Scope
-+- Confirm `09_automations/03_make/Makefile` targets for kickoff and work-order commit.
-+- Run kickoff flow with `WO-20260207-902` and short slug `sim-workflow`.
-+- Populate this work order with non-empty objective/scope/DoD/risk content.
-+- Run work-order stage commit via automation script equivalent to make target behavior.
-+
-+## Out of Scope
-+- Context pack authoring under `04_context_packs/WO-20260207-902/`.
-+- Implementation, quality, delivery, and review stage artifacts.
-+
-+## DoD
-+- Branch matches `wo/WO-20260207-902-sim-workflow`.
-+- `03_work_orders/WO-20260207-902/01_WorkOrder.md` is non-empty and actionable.
-+- Work-order commit stage command completes successfully.
-+
-+## Risks
-+- Environment lacks `make`; fallback direct script execution is required to mirror make targets.
-diff --git a/03_work_orders/WO-20260207-902/02_Scope.md b/03_work_orders/WO-20260207-902/02_Scope.md
-new file mode 100644
-index 0000000..71375c9
---- /dev/null
-+++ b/03_work_orders/WO-20260207-902/02_Scope.md
-@@ -0,0 +1,5 @@
-+# Scope
-+
-+## In Scope
-+
-+## Out of Scope
-diff --git a/03_work_orders/WO-20260207-902/03_DoD.md b/03_work_orders/WO-20260207-902/03_DoD.md
-new file mode 100644
-index 0000000..cf050ee
---- /dev/null
-+++ b/03_work_orders/WO-20260207-902/03_DoD.md
-@@ -0,0 +1,6 @@
-+# Definition of Done
-+
-+- [ ] Work order completed and committed
-+- [ ] Context pack completed and committed
-+- [ ] Delivery pack completed and committed
-+- [ ] Review report completed and committed
++- 环境缺少系统 `make`，需通过本地 shim 执行等效 `make` 目标。
++- 该 WO 已在历史分支演练过一次，本次以新分支名再次完整演练，需确保提交与合并证据为当前分支链路。
 diff --git a/04_context_packs/WO-20260207-902/01_ContextPack.md b/04_context_packs/WO-20260207-902/01_ContextPack.md
-new file mode 100644
-index 0000000..cc4565f
---- /dev/null
+index cc4565f..a354881 100644
+--- a/04_context_packs/WO-20260207-902/01_ContextPack.md
 +++ b/04_context_packs/WO-20260207-902/01_ContextPack.md
-@@ -0,0 +1,42 @@
-+# WO-20260207-902 Context Pack
-+
-+## Context
-+
-+WO-20260207-902 当前阶段为 Context Preparation，目标是在不进入实现开发的前提下，产出可用于 Gate A 准入校验的上下文工件。
-+
-+该 WO 的前置工件已具备：
-+- `03_work_orders/WO-20260207-902/01_WorkOrder.md` 已定义目标、范围、DoD 与风险。
-+- `03_work_orders/WO-20260207-902/02_Scope.md` 与 `03_DoD.md` 已存在，用于后续阶段逐步细化。
-+
-+本阶段仅覆盖上下文包目录下内容准备与提交，不修改 `01_spec_locked/` 权威规格，也不触发质量/交付/评审阶段工件。
-+
-+## Decisions
-+
-+1. **采用仓库自动化脚本生成骨架**  
-+   通过 `09_automations/01_scripts/02_prepare_context.sh` 初始化上下文包标准文件结构，保证与仓库流程一致。
-+
-+2. **在 ContextPack 中补充可执行语义，而非模板占位符**  
-+   明确记录当前阶段目标边界、输入来源与后续依赖，确保 Reviewer 可直接判断 Gate A 前置条件。
-+
-+3. **保持最小化改动策略**  
-+   仅修改 `04_context_packs/WO-20260207-902/` 下必要文件，避免引入跨阶段变更和噪音提交。
-+
-+4. **使用阶段化提交脚本进行提交**  
-+   通过 `09_automations/01_scripts/09_git_commit_stage.sh WO-20260207-902 context` 完成上下文阶段提交，保持提交信息和流程约束一致。
-+
-+## Assumptions
-+
-+1. 当前工作分支已满足 WO 分支命名规范（`wo/WO-20260207-902-sim-workflow`），可直接进行 context 阶段提交。
-+2. Gate A 判定最小要求为：
-+   - `03_work_orders/WO-20260207-902/01_WorkOrder.md` 存在且非空；
-+   - `04_context_packs/WO-20260207-902/01_ContextPack.md` 存在且内容具备有效上下文信息。
-+3. 环境中可能缺少 `rg` 命令；若出现该依赖缺失，允许以等效方式完成脚本执行，不改变 WO 产物结构。
-+4. 本阶段提交仅代表 Context Preparation 完成，不代表实现、质量、交付与评审已完成。
-+
-+## Key Files
-+
-+- `03_work_orders/WO-20260207-902/01_WorkOrder.md`：WO 目标、范围与验收基线。
-+- `04_context_packs/WO-20260207-902/01_ContextPack.md`：本文件，Gate A 关键上下文证据。
-+- `04_context_packs/WO-20260207-902/02_FileMap.md`：文件职责映射（由脚本生成，可后续细化）。
-+- `04_context_packs/WO-20260207-902/03_API_Contracts.md`：接口契约占位（如适用再补充）。
-+- `04_context_packs/WO-20260207-902/04_Decisions_Summary.md`：决策摘要占位（可与本文件同步细化）。
+@@ -1,42 +1,23 @@
+ # WO-20260207-902 Context Pack
+ 
+-## Context
++## Background
+ 
+-WO-20260207-902 当前阶段为 Context Preparation，目标是在不进入实现开发的前提下，产出可用于 Gate A 准入校验的上下文工件。
++本次 WO 用于执行本地 Git 交付闭环演练，要求覆盖：开工、上下文准备、实现、质检、交付、评审与合并。上下文包目标是为 Gate A 提供可审计证据，并明确后续阶段输入。
+ 
+-该 WO 的前置工件已具备：
+-- `03_work_orders/WO-20260207-902/01_WorkOrder.md` 已定义目标、范围、DoD 与风险。
+-- `03_work_orders/WO-20260207-902/02_Scope.md` 与 `03_DoD.md` 已存在，用于后续阶段逐步细化。
++## Constraints
+ 
+-本阶段仅覆盖上下文包目录下内容准备与提交，不修改 `01_spec_locked/` 权威规格，也不触发质量/交付/评审阶段工件。
+-
+-## Decisions
+-
+-1. **采用仓库自动化脚本生成骨架**  
+-   通过 `09_automations/01_scripts/02_prepare_context.sh` 初始化上下文包标准文件结构，保证与仓库流程一致。
+-
+-2. **在 ContextPack 中补充可执行语义，而非模板占位符**  
+-   明确记录当前阶段目标边界、输入来源与后续依赖，确保 Reviewer 可直接判断 Gate A 前置条件。
+-
+-3. **保持最小化改动策略**  
+-   仅修改 `04_context_packs/WO-20260207-902/` 下必要文件，避免引入跨阶段变更和噪音提交。
+-
+-4. **使用阶段化提交脚本进行提交**  
+-   通过 `09_automations/01_scripts/09_git_commit_stage.sh WO-20260207-902 context` 完成上下文阶段提交，保持提交信息和流程约束一致。
+-
+-## Assumptions
+-
+-1. 当前工作分支已满足 WO 分支命名规范（`wo/WO-20260207-902-sim-workflow`），可直接进行 context 阶段提交。
+-2. Gate A 判定最小要求为：
+-   - `03_work_orders/WO-20260207-902/01_WorkOrder.md` 存在且非空；
+-   - `04_context_packs/WO-20260207-902/01_ContextPack.md` 存在且内容具备有效上下文信息。
+-3. 环境中可能缺少 `rg` 命令；若出现该依赖缺失，允许以等效方式完成脚本执行，不改变 WO 产物结构。
+-4. 本阶段提交仅代表 Context Preparation 完成，不代表实现、质量、交付与评审已完成。
++- 必须绑定唯一 WO：`WO-20260207-902`。
++- 必须在分支 `wo/WO-20260207-902-roo-sim-flow` 施工。
++- `01_spec_locked/` 为只读，不在本 WO 修改。
++- 全流程通过脚本化 gate，不以口头说明替代证据。
++- 环境缺少系统 `make`，采用本地 shim 执行等效 make 目标。
+ 
+ ## Key Files
+ 
+-- `03_work_orders/WO-20260207-902/01_WorkOrder.md`：WO 目标、范围与验收基线。
+-- `04_context_packs/WO-20260207-902/01_ContextPack.md`：本文件，Gate A 关键上下文证据。
+-- `04_context_packs/WO-20260207-902/02_FileMap.md`：文件职责映射（由脚本生成，可后续细化）。
+-- `04_context_packs/WO-20260207-902/03_API_Contracts.md`：接口契约占位（如适用再补充）。
+-- `04_context_packs/WO-20260207-902/04_Decisions_Summary.md`：决策摘要占位（可与本文件同步细化）。
++- `03_work_orders/WO-20260207-902/01_WorkOrder.md`：工单目标、范围、DoD 与风险。
++- `04_context_packs/WO-20260207-902/01_ContextPack.md`：本上下文基线。
++- `04_context_packs/WO-20260207-902/02_FileMap.md`：受影响文件与职责映射。
++- `05_src/app/roo_sim_marker.txt`：最小实现标记文件（implementation 阶段新增）。
++- `06_quality/04_reports/WO-20260207-902/`：质量报告、命令清单与日志。
++- `07_delivery_packs/WO-20260207-902/`：交付包与 `99_artifacts`。
++- `08_review_reports/WO-20260207-902/01_Review.md`：独立评审结论，需 `Verdict: PASS`。
 diff --git a/04_context_packs/WO-20260207-902/02_FileMap.md b/04_context_packs/WO-20260207-902/02_FileMap.md
-new file mode 100644
-index 0000000..36e0e3d
---- /dev/null
+index 36e0e3d..4463298 100644
+--- a/04_context_packs/WO-20260207-902/02_FileMap.md
 +++ b/04_context_packs/WO-20260207-902/02_FileMap.md
-@@ -0,0 +1,92 @@
-+# File Map
-+
-+| File | Responsibility |
-+|---|---|
-+| `.roo/rules/01_general.md` | TODO |
-+| `.roo/rules/02_repo_workflow.md` | TODO |
-+| `.roo/rules/03_artifact_contract.md` | TODO |
-+| `.roo/rules/04_gate_policy.md` | TODO |
-+| `.roo/rules-architect/01_arch_guardrails.md` | TODO |
-+| `.roo/rules-architect/02_planning_contract.md` | TODO |
-+| `.roo/rules-ask/01_answer_protocol.md` | TODO |
-+| `.roo/rules-ask/02_response_format.md` | TODO |
-+| `.roo/rules-code/01_coding_style.md` | TODO |
-+| `.roo/rules-code/02_tests.md` | TODO |
-+| `.roo/rules-code/03_delivery_obligations.md` | TODO |
-+| `.roo/rules-debug/01_debug_protocol.md` | TODO |
-+| `.roo/rules-debug/02_evidence_contract.md` | TODO |
-+| `.roo/rules-librarian/01_context_contract.md` | TODO |
-+| `.roo/rules-librarian/02_handoff_protocol.md` | TODO |
-+| `.roo/rules-librarian/03_git_notes.md` | TODO |
-+| `.roo/rules-orchestrator/01_handoff_flow.md` | TODO |
-+| `.roo/rules-orchestrator/02_task_contract.md` | TODO |
-+| `.roo/rules-orchestrator/03_program_planning.md` | TODO |
-+| `.roo/rules-orchestrator/04_git_control.md` | TODO |
-+| `.roo/rules-orchestrator/05_branch_issuance.md` | TODO |
-+| `.roo/rules-qa-runner/01_quality_contract.md` | TODO |
-+| `.roo/rules-reviewer/01_acceptance_gate.md` | TODO |
-+| `.roo/rules-reviewer/02_decision_matrix.md` | TODO |
-+| `.roo/rules-reviewer/03_git_audit.md` | TODO |
-+| `.roomodes` | TODO |
-+| `01_spec_locked/01_SPEC.md` | TODO |
-+| `01_spec_locked/02_ACCEPTANCE.md` | TODO |
-+| `01_spec_locked/03_GLOSSARY.md` | TODO |
-+| `01_spec_locked/04_NFR.md` | TODO |
-+| `02_templates/01_work_order.md` | TODO |
-+| `02_templates/02_context_pack.md` | TODO |
-+| `02_templates/03_delivery_pack.md` | TODO |
-+| `02_templates/04_review_report.md` | TODO |
-+| `02_templates/05_acceptance_request.md` | TODO |
-+| `03_work_orders/WO-20260207-901/01_WorkOrder.md` | TODO |
-+| `03_work_orders/WO-20260207-901/02_Scope.md` | TODO |
-+| `03_work_orders/WO-20260207-901/03_DoD.md` | TODO |
-+| `03_work_orders/WO-20260207-902/01_WorkOrder.md` | TODO |
-+| `03_work_orders/WO-20260207-902/02_Scope.md` | TODO |
-+| `03_work_orders/WO-20260207-902/03_DoD.md` | TODO |
-+| `04_context_packs/WO-20260207-901/01_ContextPack.md` | TODO |
-+| `04_context_packs/WO-20260207-901/02_FileMap.md` | TODO |
-+| `04_context_packs/WO-20260207-901/03_API_Contracts.md` | TODO |
-+| `04_context_packs/WO-20260207-901/04_Decisions_Summary.md` | TODO |
-+| `04_context_packs/WO-20260207-902/01_ContextPack.md` | TODO |
-+| `04_context_packs/WO-20260207-902/02_FileMap.md` | TODO |
-+| `05_src/app/e2e_test_marker.txt` | TODO |
-+| `06_quality/04_reports/WO-20260207-901/01_quality_report.md` | TODO |
-+| `06_quality/04_reports/WO-20260207-901/02_commands.md` | TODO |
-+| `06_quality/04_reports/WO-20260207-901/03_logs/repo-scan.log` | TODO |
-+| `06_quality/04_reports/WO-20260207-901/03_logs/validate-quality.log` | TODO |
-+| `06_quality/04_reports/WO-20260207-901/04_validation_delivery.md` | TODO |
-+| `06_quality/04_reports/WO-20260207-901/04_validation_quality.md` | TODO |
-+| `07_delivery_packs/WO-20260207-901/01_DeliveryPack.md` | TODO |
-+| `07_delivery_packs/WO-20260207-901/02_ChangeList.md` | TODO |
-+| `07_delivery_packs/WO-20260207-901/03_SpecCoverage.md` | TODO |
-+| `07_delivery_packs/WO-20260207-901/04_Verification.md` | TODO |
-+| `07_delivery_packs/WO-20260207-901/05_RiskNotes.md` | TODO |
-+| `07_delivery_packs/WO-20260207-901/99_artifacts/changes.diff` | TODO |
-+| `07_delivery_packs/WO-20260207-901/99_artifacts/changes.patch` | TODO |
-+| `08_review_reports/WO-20260207-901/01_Review.md` | TODO |
-+| `08_review_reports/WO-20260207-901/02_Blockers.md` | TODO |
-+| `08_review_reports/WO-20260207-901/03_FollowUps.md` | TODO |
-+| `09_automations/01_scripts/01_new_work_order.sh` | TODO |
-+| `09_automations/01_scripts/02_prepare_context.sh` | TODO |
-+| `09_automations/01_scripts/03_run_quality.sh` | TODO |
-+| `09_automations/01_scripts/04_pack_delivery.sh` | TODO |
-+| `09_automations/01_scripts/05_validate_wo.sh` | TODO |
-+| `09_automations/01_scripts/06_git_control_check.sh` | TODO |
-+| `09_automations/01_scripts/07_prepare_review_artifacts.sh` | TODO |
-+| `09_automations/01_scripts/08_install_git_hooks.sh` | TODO |
-+| `09_automations/01_scripts/09_git_commit_stage.sh` | TODO |
-+| `09_automations/01_scripts/10_git_merge_wo.sh` | TODO |
-+| `09_automations/01_scripts/11_prepare_review.sh` | TODO |
-+| `09_automations/02_git_hooks/commit-msg` | TODO |
-+| `09_automations/02_git_hooks/pre-push` | TODO |
-+| `09_automations/02_git_hooks/README.md` | TODO |
-+| `09_automations/03_make/Makefile` | TODO |
-+| `1-from_GPT_Web.md` | TODO |
-+| `10_docs/01_README.md` | TODO |
-+| `10_docs/02_ARCH_OVERVIEW.md` | TODO |
-+| `10_docs/03_CONTRIBUTING.md` | TODO |
-+| `10_docs/04_git_workflow.md` | TODO |
-+| `10_docs/04_ROO_WORKFLOW.md` | TODO |
-+| `10_docs/05_interaction_protocol.md` | TODO |
-+| `2-git_add.md` | TODO |
-+| `3-add_交互模式说明.md` | TODO |
-diff --git a/04_context_packs/WO-20260207-902/03_API_Contracts.md b/04_context_packs/WO-20260207-902/03_API_Contracts.md
+@@ -2,6 +2,226 @@
+ 
+ | File | Responsibility |
+ |---|---|
++| `.git/COMMIT_EDITMSG` | TODO |
++| `.git/config` | TODO |
++| `.git/description` | TODO |
++| `.git/FETCH_HEAD` | TODO |
++| `.git/HEAD` | TODO |
++| `.git/hooks/applypatch-msg.sample` | TODO |
++| `.git/hooks/commit-msg.sample` | TODO |
++| `.git/hooks/fsmonitor-watchman.sample` | TODO |
++| `.git/hooks/post-update.sample` | TODO |
++| `.git/hooks/pre-applypatch.sample` | TODO |
++| `.git/hooks/pre-commit.sample` | TODO |
++| `.git/hooks/pre-merge-commit.sample` | TODO |
++| `.git/hooks/pre-push.sample` | TODO |
++| `.git/hooks/pre-rebase.sample` | TODO |
++| `.git/hooks/pre-receive.sample` | TODO |
++| `.git/hooks/prepare-commit-msg.sample` | TODO |
++| `.git/hooks/push-to-checkout.sample` | TODO |
++| `.git/hooks/sendemail-validate.sample` | TODO |
++| `.git/hooks/update.sample` | TODO |
++| `.git/index` | TODO |
++| `.git/info/exclude` | TODO |
++| `.git/logs/HEAD` | TODO |
++| `.git/logs/refs/heads/main` | TODO |
++| `.git/logs/refs/heads/wo/WO-20260207-901-e2e-test` | TODO |
++| `.git/logs/refs/heads/wo/WO-20260207-902-roo-sim-flow` | TODO |
++| `.git/logs/refs/heads/wo/WO-20260207-902-sim-workflow` | TODO |
++| `.git/logs/refs/remotes/origin/main` | TODO |
++| `.git/objects/00/e5b32c0e831eba9c4b8cfe85d604b8068fd973` | TODO |
++| `.git/objects/02/b9abb2c369204b72493bca1575e6da055f2e52` | TODO |
++| `.git/objects/04/1cc97e5b8793389f5f3704766d34b594ee67c8` | TODO |
++| `.git/objects/04/d070c2254f9f2aed4ea6cb7402e10ae9c84e01` | TODO |
++| `.git/objects/05/918d6813bc2813907ef4a4357bf0a4fc43bc3c` | TODO |
++| `.git/objects/07/0200bed0ce2b9cc2654568e62a7d1eafea0dc9` | TODO |
++| `.git/objects/07/c2823c7f17f5a6e344dd0156c0112510f9e597` | TODO |
++| `.git/objects/0a/6d0276acbbb70b7da5498fe9a2e11a874afeb5` | TODO |
++| `.git/objects/0a/b7f09517f9009024a18bcc6b89afe862c70ea2` | TODO |
++| `.git/objects/0d/1fe984e05223fc356ad47126b0766391f8cd7a` | TODO |
++| `.git/objects/0d/57910394b55873fd5a8020e08794498db91546` | TODO |
++| `.git/objects/0d/e914e7889c5e70054f2ee1e67b18b44b903549` | TODO |
++| `.git/objects/0d/f696d0bff7e73640771c4d50b2bd4eca77db8d` | TODO |
++| `.git/objects/0f/1560a38d83830af9ad2250cc20b21dddc3c4cf` | TODO |
++| `.git/objects/0f/480ce8ca4d411665328927c8ae46d4e72a34c9` | TODO |
++| `.git/objects/11/0cf6a9cd7a39c5fca6e9d3a783d87e0472134b` | TODO |
++| `.git/objects/11/671f11d2c94b687a919a3cdc6da4cd4e64758f` | TODO |
++| `.git/objects/12/104188f632a870c7cf502e8e2501294eade9cd` | TODO |
++| `.git/objects/13/9ab707eee12146c53b663ad159c8d0573498b0` | TODO |
++| `.git/objects/15/623c836abf44d6795c9f2fc64d49ff945b80da` | TODO |
++| `.git/objects/16/ef0cf2c993485a045363d1b8143462c82cfe73` | TODO |
++| `.git/objects/17/90d13c31363ce655217c6022650d9ece709418` | TODO |
++| `.git/objects/18/4fb535094fb9cecd77662851d70f2e28c6ffe7` | TODO |
++| `.git/objects/19/1ff3e9b2765fc05df8d9aa73ca5ea671223ae9` | TODO |
++| `.git/objects/1a/bf67e347076b5be7225ea5aa8c3feee60460e3` | TODO |
++| `.git/objects/1e/f21ad79be004675827b8b5f781f16536d674e4` | TODO |
++| `.git/objects/1f/7aaf1bed9d56828eb72d85c60d450e3b0e52a9` | TODO |
++| `.git/objects/21/0827c32c7368a82c9d534103b74ba6a2e032ab` | TODO |
++| `.git/objects/21/48ba0b83550724e6e32dbc69ab602685312e31` | TODO |
++| `.git/objects/21/c7ee502318e84d2654bfae8f602f320092a942` | TODO |
++| `.git/objects/22/38e3711dfb6e4a674a2a60d53105030401c5ed` | TODO |
++| `.git/objects/22/f1e7399b2eef6540e7e77db42cd477b4687d2a` | TODO |
++| `.git/objects/23/95c43ee3c371a13b2e418efbff22adea43d89a` | TODO |
++| `.git/objects/23/b9d472b966a7bbe0f1ae8c3dd41533d1f91d6c` | TODO |
++| `.git/objects/26/fa1f00a73802aa2e8ab2ec4b6279f708f78a10` | TODO |
++| `.git/objects/28/0b9444c9c4118cfc465110d292ca7c65d0f0f2` | TODO |
++| `.git/objects/29/08e41309743d273e7dc08b2fbfe59ac04acc4e` | TODO |
++| `.git/objects/2a/3e8b5084943f2e81aa22a6510cd46a3432efd6` | TODO |
++| `.git/objects/2a/8f906424d198d0fd9b3190e3136ca379d512eb` | TODO |
++| `.git/objects/2c/14bd3542ab81d6968536d9b6d1e3990b2861dc` | TODO |
++| `.git/objects/2c/a842079bcea08e9e702fdc01a0a7b63a656bc0` | TODO |
++| `.git/objects/2d/e841b62226f398a621047e83751f37c47b4e71` | TODO |
++| `.git/objects/2e/b9f72663f725b013dff79bd92e56f805501cbb` | TODO |
++| `.git/objects/2e/bc20e7d1fff22215b06b8c68b0e84a64eed59a` | TODO |
++| `.git/objects/2f/99b14f9046346e813eacfd72de96ca321ffe5d` | TODO |
++| `.git/objects/2f/a63842876b897866e31c1df41795707f8863e8` | TODO |
++| `.git/objects/33/72eadbbe4ce9e69bc8c313a89da7d46f93ff39` | TODO |
++| `.git/objects/35/8aad28c23d2f31b61937322445efa7cae6c825` | TODO |
++| `.git/objects/36/e0e3df537c45b437e13fa9237733a345b78085` | TODO |
++| `.git/objects/37/0c6bfef3565681393a814d21debb20c807530d` | TODO |
++| `.git/objects/38/fad5a48420b2c851283e1c03e8788b98391926` | TODO |
++| `.git/objects/3a/d892aba7ea503f884e31a65138bc1317bf5a4b` | TODO |
++| `.git/objects/3b/8cc0f9cec3adc81e412a274424f057a17d048e` | TODO |
++| `.git/objects/3c/0573f83c9df16ea33f09717a41ea064114ab36` | TODO |
++| `.git/objects/3c/b4f181ed37b50a5ae31f0c45df3f847f3b2dda` | TODO |
++| `.git/objects/3c/dfe054a1cdf0b6d07391018df445a89eaefc21` | TODO |
++| `.git/objects/40/7613b4a9f8d3d97b06af711e4950f4f0d8bfbe` | TODO |
++| `.git/objects/44/601f6ea22564ea0962a5067af92cf7f2ca71fa` | TODO |
++| `.git/objects/44/922e96b704e04febd335e6d924af19224462a6` | TODO |
++| `.git/objects/44/d3352c085e3a43ae8cb8eb31f85ca9cb703d10` | TODO |
++| `.git/objects/45/a7e1f8e55613b9ee8ada4757cb65bb96b3ab98` | TODO |
++| `.git/objects/46/5e372153540c322e8d2011d27115a40c0ca63c` | TODO |
++| `.git/objects/48/3c62fa327f78b50ca7eff8bd2a6ff850c123e8` | TODO |
++| `.git/objects/48/84d59b705565bc97ff2fb789b89d59af159872` | TODO |
++| `.git/objects/48/eb11a9795d28c280b4506d82637fb0de2c799a` | TODO |
++| `.git/objects/4b/6bbbda9f6789efa5984e7f51273b37f8d7fd26` | TODO |
++| `.git/objects/4b/de77be13ee3ec3d2a538ccdd2438cce89883f4` | TODO |
++| `.git/objects/4c/7b4ed0aa9cc67bdecf90999d5f381bf4c4299c` | TODO |
++| `.git/objects/4c/f2c9a111fca798a906808efee032d1a39d87c2` | TODO |
++| `.git/objects/4e/bd9d62cb75998055c5faa03e01ae6d58855bca` | TODO |
++| `.git/objects/51/ac43de2283b3e78dca875f65cac95635442bc2` | TODO |
++| `.git/objects/52/4678a659e7b9f510bcfa7b029c8471a759e1de` | TODO |
++| `.git/objects/54/f40281a906f8bd3f3650539dd8013b46584796` | TODO |
++| `.git/objects/57/4d9bce66370ffbe5b4f593e31c2bbc0192af82` | TODO |
++| `.git/objects/5a/b0f6d7a20e7c834c529b350fef8976058b1ce5` | TODO |
++| `.git/objects/5a/f4aa06c7b023d37a5eccf312face8f178b0677` | TODO |
++| `.git/objects/5c/3a08f7b1fc6fea2e19b1fa2dbfde5c4ba86fc0` | TODO |
++| `.git/objects/5d/bb636adedd3771e0d6af44dfe52f835054f0e4` | TODO |
++| `.git/objects/60/2b9e8c087e294986b96522d091fd777c644837` | TODO |
++| `.git/objects/60/a702cfc6b2595e016699fbc0cdd1d629523741` | TODO |
++| `.git/objects/62/1b0ccc055855ead91cc11366f3ed41d117d895` | TODO |
++| `.git/objects/63/b367130ed8f2b7c8182d320ca4b285ef8302ec` | TODO |
++| `.git/objects/64/11cf3a086ae32c29dfd99b8a7448924132e957` | TODO |
++| `.git/objects/65/a7890319272f018324d5aef32d822fda9bc73a` | TODO |
++| `.git/objects/66/5f7399e28f4992933b9ae551f568a1fd2e98e5` | TODO |
++| `.git/objects/66/6469e10eda2b0b289ad53d691b900bfbc87d73` | TODO |
++| `.git/objects/67/ca4419c0241c322a6d2f9f2102343ef5312b6b` | TODO |
++| `.git/objects/68/fb2aa447d9cdd6387273e0f4510dde6b8ee1f8` | TODO |
++| `.git/objects/69/d1fa194f60ff28ebbaa5a47ecf761ac5b387a3` | TODO |
++| `.git/objects/6b/f7b0f9a5181f155781c7b0a282400248f67ecc` | TODO |
++| `.git/objects/6c/8a70c87535a481fe97207af14ca71a04f7df8d` | TODO |
++| `.git/objects/6d/450412c550ff591a784996a1a3c5d23697568f` | TODO |
++| `.git/objects/6e/a0ffc286e9c1bf9d53c4bfdc6eaf6c885724a0` | TODO |
++| `.git/objects/6e/edc0d599664864e1a6b4917545e3ec933f3360` | TODO |
++| `.git/objects/70/6c2f058229b185064caed6832dcb8ffe0c45f2` | TODO |
++| `.git/objects/71/2c6d85979b56352d74ed95f1cfc24b2d6acc84` | TODO |
++| `.git/objects/71/375c9d07c29bf9b94ccdee8f4eab425d35d630` | TODO |
++| `.git/objects/71/f699e3dd6ce562dc2c8c80ea6c28af68855b49` | TODO |
++| `.git/objects/76/056d22b10517e3e8b03ed613817340a5e063d3` | TODO |
++| `.git/objects/76/822ccbbf5b2d3f9fd8e6fe6ee9d3cc62aded20` | TODO |
++| `.git/objects/76/a7ade6c274464609f16f47e01179e1069e16e3` | TODO |
++| `.git/objects/78/11b5512e20a65fc25c35ccd02f332075e698ba` | TODO |
++| `.git/objects/79/cc5369a0285a56b13a43121c7c85d4792cd5dc` | TODO |
++| `.git/objects/7a/ee1a1aa5c032bfd6c3b229cdfaa3a2796da046` | TODO |
++| `.git/objects/7b/b8f6f9359cf6c64635e455d3356ce3ee994625` | TODO |
++| `.git/objects/7c/664708fc76b9ce553faac2097cbff0029e2167` | TODO |
++| `.git/objects/7d/5d0c42734a838cecd0f0b8c912315020ca2f43` | TODO |
++| `.git/objects/7e/97d7370f1fe2df374dd5fc031651d15b012235` | TODO |
++| `.git/objects/7f/f6bd486997b2daa821eb267a7bbf1a575bb185` | TODO |
++| `.git/objects/80/1b5a3ae3c2f61964ebdb0c2f815a268f2d539e` | TODO |
++| `.git/objects/81/91faa58525b4c4b9738d68d54c0ec76871f432` | TODO |
++| `.git/objects/81/e74e4ed3fbfe902ee51f7161d91ce5295f871c` | TODO |
++| `.git/objects/86/23563fb7b777286e35b2fc47eef2941b62a25c` | TODO |
++| `.git/objects/86/7daeeae33fc60166cf491fab684ef67510687b` | TODO |
++| `.git/objects/86/ff4437fe91113b0f020e469f32e60666613259` | TODO |
++| `.git/objects/89/c1c3ce8ffb13875e46dd4a986bc2d67f5432db` | TODO |
++| `.git/objects/8a/06fc7a7816bedaf340298c9f8b4eac8d1c5201` | TODO |
++| `.git/objects/8a/4fb5f12533687365f780c021618847e5515a2b` | TODO |
++| `.git/objects/8a/d536ed6ebc5c4be6adaa37fd82f34bb3ea7861` | TODO |
++| `.git/objects/8a/f7fc27fe7605842ea50fe3d576b4de4677a75e` | TODO |
++| `.git/objects/8d/df17961365054f31dd6915dfa2d899ed02027c` | TODO |
++| `.git/objects/8e/69c963d7d2d5450e7fbd2cc5830ce5054abc6f` | TODO |
++| `.git/objects/93/fb079a5108fff5aaf6f55f16e6e2eef9539b48` | TODO |
++| `.git/objects/98/b9178aedb7bf38ea0eabc6522c7279e159b21f` | TODO |
++| `.git/objects/98/d379c49368e2360a80a50dfe856b90bdb668fa` | TODO |
++| `.git/objects/99/dec80843e50398c5e1bcf40587d29c64811d1e` | TODO |
++| `.git/objects/9e/11bd44469b1d5df223cd26af08c7c71dd47705` | TODO |
++| `.git/objects/9e/647f647b20693a7226315251cd4c22ebc94737` | TODO |
++| `.git/objects/a0/aee40fe6c40a5f49ce05bc734f021e8a2f5eb8` | TODO |
++| `.git/objects/a1/f4a68126cbbbafcc2bc4a5dbe44b9ad0db3625` | TODO |
++| `.git/objects/a2/5dc0826afdcbb825495096160292816360e6f8` | TODO |
++| `.git/objects/a3/0d8ebd4adccf9f0d0523ac4adca97580579c21` | TODO |
++| `.git/objects/a3/17c95219a9aacc6f5f014b11c0ad4c2cfeb3df` | TODO |
++| `.git/objects/a6/2d7855c6c2449a835dc160b2acb0dd0631ea2e` | TODO |
++| `.git/objects/a6/3d470f89243807cec18e0984edfb002eed28e3` | TODO |
++| `.git/objects/a9/091eb9c215ecde50f8a2af16112f15c407d337` | TODO |
++| `.git/objects/a9/7c5c8aecc530f6c53dbeaabad8ceebcf5724c3` | TODO |
++| `.git/objects/ae/31e794d1938d4ed9ac5b9b7ad563586062f4b4` | TODO |
++| `.git/objects/af/5209507211f300afa544615ff3d94d588916f7` | TODO |
++| `.git/objects/af/80c4fb468442a3ba4ccc699a44631a0357a213` | TODO |
++| `.git/objects/af/b79fd56ac904bec1dcddcdae1caa59b39b3f1a` | TODO |
++| `.git/objects/af/cd619f00031a1497f4411379cc6ed4b52bdd87` | TODO |
++| `.git/objects/b0/4daa459d415a81199b8c684d9fa316d1a76fd5` | TODO |
++| `.git/objects/b4/786d883e4176001fddb4c3c7aef62abf3fa72c` | TODO |
++| `.git/objects/b4/b98ec067eee633e5bb89dddf0215db2eb46d30` | TODO |
++| `.git/objects/b4/d86298cfe9262accc96ec622b0e752f3960e86` | TODO |
++| `.git/objects/b8/003368fdffa0f88a5713631e6c9ff19f385e5a` | TODO |
++| `.git/objects/bb/009e17dcc2c9a3f102670a0a35999c9657d3b2` | TODO |
++| `.git/objects/bd/a1de0c80a3f40b5ba3b6b8dffefc338d8db2e5` | TODO |
++| `.git/objects/bd/fb8fd92f5470c737077ccc8ffd6fbec757146c` | TODO |
++| `.git/objects/be/0b2c8138297b99144e7f6b70e29a8b42e617bb` | TODO |
++| `.git/objects/bf/550c4e0590ad820ac59b173f90531492774141` | TODO |
++| `.git/objects/c1/394370a7a51938fba66e2764c092010f5b1654` | TODO |
++| `.git/objects/c1/41de3e7d3171be4a8fbdc5ec40072659d8caf4` | TODO |
++| `.git/objects/c4/6c6ed6ea71449d7533eaa482041139e2f2bdad` | TODO |
++| `.git/objects/c4/83497df909db21e27f36bad963c95108a10008` | TODO |
++| `.git/objects/c6/526a5a378b7da29c86daf7b5002e86ee377103` | TODO |
++| `.git/objects/c7/39b42c4d2ce23786c5350641d0adbf5fa7d6b2` | TODO |
++| `.git/objects/cc/4565f314cce7b3b84245f3254e5df3ed62de0c` | TODO |
++| `.git/objects/cf/050ee6f9b9c03a9efe81a769bd83beee8be94a` | TODO |
++| `.git/objects/d0/7a3f2c40c70d23458ab7be758779f309c813ff` | TODO |
++| `.git/objects/d1/f273826c243a6e56023ba1fa7678870743f1c2` | TODO |
++| `.git/objects/d3/b29cc2f8766c366419117f0549b4890eefdd68` | TODO |
++| `.git/objects/d5/b62a59e7a9a8aaeb00e892e96f5bc3856514c2` | TODO |
++| `.git/objects/d5/bea8830baaf171440439c103bb10fa593187df` | TODO |
++| `.git/objects/df/a8a3b3b0fedb5254d7a18bb598b25f8838834e` | TODO |
++| `.git/objects/e1/7787f51bcd329d705a69b5e4deb72674290f96` | TODO |
++| `.git/objects/e4/f8010156a7bf88dcadb05f43a80b12e01f37a3` | TODO |
++| `.git/objects/e7/9d636e18a50197b3615f798fdb7f53af81743c` | TODO |
++| `.git/objects/e7/d1bd6da559666b10d783fd7e83ebf97bf760eb` | TODO |
++| `.git/objects/e8/7445a4b1d3251e017efa6891bebd3c7436df6b` | TODO |
++| `.git/objects/ea/376d486f8c9e89d4d1c4469de56e574b9b3bf3` | TODO |
++| `.git/objects/ea/b060d5534d3d0186f399d7ebfa8ea8c9a78670` | TODO |
++| `.git/objects/eb/6b388c414dfc929d961f1e52811355387e3fac` | TODO |
++| `.git/objects/ec/1608fdeb69ebe8de0ed66fc3279899cbe68222` | TODO |
++| `.git/objects/f0/9d0812950e36f04f969d9ffc6529ca2f783703` | TODO |
++| `.git/objects/f6/6ba01a8950fae96887003146851fe103e5df2a` | TODO |
++| `.git/objects/f8/79c50e310d8f13ea55d9c047d30c6e00a08086` | TODO |
++| `.git/objects/f8/953fd4b8d24cc58c16592158a4d40e2b60ef95` | TODO |
++| `.git/objects/f9/2401664599dc2cb1e904d2aa94c15b503765d2` | TODO |
++| `.git/objects/f9/c495ec2e06b2d974d34a34d52500f3a36a911e` | TODO |
++| `.git/objects/fa/35a11b0d8ebfaf932868e3596435e4405702f7` | TODO |
++| `.git/objects/fa/7c132214c15846ffb4dcc84f4b2be93e284f8f` | TODO |
++| `.git/objects/fa/cb83d043aff6f37cb026c24eb89dc1300c383a` | TODO |
++| `.git/objects/fb/1ff661c39bd92bf2a1a686e374695fcc267dff` | TODO |
++| `.git/objects/fb/baaba046100186dfe34c1bf928f7f19120fb87` | TODO |
++| `.git/objects/fe/333a4b2c94ebc5b9d1078f1062e0c43d26c7a6` | TODO |
++| `.git/ORIG_HEAD` | TODO |
++| `.git/refs/heads/main` | TODO |
++| `.git/refs/heads/wo/WO-20260207-901-e2e-test` | TODO |
++| `.git/refs/heads/wo/WO-20260207-902-roo-sim-flow` | TODO |
++| `.git/refs/heads/wo/WO-20260207-902-sim-workflow` | TODO |
++| `.git/refs/remotes/origin/main` | TODO |
+ | `.roo/rules/01_general.md` | TODO |
+ | `.roo/rules/02_repo_workflow.md` | TODO |
+ | `.roo/rules/03_artifact_contract.md` | TODO |
+@@ -28,6 +248,8 @@
+ | `.roo/rules-reviewer/02_decision_matrix.md` | TODO |
+ | `.roo/rules-reviewer/03_git_audit.md` | TODO |
+ | `.roomodes` | TODO |
++| `.tmp_bin/make` | TODO |
++| `.tmp_bin/rg` | TODO |
+ | `01_spec_locked/01_SPEC.md` | TODO |
+ | `01_spec_locked/02_ACCEPTANCE.md` | TODO |
+ | `01_spec_locked/03_GLOSSARY.md` | TODO |
+@@ -49,13 +271,21 @@
+ | `04_context_packs/WO-20260207-901/04_Decisions_Summary.md` | TODO |
+ | `04_context_packs/WO-20260207-902/01_ContextPack.md` | TODO |
+ | `04_context_packs/WO-20260207-902/02_FileMap.md` | TODO |
++| `04_context_packs/WO-20260207-902/03_API_Contracts.md` | TODO |
++| `04_context_packs/WO-20260207-902/04_Decisions_Summary.md` | TODO |
+ | `05_src/app/e2e_test_marker.txt` | TODO |
++| `05_src/roo_sim_marker.txt` | TODO |
+ | `06_quality/04_reports/WO-20260207-901/01_quality_report.md` | TODO |
+ | `06_quality/04_reports/WO-20260207-901/02_commands.md` | TODO |
+ | `06_quality/04_reports/WO-20260207-901/03_logs/repo-scan.log` | TODO |
+ | `06_quality/04_reports/WO-20260207-901/03_logs/validate-quality.log` | TODO |
+ | `06_quality/04_reports/WO-20260207-901/04_validation_delivery.md` | TODO |
+ | `06_quality/04_reports/WO-20260207-901/04_validation_quality.md` | TODO |
++| `06_quality/04_reports/WO-20260207-902/01_quality_report.md` | TODO |
++| `06_quality/04_reports/WO-20260207-902/02_commands.md` | TODO |
++| `06_quality/04_reports/WO-20260207-902/03_logs/validate-quality.log` | TODO |
++| `06_quality/04_reports/WO-20260207-902/04_validation_delivery.md` | TODO |
++| `06_quality/04_reports/WO-20260207-902/04_validation_quality.md` | TODO |
+ | `07_delivery_packs/WO-20260207-901/01_DeliveryPack.md` | TODO |
+ | `07_delivery_packs/WO-20260207-901/02_ChangeList.md` | TODO |
+ | `07_delivery_packs/WO-20260207-901/03_SpecCoverage.md` | TODO |
+@@ -63,9 +293,19 @@
+ | `07_delivery_packs/WO-20260207-901/05_RiskNotes.md` | TODO |
+ | `07_delivery_packs/WO-20260207-901/99_artifacts/changes.diff` | TODO |
+ | `07_delivery_packs/WO-20260207-901/99_artifacts/changes.patch` | TODO |
++| `07_delivery_packs/WO-20260207-902/01_DeliveryPack.md` | TODO |
++| `07_delivery_packs/WO-20260207-902/02_ChangeList.md` | TODO |
++| `07_delivery_packs/WO-20260207-902/03_SpecCoverage.md` | TODO |
++| `07_delivery_packs/WO-20260207-902/04_Verification.md` | TODO |
++| `07_delivery_packs/WO-20260207-902/05_RiskNotes.md` | TODO |
++| `07_delivery_packs/WO-20260207-902/99_artifacts/changes.diff` | TODO |
++| `07_delivery_packs/WO-20260207-902/99_artifacts/changes.patch` | TODO |
+ | `08_review_reports/WO-20260207-901/01_Review.md` | TODO |
+ | `08_review_reports/WO-20260207-901/02_Blockers.md` | TODO |
+ | `08_review_reports/WO-20260207-901/03_FollowUps.md` | TODO |
++| `08_review_reports/WO-20260207-902/01_Review.md` | TODO |
++| `08_review_reports/WO-20260207-902/02_Blockers.md` | TODO |
++| `08_review_reports/WO-20260207-902/03_FollowUps.md` | TODO |
+ | `09_automations/01_scripts/01_new_work_order.sh` | TODO |
+ | `09_automations/01_scripts/02_prepare_context.sh` | TODO |
+ | `09_automations/01_scripts/03_run_quality.sh` | TODO |
+diff --git a/05_src/app/roo_sim_marker.txt b/05_src/app/roo_sim_marker.txt
 new file mode 100644
-index 0000000..45a7e1f
+index 0000000..412e45a
 --- /dev/null
-+++ b/04_context_packs/WO-20260207-902/03_API_Contracts.md
-@@ -0,0 +1,3 @@
-+# API Contracts
-+
-+- N/A (fill if applicable)
-diff --git a/04_context_packs/WO-20260207-902/04_Decisions_Summary.md b/04_context_packs/WO-20260207-902/04_Decisions_Summary.md
-new file mode 100644
-index 0000000..48eb11a
---- /dev/null
-+++ b/04_context_packs/WO-20260207-902/04_Decisions_Summary.md
-@@ -0,0 +1,3 @@
-+# Decisions Summary
-+
-+- N/A (fill if applicable)
-diff --git a/05_src/roo_sim_marker.txt b/05_src/roo_sim_marker.txt
-new file mode 100644
-index 0000000..3cdfe05
---- /dev/null
-+++ b/05_src/roo_sim_marker.txt
++++ b/05_src/app/roo_sim_marker.txt
 @@ -0,0 +1 @@
-+Simulation Implementation Artifact for WO-20260207-902
++WO-20260207-902 roo-sim-flow marker
 diff --git a/06_quality/04_reports/WO-20260207-902/01_quality_report.md b/06_quality/04_reports/WO-20260207-902/01_quality_report.md
-new file mode 100644
-index 0000000..11671f1
---- /dev/null
+index 11671f1..69a4938 100644
+--- a/06_quality/04_reports/WO-20260207-902/01_quality_report.md
 +++ b/06_quality/04_reports/WO-20260207-902/01_quality_report.md
-@@ -0,0 +1,7 @@
-+# Quality Report
-+
-+- validate-quality: PASS
-+
-+- overall: PASS
-+
-+Logs: `06_quality/04_reports/WO-20260207-902/03_logs`
+@@ -1,7 +1,6 @@
+ # Quality Report
+ 
++- repo-scan: PASS
+ - validate-quality: PASS
+ 
+-- overall: PASS
+-
+ Logs: `06_quality/04_reports/WO-20260207-902/03_logs`
 diff --git a/06_quality/04_reports/WO-20260207-902/02_commands.md b/06_quality/04_reports/WO-20260207-902/02_commands.md
-new file mode 100644
-index 0000000..801b5a3
---- /dev/null
+index 801b5a3..bf3b19a 100644
+--- a/06_quality/04_reports/WO-20260207-902/02_commands.md
 +++ b/06_quality/04_reports/WO-20260207-902/02_commands.md
-@@ -0,0 +1,7 @@
-+# Commands
-+
-+## validate-quality
+@@ -1,5 +1,10 @@
+ # Commands
+ 
++## repo-scan
 +```bash
-+bash 09_automations/01_scripts/05_validate_wo.sh WO-20260207-902 quality
++rg --files | wc -l
 +```
 +
-diff --git a/06_quality/04_reports/WO-20260207-902/03_logs/validate-quality.log b/06_quality/04_reports/WO-20260207-902/03_logs/validate-quality.log
+ ## validate-quality
+ ```bash
+ bash 09_automations/01_scripts/05_validate_wo.sh WO-20260207-902 quality
+diff --git a/06_quality/04_reports/WO-20260207-902/03_logs/repo-scan.log b/06_quality/04_reports/WO-20260207-902/03_logs/repo-scan.log
 new file mode 100644
-index 0000000..2238e37
+index 0000000..a239dc7
 --- /dev/null
-+++ b/06_quality/04_reports/WO-20260207-902/03_logs/validate-quality.log
++++ b/06_quality/04_reports/WO-20260207-902/03_logs/repo-scan.log
 @@ -0,0 +1,2 @@
 +bash: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
-+Validation passed (quality) for WO-20260207-902. See 06_quality/04_reports/WO-20260207-902/04_validation_quality.md
++341
 diff --git a/06_quality/04_reports/WO-20260207-902/04_validation_quality.md b/06_quality/04_reports/WO-20260207-902/04_validation_quality.md
-new file mode 100644
-index 0000000..fa35a11
---- /dev/null
+index fa35a11..d071f27 100644
+--- a/06_quality/04_reports/WO-20260207-902/04_validation_quality.md
 +++ b/06_quality/04_reports/WO-20260207-902/04_validation_quality.md
-@@ -0,0 +1,14 @@
-+# Validation (quality)
-+
-+- WO: WO-20260207-902
-+- Time: 2026-02-07 14:12:09Z
-+
-+## Required Checks
-+- [PASS] Exists: 03_work_orders/WO-20260207-902/01_WorkOrder.md
-+- [PASS] Exists: 04_context_packs/WO-20260207-902/01_ContextPack.md
-+- [PASS] Exists: 06_quality/04_reports/WO-20260207-902/01_quality_report.md
-+- [PASS] Exists: 06_quality/04_reports/WO-20260207-902/02_commands.md
-+
-+## Summary
-+- Missing: 0
-+- Warnings: 0
+@@ -1,7 +1,7 @@
+ # Validation (quality)
+ 
+ - WO: WO-20260207-902
+-- Time: 2026-02-07 14:12:09Z
++- Time: 2026-02-07 14:46:18Z
+ 
+ ## Required Checks
+ - [PASS] Exists: 03_work_orders/WO-20260207-902/01_WorkOrder.md
