@@ -39,7 +39,7 @@ add_stage_files() {
       ;;
     implementation)
       # Keep implementation scope explicit and auditable.
-      git add 05_src srv 06_quality/01_tests 06_quality/02_lint 06_quality/03_security 10_docs .roo .roomodes 2>/dev/null || true
+      git add 05_src srv 06_quality/01_tests 06_quality/02_lint 06_quality/03_security 09_automations 10_docs .roo .roomodes 2>/dev/null || true
       ;;
     quality)
       bash 09_automations/01_scripts/05_validate_wo.sh "${WO}" quality

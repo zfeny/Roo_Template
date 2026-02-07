@@ -10,9 +10,20 @@ WO="$1"
 DP="07_delivery_packs/${WO}"
 mkdir -p "${DP}/99_artifacts"
 
+if [[ ! -f "${DP}/01_DeliveryPack.md" ]]; then
+  cat > "${DP}/01_DeliveryPack.md" <<EOT
+# ${WO} Delivery Pack
+
+## Summary
+
+## Outcome
+EOT
+fi
+
 CH="${DP}/02_ChangeList.md"
 SP="${DP}/03_SpecCoverage.md"
 VF="${DP}/04_Verification.md"
+RN="${DP}/05_RiskNotes.md"
 
 {
   echo "# Change List"
@@ -41,6 +52,16 @@ cat > "${VF}" <<EOT
 - Quality Report: \`06_quality/04_reports/${WO}/01_quality_report.md\`
 - Commands: \`06_quality/04_reports/${WO}/02_commands.md\`
 EOT
+
+if [[ ! -f "${RN}" ]]; then
+  cat > "${RN}" << 'EOT'
+# Risk Notes
+
+## Known Limits
+
+## Rollback Plan
+EOT
+fi
 
 bash 09_automations/01_scripts/05_validate_wo.sh "${WO}" delivery
 
