@@ -1,0 +1,339 @@
+From 93fb079a5108fff5aaf6f55f16e6e2eef9539b48 Mon Sep 17 00:00:00 2001
+From: zfeny <zfeny123@gmail.com>
+Date: Sat, 7 Feb 2026 20:40:31 +0700
+Subject: [PATCH 1/5] WO-20260207-901: add work order
+
+---
+ 03_work_orders/WO-20260207-901/01_WorkOrder.md | 18 ++++++++++++++++++
+ 03_work_orders/WO-20260207-901/02_Scope.md     |  5 +++++
+ 03_work_orders/WO-20260207-901/03_DoD.md       |  6 ++++++
+ 3 files changed, 29 insertions(+)
+ create mode 100644 03_work_orders/WO-20260207-901/01_WorkOrder.md
+ create mode 100644 03_work_orders/WO-20260207-901/02_Scope.md
+ create mode 100644 03_work_orders/WO-20260207-901/03_DoD.md
+
+diff --git a/03_work_orders/WO-20260207-901/01_WorkOrder.md b/03_work_orders/WO-20260207-901/01_WorkOrder.md
+new file mode 100644
+index 0000000..02b9abb
+--- /dev/null
++++ b/03_work_orders/WO-20260207-901/01_WorkOrder.md
+@@ -0,0 +1,18 @@
++# WO-20260207-901 Work Order
++
++- Branch: wo/WO-20260207-901-e2e-test
++- Status: Ready
++- Owner: orchestrator
++- Requester: test
++
++## Objective
++Validate scripted git workflow end-to-end.
++
++## Scope
++Run staged scripts and merge when review is PASS.
++
++## DoD
++All stage commits succeed and merge gate passes.
++
++## Risks
++Minimal test changes only.
+diff --git a/03_work_orders/WO-20260207-901/02_Scope.md b/03_work_orders/WO-20260207-901/02_Scope.md
+new file mode 100644
+index 0000000..71375c9
+--- /dev/null
++++ b/03_work_orders/WO-20260207-901/02_Scope.md
+@@ -0,0 +1,5 @@
++# Scope
++
++## In Scope
++
++## Out of Scope
+diff --git a/03_work_orders/WO-20260207-901/03_DoD.md b/03_work_orders/WO-20260207-901/03_DoD.md
+new file mode 100644
+index 0000000..cf050ee
+--- /dev/null
++++ b/03_work_orders/WO-20260207-901/03_DoD.md
+@@ -0,0 +1,6 @@
++# Definition of Done
++
++- [ ] Work order completed and committed
++- [ ] Context pack completed and committed
++- [ ] Delivery pack completed and committed
++- [ ] Review report completed and committed
+-- 
+2.43.0
+
+
+From f09d0812950e36f04f969d9ffc6529ca2f783703 Mon Sep 17 00:00:00 2001
+From: zfeny <zfeny123@gmail.com>
+Date: Sat, 7 Feb 2026 20:40:33 +0700
+Subject: [PATCH 2/5] WO-20260207-901: add context pack
+
+---
+ .../WO-20260207-901/01_ContextPack.md         |  7 ++++
+ .../WO-20260207-901/02_FileMap.md             | 42 +++++++++++++++++++
+ .../WO-20260207-901/03_API_Contracts.md       |  3 ++
+ .../WO-20260207-901/04_Decisions_Summary.md   |  3 ++
+ 4 files changed, 55 insertions(+)
+ create mode 100644 04_context_packs/WO-20260207-901/01_ContextPack.md
+ create mode 100644 04_context_packs/WO-20260207-901/02_FileMap.md
+ create mode 100644 04_context_packs/WO-20260207-901/03_API_Contracts.md
+ create mode 100644 04_context_packs/WO-20260207-901/04_Decisions_Summary.md
+
+diff --git a/04_context_packs/WO-20260207-901/01_ContextPack.md b/04_context_packs/WO-20260207-901/01_ContextPack.md
+new file mode 100644
+index 0000000..f924016
+--- /dev/null
++++ b/04_context_packs/WO-20260207-901/01_ContextPack.md
+@@ -0,0 +1,7 @@
++# WO-20260207-901 Context Pack
++
++## Background
++
++## Constraints
++
++## Key Files
+diff --git a/04_context_packs/WO-20260207-901/02_FileMap.md b/04_context_packs/WO-20260207-901/02_FileMap.md
+new file mode 100644
+index 0000000..89c1c3c
+--- /dev/null
++++ b/04_context_packs/WO-20260207-901/02_FileMap.md
+@@ -0,0 +1,42 @@
++# File Map
++
++| File | Responsibility |
++|---|---|
++| `1-from_GPT_Web.md` | TODO |
++| `3-add_交互模式说明.md` | TODO |
++| `2-git_add.md` | TODO |
++| `01_spec_locked/03_GLOSSARY.md` | TODO |
++| `01_spec_locked/02_ACCEPTANCE.md` | TODO |
++| `01_spec_locked/01_SPEC.md` | TODO |
++| `01_spec_locked/04_NFR.md` | TODO |
++| `02_templates/03_delivery_pack.md` | TODO |
++| `02_templates/02_context_pack.md` | TODO |
++| `02_templates/01_work_order.md` | TODO |
++| `02_templates/05_acceptance_request.md` | TODO |
++| `02_templates/04_review_report.md` | TODO |
++| `10_docs/03_CONTRIBUTING.md` | TODO |
++| `10_docs/02_ARCH_OVERVIEW.md` | TODO |
++| `10_docs/01_README.md` | TODO |
++| `10_docs/04_ROO_WORKFLOW.md` | TODO |
++| `10_docs/04_git_workflow.md` | TODO |
++| `10_docs/05_interaction_protocol.md` | TODO |
++| `09_automations/03_make/Makefile` | TODO |
++| `04_context_packs/WO-20260207-901/01_ContextPack.md` | TODO |
++| `04_context_packs/WO-20260207-901/02_FileMap.md` | TODO |
++| `03_work_orders/WO-20260207-901/02_Scope.md` | TODO |
++| `03_work_orders/WO-20260207-901/01_WorkOrder.md` | TODO |
++| `03_work_orders/WO-20260207-901/03_DoD.md` | TODO |
++| `09_automations/02_git_hooks/pre-push` | TODO |
++| `09_automations/02_git_hooks/commit-msg` | TODO |
++| `09_automations/02_git_hooks/README.md` | TODO |
++| `09_automations/01_scripts/06_git_control_check.sh` | TODO |
++| `09_automations/01_scripts/05_validate_wo.sh` | TODO |
++| `09_automations/01_scripts/04_pack_delivery.sh` | TODO |
++| `09_automations/01_scripts/03_run_quality.sh` | TODO |
++| `09_automations/01_scripts/02_prepare_context.sh` | TODO |
++| `09_automations/01_scripts/01_new_work_order.sh` | TODO |
++| `09_automations/01_scripts/09_git_commit_stage.sh` | TODO |
++| `09_automations/01_scripts/08_install_git_hooks.sh` | TODO |
++| `09_automations/01_scripts/07_prepare_review_artifacts.sh` | TODO |
++| `09_automations/01_scripts/10_git_merge_wo.sh` | TODO |
++| `09_automations/01_scripts/11_prepare_review.sh` | TODO |
+diff --git a/04_context_packs/WO-20260207-901/03_API_Contracts.md b/04_context_packs/WO-20260207-901/03_API_Contracts.md
+new file mode 100644
+index 0000000..45a7e1f
+--- /dev/null
++++ b/04_context_packs/WO-20260207-901/03_API_Contracts.md
+@@ -0,0 +1,3 @@
++# API Contracts
++
++- N/A (fill if applicable)
+diff --git a/04_context_packs/WO-20260207-901/04_Decisions_Summary.md b/04_context_packs/WO-20260207-901/04_Decisions_Summary.md
+new file mode 100644
+index 0000000..48eb11a
+--- /dev/null
++++ b/04_context_packs/WO-20260207-901/04_Decisions_Summary.md
+@@ -0,0 +1,3 @@
++# Decisions Summary
++
++- N/A (fill if applicable)
+-- 
+2.43.0
+
+
+From 5af4aa06c7b023d37a5eccf312face8f178b0677 Mon Sep 17 00:00:00 2001
+From: zfeny <zfeny123@gmail.com>
+Date: Sat, 7 Feb 2026 20:40:35 +0700
+Subject: [PATCH 3/5] WO-20260207-901: implement changes
+
+---
+ 05_src/app/e2e_test_marker.txt | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 05_src/app/e2e_test_marker.txt
+
+diff --git a/05_src/app/e2e_test_marker.txt b/05_src/app/e2e_test_marker.txt
+new file mode 100644
+index 0000000..ec1608f
+--- /dev/null
++++ b/05_src/app/e2e_test_marker.txt
+@@ -0,0 +1 @@
++WO-20260207-901 implementation marker
+-- 
+2.43.0
+
+
+From 9e11bd44469b1d5df223cd26af08c7c71dd47705 Mon Sep 17 00:00:00 2001
+From: zfeny <zfeny123@gmail.com>
+Date: Sat, 7 Feb 2026 20:40:38 +0700
+Subject: [PATCH 4/5] WO-20260207-901: add quality report
+
+---
+ .../WO-20260207-901/01_quality_report.md           |  6 ++++++
+ .../04_reports/WO-20260207-901/02_commands.md      | 12 ++++++++++++
+ .../WO-20260207-901/03_logs/repo-scan.log          |  1 +
+ .../WO-20260207-901/03_logs/validate-quality.log   |  1 +
+ .../WO-20260207-901/04_validation_quality.md       | 14 ++++++++++++++
+ 5 files changed, 34 insertions(+)
+ create mode 100644 06_quality/04_reports/WO-20260207-901/01_quality_report.md
+ create mode 100644 06_quality/04_reports/WO-20260207-901/02_commands.md
+ create mode 100644 06_quality/04_reports/WO-20260207-901/03_logs/repo-scan.log
+ create mode 100644 06_quality/04_reports/WO-20260207-901/03_logs/validate-quality.log
+ create mode 100644 06_quality/04_reports/WO-20260207-901/04_validation_quality.md
+
+diff --git a/06_quality/04_reports/WO-20260207-901/01_quality_report.md b/06_quality/04_reports/WO-20260207-901/01_quality_report.md
+new file mode 100644
+index 0000000..8ddf179
+--- /dev/null
++++ b/06_quality/04_reports/WO-20260207-901/01_quality_report.md
+@@ -0,0 +1,6 @@
++# Quality Report
++
++- repo-scan: PASS
++- validate-quality: PASS
++
++Logs: `06_quality/04_reports/WO-20260207-901/03_logs`
+diff --git a/06_quality/04_reports/WO-20260207-901/02_commands.md b/06_quality/04_reports/WO-20260207-901/02_commands.md
+new file mode 100644
+index 0000000..e4f8010
+--- /dev/null
++++ b/06_quality/04_reports/WO-20260207-901/02_commands.md
+@@ -0,0 +1,12 @@
++# Commands
++
++## repo-scan
++```bash
++rg --files | wc -l
++```
++
++## validate-quality
++```bash
++bash 09_automations/01_scripts/05_validate_wo.sh WO-20260207-901 quality
++```
++
+diff --git a/06_quality/04_reports/WO-20260207-901/03_logs/repo-scan.log b/06_quality/04_reports/WO-20260207-901/03_logs/repo-scan.log
+new file mode 100644
+index 0000000..c739b42
+--- /dev/null
++++ b/06_quality/04_reports/WO-20260207-901/03_logs/repo-scan.log
+@@ -0,0 +1 @@
++44
+diff --git a/06_quality/04_reports/WO-20260207-901/03_logs/validate-quality.log b/06_quality/04_reports/WO-20260207-901/03_logs/validate-quality.log
+new file mode 100644
+index 0000000..a97c5c8
+--- /dev/null
++++ b/06_quality/04_reports/WO-20260207-901/03_logs/validate-quality.log
+@@ -0,0 +1 @@
++Validation passed (quality) for WO-20260207-901. See 06_quality/04_reports/WO-20260207-901/04_validation_quality.md
+diff --git a/06_quality/04_reports/WO-20260207-901/04_validation_quality.md b/06_quality/04_reports/WO-20260207-901/04_validation_quality.md
+new file mode 100644
+index 0000000..8a06fc7
+--- /dev/null
++++ b/06_quality/04_reports/WO-20260207-901/04_validation_quality.md
+@@ -0,0 +1,14 @@
++# Validation (quality)
++
++- WO: WO-20260207-901
++- Time: 2026-02-07 13:40:36Z
++
++## Required Checks
++- [PASS] Exists: 03_work_orders/WO-20260207-901/01_WorkOrder.md
++- [PASS] Exists: 04_context_packs/WO-20260207-901/01_ContextPack.md
++- [PASS] Exists: 06_quality/04_reports/WO-20260207-901/01_quality_report.md
++- [PASS] Exists: 06_quality/04_reports/WO-20260207-901/02_commands.md
++
++## Summary
++- Missing: 0
++- Warnings: 0
+-- 
+2.43.0
+
+
+From 3c0573f83c9df16ea33f09717a41ea064114ab36 Mon Sep 17 00:00:00 2001
+From: zfeny <zfeny123@gmail.com>
+Date: Sat, 7 Feb 2026 20:41:36 +0700
+Subject: [PATCH 5/5] WO-20260207-901: fix delivery scaffold automation
+
+---
+ 09_automations/01_scripts/04_pack_delivery.sh | 21 +++++++++++++++++++
+ .../01_scripts/09_git_commit_stage.sh         |  2 +-
+ 2 files changed, 22 insertions(+), 1 deletion(-)
+
+diff --git a/09_automations/01_scripts/04_pack_delivery.sh b/09_automations/01_scripts/04_pack_delivery.sh
+index 4b6bbbd..0f480ce 100644
+--- a/09_automations/01_scripts/04_pack_delivery.sh
++++ b/09_automations/01_scripts/04_pack_delivery.sh
+@@ -10,9 +10,20 @@ WO="$1"
+ DP="07_delivery_packs/${WO}"
+ mkdir -p "${DP}/99_artifacts"
+ 
++if [[ ! -f "${DP}/01_DeliveryPack.md" ]]; then
++  cat > "${DP}/01_DeliveryPack.md" <<EOT
++# ${WO} Delivery Pack
++
++## Summary
++
++## Outcome
++EOT
++fi
++
+ CH="${DP}/02_ChangeList.md"
+ SP="${DP}/03_SpecCoverage.md"
+ VF="${DP}/04_Verification.md"
++RN="${DP}/05_RiskNotes.md"
+ 
+ {
+   echo "# Change List"
+@@ -42,6 +53,16 @@ cat > "${VF}" <<EOT
+ - Commands: \`06_quality/04_reports/${WO}/02_commands.md\`
+ EOT
+ 
++if [[ ! -f "${RN}" ]]; then
++  cat > "${RN}" << 'EOT'
++# Risk Notes
++
++## Known Limits
++
++## Rollback Plan
++EOT
++fi
++
+ bash 09_automations/01_scripts/05_validate_wo.sh "${WO}" delivery
+ 
+ if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+diff --git a/09_automations/01_scripts/09_git_commit_stage.sh b/09_automations/01_scripts/09_git_commit_stage.sh
+index a62d785..facb83d 100644
+--- a/09_automations/01_scripts/09_git_commit_stage.sh
++++ b/09_automations/01_scripts/09_git_commit_stage.sh
+@@ -39,7 +39,7 @@ add_stage_files() {
+       ;;
+     implementation)
+       # Keep implementation scope explicit and auditable.
+-      git add 05_src srv 06_quality/01_tests 06_quality/02_lint 06_quality/03_security 10_docs .roo .roomodes 2>/dev/null || true
++      git add 05_src srv 06_quality/01_tests 06_quality/02_lint 06_quality/03_security 09_automations 10_docs .roo .roomodes 2>/dev/null || true
+       ;;
+     quality)
+       bash 09_automations/01_scripts/05_validate_wo.sh "${WO}" quality
+-- 
+2.43.0
+
