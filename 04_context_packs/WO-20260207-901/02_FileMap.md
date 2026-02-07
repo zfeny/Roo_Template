@@ -1,0 +1,42 @@
+# File Map
+
+| File | Responsibility |
+|---|---|
+| `1-from_GPT_Web.md` | TODO |
+| `3-add_交互模式说明.md` | TODO |
+| `2-git_add.md` | TODO |
+| `01_spec_locked/03_GLOSSARY.md` | TODO |
+| `01_spec_locked/02_ACCEPTANCE.md` | TODO |
+| `01_spec_locked/01_SPEC.md` | TODO |
+| `01_spec_locked/04_NFR.md` | TODO |
+| `02_templates/03_delivery_pack.md` | TODO |
+| `02_templates/02_context_pack.md` | TODO |
+| `02_templates/01_work_order.md` | TODO |
+| `02_templates/05_acceptance_request.md` | TODO |
+| `02_templates/04_review_report.md` | TODO |
+| `10_docs/03_CONTRIBUTING.md` | TODO |
+| `10_docs/02_ARCH_OVERVIEW.md` | TODO |
+| `10_docs/01_README.md` | TODO |
+| `10_docs/04_ROO_WORKFLOW.md` | TODO |
+| `10_docs/04_git_workflow.md` | TODO |
+| `10_docs/05_interaction_protocol.md` | TODO |
+| `09_automations/03_make/Makefile` | TODO |
+| `04_context_packs/WO-20260207-901/01_ContextPack.md` | TODO |
+| `04_context_packs/WO-20260207-901/02_FileMap.md` | TODO |
+| `03_work_orders/WO-20260207-901/02_Scope.md` | TODO |
+| `03_work_orders/WO-20260207-901/01_WorkOrder.md` | TODO |
+| `03_work_orders/WO-20260207-901/03_DoD.md` | TODO |
+| `09_automations/02_git_hooks/pre-push` | TODO |
+| `09_automations/02_git_hooks/commit-msg` | TODO |
+| `09_automations/02_git_hooks/README.md` | TODO |
+| `09_automations/01_scripts/06_git_control_check.sh` | TODO |
+| `09_automations/01_scripts/05_validate_wo.sh` | TODO |
+| `09_automations/01_scripts/04_pack_delivery.sh` | TODO |
+| `09_automations/01_scripts/03_run_quality.sh` | TODO |
+| `09_automations/01_scripts/02_prepare_context.sh` | TODO |
+| `09_automations/01_scripts/01_new_work_order.sh` | TODO |
+| `09_automations/01_scripts/09_git_commit_stage.sh` | TODO |
+| `09_automations/01_scripts/08_install_git_hooks.sh` | TODO |
+| `09_automations/01_scripts/07_prepare_review_artifacts.sh` | TODO |
+| `09_automations/01_scripts/10_git_merge_wo.sh` | TODO |
+| `09_automations/01_scripts/11_prepare_review.sh` | TODO |
