@@ -27,6 +27,12 @@
 3. 分支命名必须匹配 `wo/<WO_ID>-<slug>`。
 4. 提交信息必须以 `<WO_ID>:` 前缀开头。
 5. 合并前必须存在 `.roo_template/08_review_reports/<WO_ID>/01_Review.md` 且 `Verdict: PASS`。
+6. 提交作者应使用角色身份而非本机默认用户：
+   - work-order/merge: `Orchestrator`
+   - context/delivery: `Librarian`
+   - implementation: `Code`
+   - quality: `QA-Runner`
+   - review: `Reviewer`
 
 ## 5) 效率策略
 1. Context 默认使用 changed-only 文件映射；仅在需要时使用 full 映射。

@@ -10,6 +10,7 @@ fi
 WO="$1"
 SLUG="$2"
 BRANCH="wo/${WO}-${SLUG}"
+ROLE_EMAIL_DOMAIN="${ROLE_EMAIL_DOMAIN:-roo.local}"
 
 if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   echo "Not a git repository"
@@ -29,6 +30,12 @@ if ! git show-ref --verify --quiet refs/heads/main; then
 fi
 
 git switch main >/dev/null
+ROLE_NAME="Orchestrator"
+ROLE_EMAIL="orchestrator@${ROLE_EMAIL_DOMAIN}"
+GIT_AUTHOR_NAME="${ROLE_NAME}" \
+GIT_AUTHOR_EMAIL="${ROLE_EMAIL}" \
+GIT_COMMITTER_NAME="${ROLE_NAME}" \
+GIT_COMMITTER_EMAIL="${ROLE_EMAIL}" \
 git merge --no-ff "${BRANCH}" -m "Merge ${WO}"
 
 echo "Merged ${BRANCH} into main"

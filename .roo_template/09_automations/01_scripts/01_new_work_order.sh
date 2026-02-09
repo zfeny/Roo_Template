@@ -16,7 +16,7 @@ next_wo_id() {
       | awk '/^[0-9]{3}$/{print}' \
       | sort -n \
       | tail -n 1 \
-      | awk '{printf \"%03d\", $1 + 1}'
+      | awk '{printf "%03d", $1 + 1}'
     )"
   fi
   echo "WO-${today}-${seq}"

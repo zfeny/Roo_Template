@@ -9,6 +9,7 @@ fi
 WO="$1"
 STAGE="$2"
 MSG="${3:-}"
+ROLE_EMAIL_DOMAIN="${ROLE_EMAIL_DOMAIN:-roo.local}"
 
 if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   echo "Not a git repository"
@@ -26,6 +27,18 @@ default_msg() {
     delivery) echo "${WO}: add delivery pack" ;;
     review) echo "${WO}: add review report" ;;
     *) echo "" ;;
+  esac
+}
+
+stage_role() {
+  case "${STAGE}" in
+    work-order) echo "Orchestrator" ;;
+    context) echo "Librarian" ;;
+    implementation) echo "Code" ;;
+    quality) echo "QA-Runner" ;;
+    delivery) echo "Librarian" ;;
+    review) echo "Reviewer" ;;
+    *) echo "Agent" ;;
   esac
 }
 
@@ -75,5 +88,11 @@ if [[ ! "${MSG}" =~ ^${WO}:\  ]]; then
   exit 4
 fi
 
+ROLE_NAME="$(stage_role)"
+ROLE_EMAIL="$(echo "${ROLE_NAME}" | tr '[:upper:]' '[:lower:]' | tr -cs 'a-z0-9' '-' | sed 's/^-//; s/-$//')@${ROLE_EMAIL_DOMAIN}"
+GIT_AUTHOR_NAME="${ROLE_NAME}" \
+GIT_AUTHOR_EMAIL="${ROLE_EMAIL}" \
+GIT_COMMITTER_NAME="${ROLE_NAME}" \
+GIT_COMMITTER_EMAIL="${ROLE_EMAIL}" \
 git commit -m "${MSG}"
 echo "Committed ${STAGE}: ${MSG}"
