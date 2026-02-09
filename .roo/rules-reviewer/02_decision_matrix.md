@@ -12,5 +12,5 @@
 3. 存在阻断级质量失败且无可接受缓解。
 
 ## 输出要求
-1. `08_review_reports/{WO}/01_Review.md` 必须包含 `Verdict: PASS|FAIL`。
+1. `.roo_template/08_review_reports/{WO}/01_Review.md` 必须包含 `Verdict: PASS|FAIL`。
 2. FAIL 必须列出 blocking 项与整改建议。

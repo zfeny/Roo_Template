@@ -6,9 +6,9 @@
 3. NFR 高风险项单独建 WO，避免被功能开发吞掉。
 
 ## 推荐产出
-1. `03_work_orders/PROGRAM-<date>/01_ProgramPlan.md`（项目级拆分计划）
+1. `.roo_template/03_work_orders/PROGRAM-<date>/01_ProgramPlan.md`（项目级拆分计划）
 2. 每个 WO 的 `01_WorkOrder.md`（目标/边界/验收）
-3. `04_context_packs/<WO>/04_Decisions_Summary.md`（阶段决策沉淀）
+3. `.roo_template/04_context_packs/<WO>/04_Decisions_Summary.md`（阶段决策沉淀）
 
 ## 排程建议
 1. 先做依赖底座 WO，再做功能 WO，最后做收口 WO（文档/风险/发布）。

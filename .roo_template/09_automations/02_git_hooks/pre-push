@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+
+if [[ "${BRANCH}" =~ ^wo/(WO-[0-9]{8}-[0-9]{3}(?:-R[0-9]+)?)-[a-z0-9._-]+$ ]]; then
+  WO="${BASH_REMATCH[1]}"
+  bash .roo_template/09_automations/01_scripts/06_git_control_check.sh "${WO}" branch
+  # Commit message check is enforced by commit-msg hook; verify merge prerequisites early.
+  if [[ -f ".roo_template/08_review_reports/${WO}/01_Review.md" ]]; then
+    bash .roo_template/09_automations/01_scripts/06_git_control_check.sh "${WO}" merge || true
+  fi
+fi

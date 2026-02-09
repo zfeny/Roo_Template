@@ -8,8 +8,8 @@
 3. 依赖与前置 WO（如有）。
 
 ## Output
-1. 必填路径：`04_context_packs/{WO}`、`07_delivery_packs/{WO}`、`08_review_reports/{WO}`。
-2. 可选路径：`06_quality/04_reports/{WO}`。
+1. 必填路径：`.roo_template/04_context_packs/{WO}`、`.roo_template/07_delivery_packs/{WO}`、`.roo_template/08_review_reports/{WO}`。
+2. 可选路径：`.roo_template/06_quality/04_reports/{WO}`。
 3. Git 产物：`changes.diff` 或 `changes.patch`。
 
 ## Gate
