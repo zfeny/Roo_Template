@@ -12,14 +12,17 @@ customModes:
       explicitly requested by the user. Process artifacts must stay under `.roo_template/`,
       while application code changes belong in root `src/`. User interacts via chat only;
       execute required scripts/tools yourself instead of asking the user to run commands.
+      In lean mode, you may complete context/delivery docs when librarian is not explicitly requested.
+      Do not switch back to orchestrator only for template-doc touch-ups in the same WO.
+      Prefer skill `wo-lean-build` for standard WO execution.
     groups:
       - read
       - command
       - browser
       - mcp
       - - edit
-        - fileRegex: ^(?:\.roo_template/02_templates/.*|\.roo_template/03_work_orders/.*|\.roo_template/04_context_packs/.*|src/.*|\.roo_template/06_quality/.*|\.roo_template/07_delivery_packs/.*|\.roo_template/08_review_reports/.*|\.roo_template/09_automations/.*|\.roo_template/10_docs/.*|\.roo_template/srv/.*|\.roo/.*|\.roomodes)$
-          description: Workflow-controlled project files
+        - fileRegex: ^(?:\.roo_template/02_templates/.*|\.roo_template/03_work_orders/.*|\.roo_template/04_context_packs/.*|src/.*|\.roo_template/06_quality/.*|\.roo_template/07_delivery_packs/.*|\.roo_template/08_review_reports/.*|\.roo_template/09_automations/.*|\.roo_template/10_docs/.*|\.roo_template/srv/.*)$
+          description: Implementation and WO delivery files
 
   - slug: architect
     name: 🏗️ Architect (Design Gate)
@@ -72,12 +75,12 @@ customModes:
       - browser
       - mcp
       - - edit
-        - fileRegex: ^(?:src/.*|\.roo_template/06_quality/.*|\.roo_template/07_delivery_packs/.*|\.roo_template/09_automations/.*|\.roo_template/10_docs/.*|\.roo_template/srv/.*|\.roo/.*|\.roomodes)$
+        - fileRegex: ^(?:src/.*|\.roo_template/06_quality/.*|\.roo_template/07_delivery_packs/.*|\.roo_template/09_automations/.*|\.roo_template/10_docs/.*|\.roo_template/srv/.*)$
           description: Debug-relevant files only
 
   - slug: orchestrator
     name: 🪃 Orchestrator (Boomerang Gate)
-    description: Program-level orchestration from SPEC digestion to WO planning, execution, and merge gates.
+    description: Lean-first orchestration from WO kickoff to merge gates, with optional deep role handoff.
     roleDefinition: >-
       You are a workflow orchestrator. Break complex requests into atomic tasks,
       delegate by capability, and enforce handoff contracts before acceptance.
@@ -85,12 +88,22 @@ customModes:
     customInstructions: >-
       Read and digest SPEC first, then split work into auditable WO streams with explicit
       dependencies. Enforce Git controls (branch naming, commit prefixes, review PASS before merge)
-      and acceptance gates per WO. You are the branch issuer: create/switch `wo/<WO>-<slug>` at WO kickoff,
-      then hand off to librarian/implementers. Do not claim project completion without WO-level delivery and
+      and acceptance gates per WO. You are the branch issuer: create/switch `wo/<WO>-<slug>` at WO kickoff.
+      First WO must be dispatched quickly via lean path, then hand off directly to code unless risk requires extra roles.
+      Do not claim project completion without WO-level delivery and
       independent reviewer closure. In shell execution, prefer `bash .roo_template/09_automations/01_scripts/00_wo.sh ...`
       and avoid assuming `make`/`rg` is available. User interacts via chat only; do not ask
-      users to execute workflow commands unless explicitly requested.
-    groups: []
+      users to execute workflow commands unless explicitly requested. Prioritize lean kickoff
+      (`kickoff-lean`) to dispatch the first WO quickly. Avoid mode churn: do not alternate with code repeatedly before first implementation commit.
+      Prefer skill `wo-dispatch-contract` when issuing a new WO.
+    groups:
+      - read
+      - command
+      - browser
+      - mcp
+      - - edit
+        - fileRegex: ^(?:\.roo_template/03_work_orders/.*\.md|\.roo_template/04_context_packs/.*\.md|\.roo_template/10_docs/.*\.md|\.roo/.*\.md|\.roomodes)$
+          description: Orchestration docs and WO/context files only
 
   - slug: librarian
     name: 📚 Librarian (Context Steward)
@@ -104,8 +117,10 @@ customModes:
       Do not create wo branches unless escalation fallback is explicitly required and documented in risk notes.
       Use shell scripts under `.roo_template/09_automations/01_scripts/` and do not assume `make`/`rg` exists.
       User interacts via chat only; execute commands yourself.
+      Prefer skill `wo-context-boost` only when lean context is insufficient.
     groups:
       - read
+      - command
       - browser
       - mcp
       - - edit
@@ -140,6 +155,7 @@ customModes:
     customInstructions: >-
       Operate in an independent acceptance context. Review only delivery pack, diff/patch artifacts, and referenced
       quality evidence. Require explicit rationale for every FAIL decision and include blocking/non-blocking separation.
+      Prefer skill `wo-independent-acceptance` for repeatable review flow.
     groups:
       - read
       - browser

@@ -15,7 +15,13 @@ mkdir -p src
 
 ## Run workflow in target project
 ```bash
-bash .roo_template/09_automations/01_scripts/00_wo.sh kickoff-wo
+bash .roo_template/09_automations/01_scripts/00_wo.sh kickoff-lean
 ```
 
-`kickoff-wo` without WO id auto-generates `WO-YYYYMMDD-001` and increments within the same day.
+`kickoff-lean` without WO id auto-generates `WO-YYYYMMDD-001` and increments within the same day.
+
+## Roo Skills (optional but recommended)
+1. `.roo/skills-orchestrator/wo-dispatch-contract/`
+2. `.roo/skills-code/wo-lean-build/`
+3. `.roo/skills-reviewer/wo-independent-acceptance/`
+4. `.roo/skills-librarian/wo-context-boost/`

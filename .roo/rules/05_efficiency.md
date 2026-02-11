@@ -8,3 +8,7 @@
    - `quality-full` = full test suites before final review.
 3. Delivery artifacts default to `changes.diff`; generate `changes.patch` only when reviewers explicitly need patch format.
 4. Keep gates unchanged: review and merge checks remain mandatory.
+5. Prefer mode-local Roo Skills to reduce prompt repetition and mode churn:
+   - Orchestrator: `.roo/skills-orchestrator/wo-dispatch-contract/`
+   - Code: `.roo/skills-code/wo-lean-build/`
+   - Reviewer: `.roo/skills-reviewer/wo-independent-acceptance/`

@@ -6,7 +6,7 @@ if [[ $# -lt 1 ]]; then
 Usage: $0 <command> [WO-YYYYMMDD-XXX] [short]
 
 Commands:
-  kickoff-wo | new-wo
+  kickoff-wo | kickoff-lean | new-wo
   prepare-context | prepare-context-all | prepare-review
   quality | quality-full | pack-delivery
   validate-quality | validate-delivery
@@ -40,6 +40,14 @@ case "${CMD}" in
       WO="$(find .roo_template/03_work_orders -maxdepth 1 -type d -name 'WO-*' | sed 's|^.*/||' | sort | tail -n 1)"
     fi
     run "${SCRIPTS_DIR}/06_git_control_check.sh" "${WO}" branch
+    ;;
+  kickoff-lean)
+    run "${SCRIPTS_DIR}/01_new_work_order.sh" "${WO}" "${SHORT}"
+    if [[ -z "${WO}" ]]; then
+      WO="$(find .roo_template/03_work_orders -maxdepth 1 -type d -name 'WO-*' | sed 's|^.*/||' | sort | tail -n 1)"
+    fi
+    run "${SCRIPTS_DIR}/06_git_control_check.sh" "${WO}" branch
+    run "${SCRIPTS_DIR}/02_prepare_context.sh" "${WO}" minimal
     ;;
   new-wo)
     run "${SCRIPTS_DIR}/01_new_work_order.sh" "${WO}" "${SHORT}"

@@ -1,7 +1,7 @@
 # Repo Workflow
 
 ## 1) 生命周期
-1. 创建 WO 骨架：`bash .roo_template/09_automations/01_scripts/00_wo.sh kickoff-wo [WO] <slug>`。
+1. 创建 WO 骨架：`bash .roo_template/09_automations/01_scripts/00_wo.sh kickoff-lean [WO] <slug>`（默认）。
 2. 补全上下文包：`bash .roo_template/09_automations/01_scripts/00_wo.sh prepare-context {WO}`。
 3. 施工实现：`src/` 与必要配套。
 4. 快速质检（默认）：`bash .roo_template/09_automations/01_scripts/00_wo.sh quality {WO}`。
@@ -38,6 +38,9 @@
 1. Context 默认使用 changed-only 文件映射；仅在需要时使用 full 映射。
 2. 交付材料默认导出 `changes.diff`；仅在必要时附加 `changes.patch`。
 3. 在不降低 gate 的前提下，优先 fast 流水线，收口阶段再执行 full 质检。
+4. 首工单默认精简角色链：`Orchestrator -> Code -> Reviewer`，`Librarian/Architect/QA` 按风险按需介入。
+5. 首工单优先目标是“5 分钟内完成 WO 下发并进入编码”，禁止因文档完备性反复切换模式。
+6. 同一 WO 内，若仅为补齐过程文档，优先由当前执行角色一次性补齐，不强制切换角色。
 
 ## 6) Chat-Only 执行约定
 1. 以上流程命令用于 Agent 内部执行，不作为对用户的手动操作要求。

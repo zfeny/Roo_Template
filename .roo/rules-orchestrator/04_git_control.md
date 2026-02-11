@@ -3,8 +3,9 @@
 ## 开工控制
 1. 分支由总包创建：`git switch -c wo/{WO}-<slug>`。
 2. 分支与工单目录必须一一对应。
-3. 推荐用统一入口脚本执行开工：`bash .roo_template/09_automations/01_scripts/00_wo.sh kickoff-wo {WO} <slug>`。
-4. 在受限环境中禁止依赖 `make` 命令。
+3. 推荐用统一入口脚本执行开工：`bash .roo_template/09_automations/01_scripts/00_wo.sh kickoff-lean {WO} <slug>`。
+4. `kickoff-lean` 默认使用 `minimal` 上下文模式，优先保证首个 WO 快速进入编码。
+5. 在受限环境中禁止依赖 `make` 命令。
 
 ## 过程控制
 1. 提交信息前缀必须是 `{WO}: `。

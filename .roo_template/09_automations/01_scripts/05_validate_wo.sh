@@ -64,6 +64,32 @@ check_required ".roo_template/04_context_packs/${WO}/01_ContextPack.md"
 check_required "${QDIR}/01_quality_report.md"
 check_required "${QDIR}/02_commands.md"
 
+WO_FILE=".roo_template/03_work_orders/${WO}/01_WorkOrder.md"
+if [[ -f "${WO_FILE}" ]]; then
+  if has_fixed_string "## Role Assignment (Mandatory)" "${WO_FILE}"; then
+    echo "- [PASS] WorkOrder contains role assignment section" >> "${RPT}"
+  else
+    echo "- [FAIL] WorkOrder missing 'Role Assignment (Mandatory)'" >> "${RPT}"
+    missing=$((missing + 1))
+  fi
+
+  if has_fixed_string "## Stage Plan (Mandatory)" "${WO_FILE}"; then
+    echo "- [PASS] WorkOrder contains stage plan section" >> "${RPT}"
+  else
+    echo "- [FAIL] WorkOrder missing 'Stage Plan (Mandatory)'" >> "${RPT}"
+    missing=$((missing + 1))
+  fi
+
+  for core_role in "Orchestrator" "Code" "Reviewer"; do
+    if has_fixed_string "| ${core_role} | TBD |" "${WO_FILE}"; then
+      echo "- [FAIL] Core role '${core_role}' assignee is still TBD in WorkOrder" >> "${RPT}"
+      missing=$((missing + 1))
+    else
+      echo "- [PASS] Core role '${core_role}' assignee is set" >> "${RPT}"
+    fi
+  done
+fi
+
 if [[ "${STAGE}" == "delivery" ]]; then
   check_required ".roo_template/07_delivery_packs/${WO}/01_DeliveryPack.md"
   check_required ".roo_template/07_delivery_packs/${WO}/02_ChangeList.md"
