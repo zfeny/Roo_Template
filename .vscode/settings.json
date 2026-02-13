@@ -1,7 +1,0 @@
-{
-    "chatgpt.openOnStartup": true,
-    "makefile.configureOnOpen": false,
-    "files.exclude": {
-        ".roo_process/archive": true
-    }
-}
