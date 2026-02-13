@@ -1,0 +1,4 @@
+# One command per line. Review Gate will execute these commands in order.
+# Example:
+# pytest -q tests/test_login.py
+# npm test -- --runInBand login

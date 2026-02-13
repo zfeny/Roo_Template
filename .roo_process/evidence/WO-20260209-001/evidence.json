@@ -1,0 +1,6 @@
+{
+  "feature_id": "WO-20260209-001",
+  "ac_ids": ["AC-001"],
+  "commands": ["git rev-parse --is-inside-work-tree"],
+  "artifacts": ["logs/"]
+}

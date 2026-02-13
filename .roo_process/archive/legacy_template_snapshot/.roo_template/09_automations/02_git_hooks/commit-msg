@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+MSG_FILE="$1"
+MSG="$(head -n1 "${MSG_FILE}")"
+BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+
+if [[ "${BRANCH}" =~ ^wo/(WO-[0-9]{8}-[0-9]{3}(?:-R[0-9]+)?)-[a-z0-9._-]+$ ]]; then
+  WO="${BASH_REMATCH[1]}"
+  if [[ ! "${MSG}" =~ ^${WO}:\  ]]; then
+    echo "commit-msg hook: message must start with '${WO}: '"
+    echo "Current: ${MSG}"
+    exit 1
+  fi
+fi

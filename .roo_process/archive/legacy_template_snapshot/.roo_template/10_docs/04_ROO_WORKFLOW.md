@@ -15,12 +15,14 @@
 6. Before review, run full checks: `bash .roo_template/09_automations/01_scripts/00_wo.sh quality-full WO-YYYYMMDD-001`.
 7. `bash .roo_template/09_automations/01_scripts/00_wo.sh commit-delivery WO-YYYYMMDD-001`.
 8. `bash .roo_template/09_automations/01_scripts/00_wo.sh prepare-review WO-YYYYMMDD-001`, fill review, then commit `review`.
+9. `bash .roo_template/09_automations/01_scripts/00_wo.sh review-gate WO-YYYYMMDD-001` to run evidence-first acceptance checks.
 
 ## Validation Gates
 - 质量阶段：`bash .roo_template/09_automations/01_scripts/00_wo.sh validate-quality {WO}`
 - 交付阶段：`bash .roo_template/09_automations/01_scripts/00_wo.sh validate-delivery {WO}`
 - Git 阶段：`bash .roo_template/09_automations/01_scripts/00_wo.sh git-check-branch|git-check-commit|git-check-merge {WO}`
 - 监理材料：`bash .roo_template/09_automations/01_scripts/00_wo.sh review-artifacts {WO} <slug>`
+- Evidence Gate：`bash .roo_template/09_automations/01_scripts/00_wo.sh review-gate {WO}`
 
 ## Mode Mapping
 - `architect`: 设计与计划

@@ -26,6 +26,9 @@ pack-delivery:
 validate-delivery:
 	bash ../01_scripts/05_validate_wo.sh $(WO) delivery
 
+review-gate:
+	bash ../01_scripts/12_review_gate.sh $(WO)
+
 git-check-branch:
 	bash ../01_scripts/06_git_control_check.sh $(WO) branch
 

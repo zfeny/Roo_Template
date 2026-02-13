@@ -1,0 +1,9 @@
+triggers:
+  review_gate:
+    mode: reviewer
+    engine: .roo_process/scripts/review_gate.py
+    input:
+      - feature_id
+      - strict
+    output:
+      - .roo_process/review_reports/

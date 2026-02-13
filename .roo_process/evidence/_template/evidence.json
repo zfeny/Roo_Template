@@ -1,0 +1,6 @@
+{
+  "feature_id": "WO-YYYYMMDD-XXX",
+  "ac_ids": ["AC-001"],
+  "commands": ["pytest -q tests/test_example.py"],
+  "artifacts": ["logs/", "screenshots/"]
+}

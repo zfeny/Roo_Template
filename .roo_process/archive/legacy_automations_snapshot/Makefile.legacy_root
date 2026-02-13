@@ -1,0 +1,19 @@
+FEATURE ?=
+BASE_REF ?=
+HEAD_REF ?= HEAD
+STRICT_CR ?= 1
+
+review:
+	@if [ -n "$(FEATURE)" ]; then \
+		if [ "$(STRICT_CR)" = "0" ]; then \
+			bash scripts/review_gate.sh --feature "$(FEATURE)" --base-ref "$(BASE_REF)" --head-ref "$(HEAD_REF)" --no-strict-cr; \
+		else \
+			bash scripts/review_gate.sh --feature "$(FEATURE)" --base-ref "$(BASE_REF)" --head-ref "$(HEAD_REF)"; \
+		fi; \
+	else \
+		if [ "$(STRICT_CR)" = "0" ]; then \
+			bash scripts/review_gate.sh --base-ref "$(BASE_REF)" --head-ref "$(HEAD_REF)" --no-strict-cr; \
+		else \
+			bash scripts/review_gate.sh --base-ref "$(BASE_REF)" --head-ref "$(HEAD_REF)"; \
+		fi; \
+	fi

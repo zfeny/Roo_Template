@@ -1,0 +1,2 @@
+# minimal deterministic checks
+git rev-parse --is-inside-work-tree

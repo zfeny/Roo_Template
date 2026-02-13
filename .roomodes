@@ -8,8 +8,8 @@ customModes:
     whenToUse: Use for coding and refactoring tasks that require file edits and execution.
     customInstructions: >-
       Must bind all edits to an active WO. Before coding, confirm WO and context pack exist.
-      After coding, update quality evidence and delivery pack. Never modify locked specs unless
-      explicitly requested by the user. Process artifacts must stay under `.roo_template/`,
+      After coding, update quality evidence and delivery pack. Never modify `_SPECs/` directly unless
+      explicitly requested by the user. Process artifacts must stay under `.roo_process/`,
       while application code changes belong in root `src/`. User interacts via chat only;
       execute required scripts/tools yourself instead of asking the user to run commands.
       In lean mode, you may complete context/delivery docs when librarian is not explicitly requested.
@@ -21,7 +21,7 @@ customModes:
       - browser
       - mcp
       - - edit
-        - fileRegex: ^(?:\.roo_template/02_templates/.*|\.roo_template/03_work_orders/.*|\.roo_template/04_context_packs/.*|src/.*|\.roo_template/06_quality/.*|\.roo_template/07_delivery_packs/.*|\.roo_template/08_review_reports/.*|\.roo_template/09_automations/.*|\.roo_template/10_docs/.*|\.roo_template/srv/.*)$
+        - fileRegex: ^(?:src/.*|tests/.*|\.roo_process/templates/.*|\.roo_process/work_orders/.*|\.roo_process/context_packs/.*|\.roo_process/quality/.*|\.roo_process/evidence/.*|\.roo_process/changes/.*|\.roo_process/docs/.*|\.roo_process/automations/.*|\.roo_process/scripts/.*|\.roo_process/review_reports/.*)$
           description: Implementation and WO delivery files
 
   - slug: architect
@@ -39,7 +39,7 @@ customModes:
       - browser
       - mcp
       - - edit
-        - fileRegex: ^(?:\.roo_template/03_work_orders/.*\.md|\.roo_template/04_context_packs/.*\.md|\.roo_template/07_delivery_packs/.*\.md|\.roo_template/08_review_reports/.*\.md|\.roo_template/10_docs/.*\.md|\.roo/.*\.md|\.roomodes)$
+        - fileRegex: ^(?:\.roo_process/work_orders/.*\.md|\.roo_process/context_packs/.*\.md|\.roo_process/docs/.*\.md|\.roo_process/changes/.*\.md|\.roo/.*\.md|\.roomodes)$
           description: Planning and documentation files only
 
   - slug: ask
@@ -67,7 +67,7 @@ customModes:
     customInstructions: >-
       Follow strict sequence: reproduce -> isolate -> patch -> verify. Record commands,
       logs, and residual risks in quality reports for the active WO. Keep process outputs in
-      `.roo_template/` and code-level fixes in root `src/`. User interacts via chat only;
+      `.roo_process/` and code-level fixes in root `src/`. User interacts via chat only;
       execute required scripts/tools yourself instead of asking the user to run commands.
     groups:
       - read
@@ -75,7 +75,7 @@ customModes:
       - browser
       - mcp
       - - edit
-        - fileRegex: ^(?:src/.*|\.roo_template/06_quality/.*|\.roo_template/07_delivery_packs/.*|\.roo_template/09_automations/.*|\.roo_template/10_docs/.*|\.roo_template/srv/.*)$
+        - fileRegex: ^(?:src/.*|tests/.*|\.roo_process/quality/.*|\.roo_process/evidence/.*|\.roo_process/docs/.*|\.roo_process/automations/.*|\.roo_process/scripts/.*)$
           description: Debug-relevant files only
 
   - slug: orchestrator
@@ -91,7 +91,7 @@ customModes:
       and acceptance gates per WO. You are the branch issuer: create/switch `wo/<WO>-<slug>` at WO kickoff.
       First WO must be dispatched quickly via lean path, then hand off directly to code unless risk requires extra roles.
       Do not claim project completion without WO-level delivery and
-      independent reviewer closure. In shell execution, prefer `bash .roo_template/09_automations/01_scripts/00_wo.sh ...`
+      independent reviewer closure. In shell execution, prefer Python-based validators under `.roo_process/scripts/`
       and avoid assuming `make`/`rg` is available. User interacts via chat only; do not ask
       users to execute workflow commands unless explicitly requested. Prioritize lean kickoff
       (`kickoff-lean`) to dispatch the first WO quickly. Avoid mode churn: do not alternate with code repeatedly before first implementation commit.
@@ -102,7 +102,7 @@ customModes:
       - browser
       - mcp
       - - edit
-        - fileRegex: ^(?:\.roo_template/03_work_orders/.*\.md|\.roo_template/04_context_packs/.*\.md|\.roo_template/10_docs/.*\.md|\.roo/.*\.md|\.roomodes)$
+        - fileRegex: ^(?:\.roo_process/work_orders/.*\.md|\.roo_process/context_packs/.*\.md|\.roo_process/docs/.*\.md|\.roo_process/changes/.*\.md|\.roo/.*\.md|\.roomodes)$
           description: Orchestration docs and WO/context files only
 
   - slug: librarian
@@ -115,7 +115,7 @@ customModes:
     customInstructions: >-
       Produce minimum-sufficient context before implementation and canonical delivery evidence after implementation.
       Do not create wo branches unless escalation fallback is explicitly required and documented in risk notes.
-      Use shell scripts under `.roo_template/09_automations/01_scripts/` and do not assume `make`/`rg` exists.
+      Use internal automation assets under `.roo_process/automations/` and `.roo_process/scripts/`.
       User interacts via chat only; execute commands yourself.
       Prefer skill `wo-context-boost` only when lean context is insufficient.
     groups:
@@ -124,7 +124,7 @@ customModes:
       - browser
       - mcp
       - - edit
-        - fileRegex: ^(?:\.roo_template/03_work_orders/.*\.md|\.roo_template/04_context_packs/.*\.md|\.roo_template/07_delivery_packs/.*\.md|\.roo_template/10_docs/.*\.md)$
+        - fileRegex: ^(?:\.roo_process/work_orders/.*\.md|\.roo_process/context_packs/.*\.md|\.roo_process/evidence/.*\.md|\.roo_process/docs/.*\.md|\.roo_process/changes/.*\.md)$
           description: Context and documentation artifacts only
 
   - slug: qa-runner
@@ -142,21 +142,25 @@ customModes:
       - command
       - mcp
       - - edit
-        - fileRegex: ^(?:\.roo_template/06_quality/.*|\.roo_template/07_delivery_packs/.*/04_Verification\.md|\.roo_template/09_automations/.*\.sh|\.roo_template/09_automations/03_make/Makefile)$
+        - fileRegex: ^(?:\.roo_process/quality/.*|\.roo_process/evidence/.*|\.roo_process/scripts/.*|\.roo_process/automations/.*)$
           description: Quality outputs and automation files
 
   - slug: reviewer
-    name: ✅ Reviewer (Acceptance Gate)
-    description: Independent acceptance reviewer with read-only permissions.
+    name: ✅ Reviewer (Validator Gate)
+    description: Independent acceptance reviewer with objective gate execution.
     roleDefinition: >-
       You are the acceptance reviewer. Evaluate delivery evidence and issue PASS/FAIL
       with blocking and non-blocking findings.
     whenToUse: Use for final acceptance review and release readiness decisions.
     customInstructions: >-
-      Operate in an independent acceptance context. Review only delivery pack, diff/patch artifacts, and referenced
-      quality evidence. Require explicit rationale for every FAIL decision and include blocking/non-blocking separation.
-      Prefer skill `wo-independent-acceptance` for repeatable review flow.
+      Operate in an independent acceptance context. Review only evidence/changes/spec excerpts and run
+      `.roo_process/scripts/review_gate.py` inside the chat workflow (do not ask user to run terminal commands).
+      Require explicit rationale for every FAIL decision and include blocking/non-blocking separation.
     groups:
       - read
+      - command
       - browser
       - mcp
+      - - edit
+        - fileRegex: ^(?:\.roo_process/review_reports/.*)$
+          description: Reviewer writes reports only under .roo_process/review_reports

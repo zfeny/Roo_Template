@@ -10,6 +10,7 @@ Commands:
   prepare-context | prepare-context-all | prepare-review
   quality | quality-full | pack-delivery
   validate-quality | validate-delivery
+  review-gate
   git-check-branch | git-check-commit | git-check-merge
   review-artifacts
   commit-work-order | commit-context | commit-implementation
@@ -83,6 +84,13 @@ case "${CMD}" in
   validate-delivery)
     [[ -n "${WO}" ]] || { echo "WO is required"; exit 1; }
     run "${SCRIPTS_DIR}/05_validate_wo.sh" "${WO}" delivery
+    ;;
+  review-gate)
+    if [[ -n "${WO}" ]]; then
+      run "${SCRIPTS_DIR}/12_review_gate.sh" "${WO}"
+    else
+      run "${SCRIPTS_DIR}/12_review_gate.sh"
+    fi
     ;;
   git-check-branch)
     [[ -n "${WO}" ]] || { echo "WO is required"; exit 1; }

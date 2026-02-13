@@ -1,27 +1,17 @@
-# Roo Template Pack
+# Roo Workflow Refactor Baseline
 
-## Layout
-1. Roo config files for runtime detection: `.roo/` and `.roomodes` at repo root.
-2. Roo process artifacts/templates: `.roo_template/`
-3. Business source code: `src/` (root, non-numbered)
+此仓库已重构为“根目录零流程污染”模式。
 
-## Copy to another project
-```bash
-cp -R /path/to/Roo_Template/.roo_template ./
-cp -R /path/to/Roo_Template/.roo ./
-cp /path/to/Roo_Template/.roomodes ./
-mkdir -p src
-```
+## 根目录约定
+- `_SPECs/`：唯一 Spec 入口（流程相关目录中唯一保留在根目录）
+- `.roo/`、`.roomodes`：Roo 运行配置
+- `.roo_process/`：所有流程资产（模板、工单、证据、变更单、自动化、审计文档）
 
-## Run workflow in target project
-```bash
-bash .roo_template/09_automations/01_scripts/00_wo.sh kickoff-lean
-```
+## 用户交互方式（零手动终端）
+- 不要求用户手动执行 Bash/终端命令。
+- 在 Roo 对话中切换到 `orchestrator` / `reviewer`（或对应模式）即可触发流程。
+- Review 验收由 agent 在对话流程内自动调用 `.roo_process/scripts/review_gate.py`。
 
-`kickoff-lean` without WO id auto-generates `WO-YYYYMMDD-001` and increments within the same day.
-
-## Roo Skills (optional but recommended)
-1. `.roo/skills-orchestrator/wo-dispatch-contract/`
-2. `.roo/skills-code/wo-lean-build/`
-3. `.roo/skills-reviewer/wo-independent-acceptance/`
-4. `.roo/skills-librarian/wo-context-boost/`
+## 追溯
+- 重构迁移与处置决策：`.roo_process/docs/PHASE0_ASSET_AUDIT.md`
+- Review Gate 规范：`.roo_process/docs/REVIEW_GATE.md`
