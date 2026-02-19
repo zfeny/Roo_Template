@@ -8,9 +8,9 @@ customModes:
     whenToUse: Use for coding and refactoring tasks that require file edits and execution.
     customInstructions: >-
       Must bind all edits to an active WO. Before coding, confirm WO and context pack exist.
-      After coding, update quality evidence and delivery pack. Never modify `_SPECs/` directly unless
-      explicitly requested by the user. Process artifacts must stay under `.roo_process/`,
-      while application code changes belong in root `src/`. User interacts via chat only;
+      After coding, update quality evidence and delivery pack. Process artifacts must stay under
+      `.roo_process/`. This repository is a generic Roo template, so do not assume any active
+      project code under `src/` or active spec files under `_SPECs/`. User interacts via chat only;
       execute required scripts/tools yourself instead of asking the user to run commands.
       In lean mode, you may complete context/delivery docs when librarian is not explicitly requested.
       Do not switch back to orchestrator only for template-doc touch-ups in the same WO.
@@ -21,7 +21,7 @@ customModes:
       - browser
       - mcp
       - - edit
-        - fileRegex: ^(?:src/.*|tests/.*|\.roo_process/templates/.*|\.roo_process/work_orders/.*|\.roo_process/context_packs/.*|\.roo_process/quality/.*|\.roo_process/evidence/.*|\.roo_process/changes/.*|\.roo_process/docs/.*|\.roo_process/automations/.*|\.roo_process/scripts/.*|\.roo_process/review_reports/.*)$
+        - fileRegex: ^(?:\.roo_process/templates/.*|\.roo_process/work_orders/.*|\.roo_process/context_packs/.*|\.roo_process/quality/.*|\.roo_process/evidence/.*|\.roo_process/changes/.*|\.roo_process/docs/.*|\.roo_process/automations/.*|\.roo_process/scripts/.*|\.roo_process/review_reports/.*)$
           description: Implementation and WO delivery files
 
   - slug: architect
@@ -67,7 +67,8 @@ customModes:
     customInstructions: >-
       Follow strict sequence: reproduce -> isolate -> patch -> verify. Record commands,
       logs, and residual risks in quality reports for the active WO. Keep process outputs in
-      `.roo_process/` and code-level fixes in root `src/`. User interacts via chat only;
+      `.roo_process/`. This template repository should not require direct edits under `src/`.
+      User interacts via chat only;
       execute required scripts/tools yourself instead of asking the user to run commands.
     groups:
       - read
@@ -75,7 +76,7 @@ customModes:
       - browser
       - mcp
       - - edit
-        - fileRegex: ^(?:src/.*|tests/.*|\.roo_process/quality/.*|\.roo_process/evidence/.*|\.roo_process/docs/.*|\.roo_process/automations/.*|\.roo_process/scripts/.*)$
+        - fileRegex: ^(?:\.roo_process/quality/.*|\.roo_process/evidence/.*|\.roo_process/docs/.*|\.roo_process/automations/.*|\.roo_process/scripts/.*)$
           description: Debug-relevant files only
 
   - slug: orchestrator

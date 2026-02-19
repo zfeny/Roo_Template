@@ -121,7 +121,13 @@ def main() -> int:
     parser.add_argument("--feature", help="Feature id, e.g., WO-20260213-001")
     parser.add_argument("--evidence-root", default=".roo_process/evidence")
     parser.add_argument("--changes-root", default=".roo_process/changes")
-    parser.add_argument("--spec-path", action="append", dest="spec_paths", default=None)
+    parser.add_argument(
+        "--spec-path",
+        action="append",
+        dest="spec_paths",
+        default=None,
+        help="Optional frozen SPEC path(s). If omitted, SPEC freeze check is skipped.",
+    )
     parser.add_argument("--base-ref")
     parser.add_argument("--head-ref", default="HEAD")
     parser.add_argument("--tests-file")
@@ -137,13 +143,16 @@ def main() -> int:
     if not feature_id:
         failed.append("Feature-ID 识别失败：请传 --feature 或在分支/提交信息中包含 WO-YYYYMMDD-###")
 
-    spec_paths = args.spec_paths or ["_SPECs"]
+    spec_paths = args.spec_paths or []
     commit_subject = run(["git", "log", "-1", "--pretty=%s"]).stdout.strip() if in_git_repo() else ""
 
     print("== Roo Review Gate ==")
     print(f"Feature: {feature_id or 'N/A'} (source: {source})")
     print(f"Strict CR: {'ON' if args.strict else 'OFF'}")
-    print("SPEC paths: " + ", ".join(spec_paths))
+    if spec_paths:
+        print("SPEC paths: " + ", ".join(spec_paths))
+    else:
+        print("SPEC paths: (none, freeze check disabled)")
 
     try:
         changed = git_changed_files(args.base_ref, args.head_ref)
@@ -151,7 +160,7 @@ def main() -> int:
         changed = set()
         failed.append(f"Diff 检查失败: {err}")
 
-    if changed:
+    if changed and spec_paths:
         touched = []
         for f in sorted(changed):
             for spec in spec_paths:
@@ -163,6 +172,8 @@ def main() -> int:
             failed.append("检测到冻结 SPEC 目录改动: " + ", ".join(touched) + "。请走 CR 变更单。")
         else:
             passed.append("SPEC 冻结目录未被本次 diff 触碰")
+    elif changed and not spec_paths:
+        warns.append("未配置 SPEC 冻结路径（未传 --spec-path），已跳过 SPEC 目录改动检查")
     else:
         warns.append("当前 diff 范围无变更文件")
 
