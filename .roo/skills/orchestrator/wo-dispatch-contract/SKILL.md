@@ -10,11 +10,13 @@ Use this skill when issuing a new WO for implementation.
 ## Steps
 1. Run kickoff: `python3 .roo_process/scripts/wo_flow.py kickoff-lean --wo <WO_ID> --slug <slug>`.
 2. Confirm `wo/<WO_ID>-<slug>` branch is active.
-3. Complete `.roo_process/work_orders/<WO_ID>/WorkOrder.md` with objective, scope, DoD, and role assignment.
-4. Generate minimal context: `python3 .roo_process/scripts/wo_flow.py prepare-context --wo <WO_ID>`.
-5. Dispatch Code execution via Boomerang child task (`new_task`) with WO/context/evidence paths.
-6. In the same WO execution child task, role changes should use `switch_mode` (Code/Debug/Librarian) to reuse context.
-7. When implementation is complete, return to Orchestrator parent and then dispatch Reviewer via a new child task.
+3. Update program-level tracker first: `.roo_process/work_orders/PROGRAM-<YYYYMMDD>/TODO.md` (add WO milestone and owner).
+4. Complete `.roo_process/work_orders/<WO_ID>/WorkOrder.md` with objective, scope, DoD, and role assignment.
+5. Generate minimal context: `python3 .roo_process/scripts/wo_flow.py prepare-context --wo <WO_ID>`.
+6. Dispatch implementation via Boomerang child task (`new_task`) starting in Librarian with WO/context/evidence paths.
+7. In the same WO execution child task, role changes should use `switch_mode` (Librarian -> Code -> Debug as needed) to reuse context.
+8. When implementation is complete, return to Orchestrator parent and then dispatch Reviewer via a new child task.
+9. After review closure, only mark current milestone done; do not mark program complete unless all milestones are closed.
 
 ## Output Checklist
 - `.roo_process/work_orders/<WO_ID>/WorkOrder.md` complete.

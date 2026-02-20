@@ -18,8 +18,9 @@ Use Roo custom tools as the first-class execution entrypoint for WO orchestratio
 
 ## Queue/Todo/Worktree Mapping
 1. Queue: high-risk operations are not exposed in custom tools.
-2. Todo: tool output warns when WO todo metadata is missing for multi-step flows.
-3. Worktree: tool output warns when multiple worktrees are detected and evidence isolation is required.
+2. Todo: tools only provide WO todo metadata warnings; Roo built-in single-session todo must be enforced by mode instructions (`update_todo_list`).
+3. Program Todo: orchestrator must maintain `.roo_process/work_orders/PROGRAM-<date>/TODO.md` outside tool auto-generation.
+4. Worktree: tool output warns when multiple worktrees are detected and evidence isolation is required.
 
 ## Audit Contract
 Tool responses must include:

@@ -12,8 +12,9 @@ Use queueing to reduce orchestration latency while preserving safety.
 2. Queue low-risk, repeatable operations for automatic approval.
 3. Block high-risk operations (`git push`, merge, destructive commands) for explicit confirmation.
 4. Use `new_task` for boundary handoffs (Orchestrator -> Implementation, Orchestrator -> Reviewer).
-5. Use `switch_mode` for intra-WO implementation role changes inside the active child task.
-6. Record queue decisions in `.roo_process/docs/QUEUE_POLICY.md` terms.
+5. Start implementation child in Librarian, then use `switch_mode` for Librarian/Code/Debug intra-WO role changes.
+6. Maintain Roo built-in todo (`update_todo_list`) for multi-step orchestration before closing tasks.
+7. Record queue decisions in `.roo_process/docs/QUEUE_POLICY.md` terms.
 
 ## References
 - Queue guardrails: `references/queue-guardrails.md`

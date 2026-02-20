@@ -16,10 +16,14 @@
 - `python3 .roo_process/scripts/wo_flow.py pack-delivery --wo <WO_ID>`
 - `python3 .roo_process/scripts/wo_flow.py prepare-review --wo <WO_ID>`
 - `python3 .roo_process/scripts/wo_flow.py validate-delivery --wo <WO_ID>`
+- 默认协作链路：`Orchestrator(parent) -> new_task(Implementation child from Librarian) -> switch_mode(Code/Debug) -> return parent -> new_task(Reviewer child) -> return parent`
+- 总包需维护 `.roo_process/work_orders/PROGRAM-<date>/TODO.md`，单个 WO 完成不等于项目完成。
+- PROGRAM TODO 可从 `.roo_process/templates/program_todo.md` 初始化。
 
 ## Gate 引擎
 - 验收 Gate：`.roo_process/scripts/review_gate.py`
 - `evidence.json` 为必备证据（缺失或字段不完整即 FAIL）
+- SPEC 冻结检查默认作用于 `_SPECs/`（可用 `--spec-path` 覆盖，或 `--no-spec-freeze` 显式关闭）
 
 ## Skills v2 目录
 - `.roo/skills/orchestrator/`

@@ -20,6 +20,8 @@
 
 ## Handoff Budget（效率约束）
 1. 首个 WO 在进入编码前，必须由 Orchestrator 通过 `new_task` 下发施工子任务。
-2. 同一 WO 的施工子任务内部，角色切换使用 `switch_mode`（不新增子任务）以保持上下文连续。
-3. 转交独立验收时，必须由 Orchestrator 通过 `new_task` 下发 Reviewer 子任务。
-4. 每个子任务结束后必须回到 Orchestrator 父任务，再进行下一次派发或决策。
+2. 施工子任务默认从 Librarian 起步，再通过 `switch_mode` 进入 Code/Debug。
+3. 同一 WO 的施工子任务内部，角色切换使用 `switch_mode`（不新增子任务）以保持上下文连续。
+4. 转交独立验收时，必须由 Orchestrator 通过 `new_task` 下发 Reviewer 子任务。
+5. 每个子任务结束后必须回到 Orchestrator 父任务，再进行下一次派发或决策。
+6. 单个 WO gate 通过后仅视为阶段完成，PROGRAM TODO 未全部完成前不得宣布项目完成。

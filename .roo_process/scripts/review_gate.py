@@ -158,7 +158,12 @@ def main() -> int:
         action="append",
         dest="spec_paths",
         default=None,
-        help="Optional frozen SPEC path(s). If omitted, SPEC freeze check is skipped.",
+        help="Frozen SPEC path(s). Defaults to _SPECs.",
+    )
+    parser.add_argument(
+        "--no-spec-freeze",
+        action="store_true",
+        help="Disable SPEC freeze check explicitly.",
     )
     parser.add_argument("--base-ref")
     parser.add_argument("--head-ref", default="HEAD")
@@ -176,7 +181,17 @@ def main() -> int:
     if not feature_id:
         failed.append("Feature-ID 识别失败：请传 --feature 或在分支/提交信息中包含 WO-YYYYMMDD-###")
 
-    spec_paths = args.spec_paths or []
+    if args.no_spec_freeze:
+        spec_paths = []
+        spec_source = "disabled"
+    elif args.spec_paths:
+        spec_paths = list(dict.fromkeys(args.spec_paths))
+        spec_source = "manual --spec-path"
+    else:
+        spec_paths = ["_SPECs"]
+        spec_source = "default"
+
+    missing_spec_paths = [p for p in spec_paths if not Path(p).exists()]
     commit_subject = run(["git", "log", "-1", "--pretty=%s"]).stdout.strip() if in_git_repo() else ""
 
     print("== Roo Review Gate ==")
@@ -184,7 +199,10 @@ def main() -> int:
     print(f"Strict CR: {'ON' if args.strict else 'OFF'}")
     print(f"Test timeout: {args.test_timeout_sec}s")
     if spec_paths:
-        print("SPEC paths: " + ", ".join(spec_paths))
+        source_suffix = " (default)" if spec_source == "default" else ""
+        print("SPEC paths: " + ", ".join(spec_paths) + source_suffix)
+    elif spec_source == "disabled":
+        print("SPEC paths: (disabled by --no-spec-freeze)")
     else:
         print("SPEC paths: (none, freeze check disabled)")
 
@@ -210,9 +228,15 @@ def main() -> int:
         else:
             passed.append("SPEC 冻结目录未被本次 diff 触碰")
     elif changed and not spec_paths:
-        warns.append("未配置 SPEC 冻结路径（未传 --spec-path），已跳过 SPEC 目录改动检查")
+        if args.no_spec_freeze:
+            warns.append("SPEC 冻结检查已被 --no-spec-freeze 显式关闭")
+        else:
+            warns.append("未配置 SPEC 冻结路径，已跳过 SPEC 目录改动检查")
     else:
         warns.append("当前 diff 范围无变更文件")
+
+    if missing_spec_paths:
+        warns.append("SPEC 路径不存在（仍按路径前缀冻结匹配）: " + ", ".join(missing_spec_paths))
 
     evidence_dir = Path(args.evidence_root) / (feature_id or "UNKNOWN")
     summary = evidence_dir / "summary.md"

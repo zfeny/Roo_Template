@@ -7,8 +7,10 @@
 1. 所有实施类工作必须绑定唯一 WO（`WO-YYYYMMDD-XXX`）。
 2. 未建立 `.roo_process/work_orders/{WO}` 与 `.roo_process/context_packs/{WO}` 前，不进入编码。
 3. 未产出 `.roo_process/quality/{WO}` 与 `.roo_process/evidence/{WO}` 前，不声称完成。
-4. `_SPECs/` 默认为只读权威，除非用户明确要求改动。
-5. Roo 过程文件只允许写入 `.roo_process/`；业务代码写入根目录 `src/`。
+4. 单个 WO 完成不等于项目完成；仅当 PROGRAM 级 TODO 里全部里程碑完成且无待处理 WO，才允许声明“任务完成”。
+5. 执行步骤 >= 4 时必须维护 Roo 内置待办清单（`update_todo_list`），且未清空待办不得结束会话任务。
+6. `_SPECs/` 默认为只读权威，除非用户明确要求改动。
+7. Roo 过程文件只允许写入 `.roo_process/`；业务代码写入根目录 `src/`。
 
 ## 3) 证据优先
 1. 结论必须可回指文件路径。

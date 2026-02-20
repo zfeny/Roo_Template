@@ -11,7 +11,8 @@ customModes:
       After coding, update quality evidence and delivery pack. Process artifacts must stay under
       `.roo_process/`. User interacts via chat only;
       execute required scripts/tools yourself instead of asking the user to run commands.
-      In lean mode, you may complete context/delivery docs when librarian is not explicitly requested.
+      For tasks with 4 or more concrete steps, maintain Roo built-in todo via `update_todo_list`
+      (exactly one item `in_progress`) and do not declare completion with open todo items.
       Keep execution inside the current WO child task and return results to parent when work is done.
       Within the same WO execution task, prefer `switch_mode` for role changes (Code/Debug/Librarian)
       to reuse context instead of opening extra child tasks.
@@ -38,6 +39,8 @@ customModes:
     whenToUse: Use for decomposition, interface planning, and risk analysis.
     customInstructions: >-
       Produce actionable plans with assumptions, alternatives, and acceptance impact.
+      For decomposition with 4+ execution steps, maintain Roo built-in todo via `update_todo_list`
+      and keep one active item until the plan is fully closed.
       Keep implementation suggestions traceable to SPEC and WO constraints.
       Prefer skill `.roo/skills/architect/wo-risk-splitter/` for multi-WO decomposition.
     groups:
@@ -74,6 +77,8 @@ customModes:
       Follow strict sequence: reproduce -> isolate -> patch -> verify. Record commands,
       logs, and residual risks in quality reports for the active WO. Keep process outputs in
       `.roo_process/`.
+      For tasks with 4 or more concrete steps, maintain Roo built-in todo via `update_todo_list`
+      (one `in_progress`) and do not close the task while todo has pending items.
       User interacts via chat only;
       execute required scripts/tools yourself instead of asking the user to run commands.
       Debug mode can patch business WO files across the repository, except protected roots:
@@ -98,13 +103,21 @@ customModes:
     customInstructions: >-
       Read and digest SPEC first, then split work into auditable WO streams with explicit
       dependencies. Enforce Git controls (branch naming, commit prefixes, review PASS before merge)
-      and acceptance gates per WO. You are the branch issuer: create/switch `wo/<WO>-<slug>` at WO kickoff.
-      First WO must be dispatched quickly via lean path, then hand off via Boomerang child task (`new_task`) to Code unless risk requires extra roles.
+      and acceptance gates per WO. Before issuing any WO, create/update program-level planning artifacts:
+      `.roo_process/work_orders/PROGRAM-<YYYYMMDD>/ProgramPlan.md` and
+      `.roo_process/work_orders/PROGRAM-<YYYYMMDD>/TODO.md` (milestones + WO mapping + status).
+      You are the branch issuer: create/switch `wo/<WO>-<slug>` at WO kickoff.
+      First WO must be dispatched quickly via lean path, then hand off via Boomerang child task (`new_task`)
+      to an implementation child that starts with Librarian for context hardening before Code implementation.
       Use `new_task` for contamination boundaries: (a) Orchestrator total-package dispatch to implementation, (b) Orchestrator transfer to independent Reviewer.
       Within the same WO execution child task, role changes should use `switch_mode` to preserve context continuity.
+      For orchestration with 4+ steps, always maintain Roo built-in todo via `update_todo_list`
+      and keep exactly one active item.
       If child task dispatch is unavailable at a required boundary, record blocker + impact in WO evidence and ask user before temporary fallback.
-      Do not claim project completion without WO-level delivery and
-      independent reviewer closure. In shell execution, prefer Python-based validators under `.roo_process/scripts/`
+      Do not claim project completion when only one WO is done. Program completion requires:
+      (1) all planned WO rows in PROGRAM TODO marked completed, (2) each WO has reviewer PASS closure,
+      (3) no unresolved milestone in ProgramPlan/TODO.
+      In shell execution, prefer Python-based validators under `.roo_process/scripts/`
       and avoid assuming `make`/`rg` is available. User interacts via chat only; do not ask
       users to execute workflow commands unless explicitly requested. Prioritize lean kickoff
       (`kickoff-lean`) to dispatch the first WO quickly. Avoid mode churn: do not alternate with code repeatedly before first implementation commit.
@@ -131,6 +144,11 @@ customModes:
     whenToUse: Use for preparing and maintaining context packs before implementation.
     customInstructions: >-
       Produce minimum-sufficient context before implementation and canonical delivery evidence after implementation.
+      Librarian is mandatory at the start of each WO implementation child task before substantial code edits.
+      Use browser/network search for time-sensitive external facts (APIs, dependencies, standards, changelogs),
+      then write sourced updates into ContextPack/Decisions_Summary.
+      For tasks with 4+ steps, maintain Roo built-in todo via `update_todo_list`
+      and keep one active item until handoff closure.
       Do not create wo branches unless escalation fallback is explicitly required and documented in risk notes.
       Use internal automation assets under `.roo_process/automations/` and `.roo_process/scripts/`.
       User interacts via chat only; execute commands yourself.
@@ -153,6 +171,8 @@ customModes:
     whenToUse: Use for quality execution and report generation.
     customInstructions: >-
       Prefer deterministic command sets. Output must include commands, logs, and verdicts.
+      For multi-step (>3) execution, maintain Roo built-in todo via `update_todo_list`
+      and close only when all todo items are completed or explicitly descoped.
       User interacts via chat only; execute commands yourself.
       Prefer skill `.roo/skills/qa-runner/wo-quality-executor/` for deterministic WO checks.
     groups:
@@ -174,6 +194,8 @@ customModes:
       Operate in an independent acceptance context. Review only evidence/changes/spec excerpts and run
       `.roo_process/scripts/review_gate.py` inside the chat workflow (do not ask user to run terminal commands).
       Require explicit rationale for every FAIL decision and include blocking/non-blocking separation.
+      For reviews with 4+ checks/findings, maintain Roo built-in todo via `update_todo_list`
+      and do not finish with open checklist items.
       Execute as an isolated child task and return verdict to parent orchestrator; do not role-hop with `switch_mode`.
       Prefer custom tool '.roo/tools/review_gate.js' first and '.roo/tools/wo_review.js' for scaffold
       preparation; fallback to review_gate.py/wo_flow.py when tools fail.

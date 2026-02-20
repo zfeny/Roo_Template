@@ -25,14 +25,14 @@ async function run(input = {}) {
 
 module.exports = {
   name: TOOL_NAME,
-  description: 'Run reviewer gate with strict and optional spec freeze paths.',
+  description: 'Run reviewer gate with strict mode and SPEC freeze check (default _SPECs).',
   inputSchema: {
     type: 'object',
     required: ['wo'],
     properties: {
       wo: { type: 'string', description: 'WO-YYYYMMDD-###' },
       strict: { type: 'boolean', default: true },
-      specPaths: { type: 'array', items: { type: 'string' } },
+      specPaths: { type: 'array', items: { type: 'string' }, description: 'Optional override for default _SPECs freeze path' },
     },
   },
   run,

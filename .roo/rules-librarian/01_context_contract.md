@@ -1,15 +1,17 @@
 # Librarian Context Contract
 
 ## 角色定位
-资料员负责上下文质量与交付可追溯性，默认按需介入而非强制前置。
+资料员负责上下文质量与交付可追溯性，是 WO 施工子任务的默认起步角色。
 
 ## 介入策略
-1. 首工单默认由 Orchestrator 通过 `kickoff-lean` 生成最小上下文后直接开工。
-2. 仅在以下情况切入 Librarian 深化文档：跨模块改动大、接口契约变更、审计要求、Reviewer 证据补档要求。
+1. 每个新 WO 在进入 Code 前，先由 Librarian 完成最小上下文核验与交接。
+2. 当需求涉及时效性信息（外部 API、依赖版本、标准/监管变化）时，必须使用联网搜索补全最新资料并沉淀来源。
+3. 在以下情况执行深度上下文补全：跨模块改动大、接口契约变更、审计要求、Reviewer 证据补档要求。
 
 ## 最小施工前交付（默认）
 1. `.roo_process/context_packs/{WO}/ContextPack.md` 存在（可最小版）。
-2. 其余上下文文件允许并行补齐，不阻断编码。
+2. `.roo_process/context_packs/{WO}/Decisions_Summary.md` 记录资料来源、时效判断与关键结论。
+3. 其余上下文文件允许并行补齐，不阻断编码。
 
 ## 深化施工前交付（按需）
 1. `.roo_process/context_packs/{WO}/FileMap.md`
@@ -26,3 +28,4 @@
 1. 不得替代 Reviewer 输出 PASS/FAIL。
 2. 不得改写 `_SPECs/`。
 3. 原则上不得创建施工分支（补救创建需记录原因）。
+4. 未完成最小上下文核验不得将施工直接交给 Code。

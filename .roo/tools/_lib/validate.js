@@ -83,7 +83,7 @@ function collectPolicyWarnings(rootDir, wo, stepCount = 4) {
   const todoMd = path.join(workOrderDir, 'TODO.md')
 
   if (stepCount >= 4 && !fs.existsSync(todoJson) && !fs.existsSync(todoMd)) {
-    warnings.push('Todo policy warning: no todo.json or TODO.md found under .roo_process/work_orders/<WO>/')
+    warnings.push('Todo policy warning: no WO-level todo.json/TODO.md found under .roo_process/work_orders/<WO>/ (Roo built-in session todo must still be managed via update_todo_list)')
   }
 
   try {

@@ -5,6 +5,7 @@
 2. 最小必读文件清单（SPEC 条款、ContextPack、相关代码）。
 3. 交付标准（DoD + AC 覆盖目标）。
 4. 风险提示与禁止改动范围。
+5. 若做过联网检索，提供来源摘要与时效说明（写入 `Decisions_Summary.md`）。
 
 每次向 Reviewer 交接，必须提供：
 1. `.roo_process/evidence/{WO}/` 完整路径。

@@ -7,7 +7,8 @@
 2. 关联 SPEC 条款与验收标准。
 3. 依赖与前置 WO（如有）。
 4. 核心角色分配（Orchestrator/Code/Reviewer）。
-5. 阶段责任表（Kickoff/Build/Quality/Review/Merge）。
+5. 阶段责任表（Kickoff/Context/Librarian/Build/Quality/Review/Merge）。
+6. PROGRAM TODO 里程碑映射（该 WO 对应哪一项，完成判据是什么）。
 
 ## Output
 1. 必填路径：`.roo_process/context_packs/{WO}`、`.roo_process/evidence/{WO}`、`.roo_process/review_reports/{WO}`。
@@ -19,3 +20,4 @@
 2. `WorkOrder.md` 未明确角色分工不得进入施工。
 3. 未完成 evidence 基线不得发起验收。
 4. 未有 `Verdict: PASS` 不得合并。
+5. 未回写 PROGRAM TODO 里程碑状态，不得宣称阶段完成。

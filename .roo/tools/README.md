@@ -8,6 +8,7 @@ This directory contains JavaScript custom tools for Roo.
 - `wo_delivery.js`: delivery pack and validation (`pack` / `validate`)
 - `wo_review.js`: reviewer scaffold preparation
 - `review_gate.js`: acceptance gate execution
+  - 默认冻结检查目录为 `_SPECs`，可用 `specPaths` 覆盖。
 
 ## Security Model
 1. Commands are constructed via allowlisted templates only.
