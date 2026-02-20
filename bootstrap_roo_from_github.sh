@@ -6,13 +6,14 @@ usage() {
 Bootstrap Roo workflow assets from a GitHub repository.
 
 Usage:
-  bootstrap_roo_from_github.sh [--repo <owner/repo|github-url>] [--ref <branch_or_tag_or_sha>] [--dest <path>] [--include-specs] [--include-archive] [--archive-root <path>] [--force] [--cleanup-legacy|--no-cleanup-legacy]
+  bootstrap_roo_from_github.sh [--repo <owner/repo|github-url>] [--ref <branch_or_tag_or_sha>] [--dest <path>] [--hot-update] [--include-specs] [--include-archive] [--archive-root <path>] [--force] [--cleanup-legacy|--no-cleanup-legacy]
 
 Options:
   --repo            GitHub repository (owner/repo, git@github.com:owner/repo.git, or https://github.com/owner/repo.git)
                     default: zfeny/Roo_Template (or $ROO_BOOTSTRAP_DEFAULT_REPO)
   --ref             Branch/tag/commit-ish used for tarball download (default: main)
   --dest            Target project directory (default: current directory)
+  --hot-update      Update runtime engine files only (preserve existing WO/context/quality/evidence/review assets)
   --include-specs   Also sync _SPECs directory from template repo
   --include-archive Also sync archive directory from template repo
   --archive-root    Target archive root path (default: archive)
@@ -30,10 +31,12 @@ REF="main"
 DEST="."
 INCLUDE_SPECS="0"
 INCLUDE_ARCHIVE="0"
+HOT_UPDATE="0"
 FORCE="0"
 DEFAULT_REPO="${ROO_BOOTSTRAP_DEFAULT_REPO:-zfeny/Roo_Template}"
 CLEANUP_LEGACY="1"
 ARCHIVE_ROOT="archive"
+HOT_PROCESS_SUBDIRS=("scripts" "automations" "templates" "docs")
 
 normalize_repo() {
   local raw="$1"
@@ -91,6 +94,10 @@ while [[ $# -gt 0 ]]; do
       INCLUDE_SPECS="1"
       shift
       ;;
+    --hot-update)
+      HOT_UPDATE="1"
+      shift
+      ;;
     --include-archive)
       INCLUDE_ARCHIVE="1"
       shift
@@ -128,6 +135,11 @@ if [[ -z "$ARCHIVE_ROOT" ]]; then
   exit 1
 fi
 
+if [[ "$HOT_UPDATE" == "1" && "$FORCE" == "1" ]]; then
+  echo "WARN: --force is ignored in --hot-update mode"
+  FORCE="0"
+fi
+
 if [[ -z "$REPO" ]]; then
   REPO="$DEFAULT_REPO"
   echo "Using default template repository: $REPO"
@@ -152,12 +164,14 @@ fi
 mkdir -p "$DEST"
 DEST_ABS="$(cd "$DEST" && pwd)"
 
-for p in .roo .roomodes .roo_process; do
-  if [[ -e "$DEST_ABS/$p" && "$FORCE" != "1" ]]; then
-    echo "Target already has $p. Re-run with --force to overwrite." >&2
-    exit 2
-  fi
-done
+if [[ "$HOT_UPDATE" != "1" ]]; then
+  for p in .roo .roomodes .roo_process; do
+    if [[ -e "$DEST_ABS/$p" && "$FORCE" != "1" ]]; then
+      echo "Target already has $p. Re-run with --force to overwrite." >&2
+      exit 2
+    fi
+  done
+fi
 
 if [[ "$INCLUDE_ARCHIVE" == "1" && -e "$DEST_ABS/$ARCHIVE_ROOT" && "$FORCE" != "1" ]]; then
   echo "Target already has $ARCHIVE_ROOT. Re-run with --force to overwrite." >&2
@@ -324,8 +338,22 @@ for p in .roo .roomodes .roo_process; do
     echo "Template missing required path: $p" >&2
     exit 4
   fi
-  copy_item "$SRC_ROOT/$p" "$DEST_ABS/$p"
 done
+
+if [[ "$HOT_UPDATE" == "1" ]]; then
+  copy_item "$SRC_ROOT/.roo" "$DEST_ABS/.roo"
+  copy_item "$SRC_ROOT/.roomodes" "$DEST_ABS/.roomodes"
+  mkdir -p "$DEST_ABS/.roo_process"
+  for sub in "${HOT_PROCESS_SUBDIRS[@]}"; do
+    if [[ -e "$SRC_ROOT/.roo_process/$sub" ]]; then
+      copy_item "$SRC_ROOT/.roo_process/$sub" "$DEST_ABS/.roo_process/$sub"
+    fi
+  done
+else
+  for p in .roo .roomodes .roo_process; do
+    copy_item "$SRC_ROOT/$p" "$DEST_ABS/$p"
+  done
+fi
 
 if [[ "$INCLUDE_ARCHIVE" == "1" ]]; then
   if [[ -d "$SRC_ROOT/archive" ]]; then
@@ -352,7 +380,12 @@ if [[ "$CLEANUP_LEGACY" == "1" ]]; then
 fi
 
 echo "Roo bootstrap completed: $DEST_ABS"
-echo "Installed: .roo, .roomodes, .roo_process"
+if [[ "$HOT_UPDATE" == "1" ]]; then
+  echo "Hot update applied: .roo, .roomodes, .roo_process/{scripts,automations,templates,docs}"
+  echo "Preserved: .roo_process/{work_orders,context_packs,quality,evidence,review_reports,changes}"
+else
+  echo "Installed: .roo, .roomodes, .roo_process"
+fi
 if [[ "$INCLUDE_ARCHIVE" == "1" ]]; then
   echo "Archive synced: $ARCHIVE_ROOT"
 else

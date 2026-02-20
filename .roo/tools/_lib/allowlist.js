@@ -64,13 +64,19 @@ function runWhitelisted(args, { cwd = ROOT, timeoutMs = 120000 } = {}) {
     timeout: timeoutMs,
   })
 
+  const errorMessage = result.error ? String(result.error.message || result.error) : ''
+  const stderr = [result.stderr || '', errorMessage ? `[spawnSync] ${errorMessage}` : '']
+    .filter(Boolean)
+    .join('\n')
+
   return {
-    ok: result.status === 0,
-    statusCode: result.status,
+    ok: result.status === 0 && !result.error,
+    statusCode: result.status ?? -1,
     signal: result.signal,
     command: [cmd, ...cmdArgs].join(' '),
     stdout: result.stdout || '',
-    stderr: result.stderr || '',
+    stderr,
+    timedOut: Boolean(result.error && result.error.code === 'ETIMEDOUT'),
   }
 }
 

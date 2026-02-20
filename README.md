@@ -53,6 +53,9 @@
 - 用途：从 GitHub 模板仓库同步 `.roo`、`.roomodes`、`.roo_process` 到任意项目目录（可选同步 `_SPECs`）。
 - 默认不覆盖本地 `archive/`；仅在显式 `--include-archive` 时同步模板归档。
 - `--force` 覆盖前会自动把目标仓 legacy process archive 抢救迁移到 `archive/`。
+- 热更新（不影响已存在 WO 资产）：
+  - `./bootstrap_roo_from_github.sh --hot-update --dest <target_repo_path>`
+  - 仅更新 `.roo`、`.roomodes`、`.roo_process/{scripts,automations,templates,docs}`，保留现有 `work_orders/context_packs/quality/evidence/review_reports/changes`。
 
 ## 存量仓 v3 工具迁移
 - 脚本：`./migrate_tools_v3.sh`

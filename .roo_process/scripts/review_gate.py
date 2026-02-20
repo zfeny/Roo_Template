@@ -87,18 +87,50 @@ def parse_commands(path: Path) -> List[str]:
     return cmds
 
 
-def run_tests(cmds: List[str], logs_dir: Path) -> Tuple[List[str], List[str]]:
+def is_recursive_gate_command(cmd: str) -> bool:
+    c = cmd.lower()
+    if "review_gate.py" in c:
+        return True
+    if "wo_flow.py" in c and "validate-delivery" in c:
+        return True
+    return False
+
+
+def run_tests(cmds: List[str], logs_dir: Path, timeout_sec: int) -> Tuple[List[str], List[str]]:
     logs_dir.mkdir(parents=True, exist_ok=True)
     ok: List[str] = []
     bad: List[str] = []
     for i, cmd in enumerate(cmds, 1):
-        p = subprocess.run(["bash", "-lc", cmd], text=True, capture_output=True)
         log = logs_dir / f"test_{i:02d}.log"
-        log.write_text(f"$ {cmd}\n\n[stdout]\n{p.stdout}\n\n[stderr]\n{p.stderr}\n", encoding="utf-8")
-        if p.returncode == 0:
-            ok.append(f"{cmd} (log: {log})")
-        else:
-            bad.append(f"{cmd} (exit={p.returncode}, log: {log})")
+        if is_recursive_gate_command(cmd):
+            log.write_text(
+                f"$ {cmd}\n\n[guard]\nBlocked recursive gate invocation. "
+                "Do not call review_gate.py/validate-delivery inside tests.txt.\n",
+                encoding="utf-8",
+            )
+            bad.append(f"{cmd} (blocked: recursive gate invocation, log: {log})")
+            continue
+
+        try:
+            p = subprocess.run(
+                ["bash", "-lc", cmd],
+                text=True,
+                capture_output=True,
+                timeout=timeout_sec,
+            )
+            log.write_text(f"$ {cmd}\n\n[stdout]\n{p.stdout}\n\n[stderr]\n{p.stderr}\n", encoding="utf-8")
+            if p.returncode == 0:
+                ok.append(f"{cmd} (log: {log})")
+            else:
+                bad.append(f"{cmd} (exit={p.returncode}, log: {log})")
+        except subprocess.TimeoutExpired as exc:
+            out = exc.stdout or ""
+            err = exc.stderr or ""
+            log.write_text(
+                f"$ {cmd}\n\n[timeout]\nExceeded {timeout_sec}s\n\n[stdout]\n{out}\n\n[stderr]\n{err}\n",
+                encoding="utf-8",
+            )
+            bad.append(f"{cmd} (timeout={timeout_sec}s, log: {log})")
     return ok, bad
 
 
@@ -131,6 +163,7 @@ def main() -> int:
     parser.add_argument("--base-ref")
     parser.add_argument("--head-ref", default="HEAD")
     parser.add_argument("--tests-file")
+    parser.add_argument("--test-timeout-sec", type=int, default=120)
     parser.add_argument("--strict", dest="strict", action="store_true", default=True)
     parser.add_argument("--no-strict", dest="strict", action="store_false")
     args = parser.parse_args()
@@ -149,10 +182,14 @@ def main() -> int:
     print("== Roo Review Gate ==")
     print(f"Feature: {feature_id or 'N/A'} (source: {source})")
     print(f"Strict CR: {'ON' if args.strict else 'OFF'}")
+    print(f"Test timeout: {args.test_timeout_sec}s")
     if spec_paths:
         print("SPEC paths: " + ", ".join(spec_paths))
     else:
         print("SPEC paths: (none, freeze check disabled)")
+
+    if args.test_timeout_sec <= 0:
+        failed.append("--test-timeout-sec 必须大于 0")
 
     try:
         changed = git_changed_files(args.base_ref, args.head_ref)
@@ -215,7 +252,7 @@ def main() -> int:
             failed.append("summary.md 必须包含至少一个 AC-xxx（或 REQ-/NFR-/FR- 兼容格式）")
 
     if cmds:
-        ok, bad = run_tests(cmds, evidence_dir / "logs" / "review_gate_tests")
+        ok, bad = run_tests(cmds, evidence_dir / "logs" / "review_gate_tests", args.test_timeout_sec)
         passed.extend("Test PASS: " + x for x in ok)
         failed.extend("Test FAIL: " + x for x in bad)
 
