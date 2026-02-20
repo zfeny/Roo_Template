@@ -19,6 +19,7 @@ triggers:
 
   wo_flow_kickoff:
     mode: orchestrator
+    dispatch: boundary_child_task_required
     engine: .roo_process/scripts/wo_flow.py
     command: kickoff-lean
     input:
@@ -31,6 +32,7 @@ triggers:
 
   wo_flow_context:
     mode: librarian
+    dispatch: in_wo_mode_switch_allowed
     engine: .roo_process/scripts/wo_flow.py
     command:
       - prepare-context
@@ -42,6 +44,7 @@ triggers:
 
   wo_flow_delivery:
     mode: code
+    dispatch: in_wo_mode_switch_allowed
     engine: .roo_process/scripts/wo_flow.py
     command:
       - pack-delivery
@@ -54,6 +57,7 @@ triggers:
 
   wo_flow_review:
     mode: reviewer
+    dispatch: boundary_child_task_required
     engine: .roo_process/scripts/wo_flow.py
     command: prepare-review
     input:

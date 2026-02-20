@@ -7,6 +7,9 @@ Use Roo custom tools as the first-class execution entrypoint for WO orchestratio
 1. Prefer `.roo/tools/*.js` for kickoff/context/delivery/review/gate operations.
 2. If tool execution fails, fallback to `.roo_process/scripts/wo_flow.py` or `.roo_process/scripts/review_gate.py`.
 3. Record fallback reason in evidence (`summary.md` or `Review.md`).
+4. Hybrid handoff contract:
+   - Boundary crossing: use child tasks (`new_task`) for Orchestrator->Implementation and Orchestrator->Reviewer.
+   - Intra-WO implementation: use `switch_mode` inside the active child task.
 
 ## Security Controls
 1. Commands must be constructed from allowlisted templates only.

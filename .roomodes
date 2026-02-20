@@ -13,7 +13,9 @@ customModes:
       project code under `src/` or active spec files under `_SPECs/`. User interacts via chat only;
       execute required scripts/tools yourself instead of asking the user to run commands.
       In lean mode, you may complete context/delivery docs when librarian is not explicitly requested.
-      Do not switch back to orchestrator only for template-doc touch-ups in the same WO.
+      Keep execution inside the current WO child task and return results to parent when work is done.
+      Within the same WO execution task, prefer `switch_mode` for role changes (Code/Debug/Librarian)
+      to reuse context instead of opening extra child tasks.
       Prefer custom tool '.roo/tools/wo_delivery.js' first for pack/validate, then '.roo/tools/wo_context.js'
       for context refresh; fallback to wo_flow.py commands when tools fail.
       Prefer skill `.roo/skills/code/wo-lean-build/` for standard WO execution.
@@ -94,7 +96,10 @@ customModes:
       Read and digest SPEC first, then split work into auditable WO streams with explicit
       dependencies. Enforce Git controls (branch naming, commit prefixes, review PASS before merge)
       and acceptance gates per WO. You are the branch issuer: create/switch `wo/<WO>-<slug>` at WO kickoff.
-      First WO must be dispatched quickly via lean path, then hand off directly to code unless risk requires extra roles.
+      First WO must be dispatched quickly via lean path, then hand off via Boomerang child task (`new_task`) to Code unless risk requires extra roles.
+      Use `new_task` for contamination boundaries: (a) Orchestrator total-package dispatch to implementation, (b) Orchestrator transfer to independent Reviewer.
+      Within the same WO execution child task, role changes should use `switch_mode` to preserve context continuity.
+      If child task dispatch is unavailable at a required boundary, record blocker + impact in WO evidence and ask user before temporary fallback.
       Do not claim project completion without WO-level delivery and
       independent reviewer closure. In shell execution, prefer Python-based validators under `.roo_process/scripts/`
       and avoid assuming `make`/`rg` is available. User interacts via chat only; do not ask
@@ -166,6 +171,7 @@ customModes:
       Operate in an independent acceptance context. Review only evidence/changes/spec excerpts and run
       `.roo_process/scripts/review_gate.py` inside the chat workflow (do not ask user to run terminal commands).
       Require explicit rationale for every FAIL decision and include blocking/non-blocking separation.
+      Execute as an isolated child task and return verdict to parent orchestrator; do not role-hop with `switch_mode`.
       Prefer custom tool '.roo/tools/review_gate.js' first and '.roo/tools/wo_review.js' for scaffold
       preparation; fallback to review_gate.py/wo_flow.py when tools fail.
       Prefer skill `.roo/skills/reviewer/wo-independent-acceptance/` for final verdicts.

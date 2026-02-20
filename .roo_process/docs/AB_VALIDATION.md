@@ -10,16 +10,17 @@
 
 ## Metrics
 1. 首提交时延（kickoff 到 first implementation commit）
-2. 模式切换次数（WO 生命周期）
-3. Reviewer 首轮通过率
-4. 平均补证据次数
-5. 工具调用失败率（tool fail / total tool calls）
-6. 工具回退率（fallback to script / total tool calls）
+2. 跨边界子任务交接次数（`new_task`，WO 生命周期）
+3. 同一 WO 施工内模式切换次数（`switch_mode`）
+4. Reviewer 首轮通过率
+5. 平均补证据次数
+6. 工具调用失败率（tool fail / total tool calls）
+7. 工具回退率（fallback to script / total tool calls）
 
 ## Data Template
-| WO | Flow Type | First Commit Latency | Mode Switch Count | First Review Verdict | Evidence Rework Count |
-|---|---|---|---|---|---|
-| WO-YYYYMMDD-001 | baseline/v2 |  |  |  |  |
+| WO | Flow Type | First Commit Latency | boundary new_task Count | intra-WO switch_mode Count | First Review Verdict | Evidence Rework Count |
+|---|---|---|---|---|---|---|
+| WO-YYYYMMDD-001 | baseline/v2 |  |  |  |  |  |
 
 ## v3 Tooling Metrics Template
 | WO | Flow Type | Tool Calls | Tool Failures | Tool Failure Rate | Script Fallback Count | Script Fallback Rate |
@@ -38,7 +39,8 @@
 
 ## Exit Criteria
 1. 首提交时延下降 >= 30%
-2. 模式切换数下降 >= 30%
-3. Reviewer 首轮 PASS 率提升 >= 20%
-4. 无 `.roo_template` 非归档引用
-5. v3 工具调用失败率 < 5%
+2. `new_task` 覆盖跨边界交接（总包->施工、总包->监理）
+3. 同一 WO 施工内角色切换主要通过 `switch_mode` 完成（无不必要新增子任务）
+4. Reviewer 首轮 PASS 率提升 >= 20%
+5. 无 `.roo_template` 非归档引用
+6. v3 工具调用失败率 < 5%

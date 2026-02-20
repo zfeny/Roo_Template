@@ -18,6 +18,8 @@
 2. 最新提交信息前缀满足 `{WO}: `。
 3. `.roo_process/review_reports/{WO}/Review.md` 存在且包含 `Verdict: PASS`。
 
-## Switch Budget（效率约束）
-1. 首个 WO 在进入编码前，默认最多一次模式切换（Orchestrator -> Code）。
-2. 若需增加角色切换，必须在 WO 文档中写明触发原因与收益。
+## Handoff Budget（效率约束）
+1. 首个 WO 在进入编码前，必须由 Orchestrator 通过 `new_task` 下发施工子任务。
+2. 同一 WO 的施工子任务内部，角色切换使用 `switch_mode`（不新增子任务）以保持上下文连续。
+3. 转交独立验收时，必须由 Orchestrator 通过 `new_task` 下发 Reviewer 子任务。
+4. 每个子任务结束后必须回到 Orchestrator 父任务，再进行下一次派发或决策。

@@ -10,3 +10,6 @@
    - Orchestrator Queue: `.roo/skills/orchestrator/wo-queue-dispatch/`
    - Code: `.roo/skills/code/wo-lean-build/`
    - Reviewer: `.roo/skills/reviewer/wo-independent-acceptance/`
+5. Apply hybrid handoff:
+   - Boundary crossing (Orchestrator -> Implementation, Orchestrator -> Reviewer): use `new_task`.
+   - Intra-WO implementation role changes: use `switch_mode`.
