@@ -6,14 +6,19 @@ usage() {
 Bootstrap Roo workflow assets from a GitHub repository.
 
 Usage:
-  bootstrap_roo_from_github.sh --repo <owner/repo> [--ref <branch_or_tag>] [--dest <path>] [--include-specs] [--force]
+  bootstrap_roo_from_github.sh [--repo <owner/repo|github-url>] [--ref <branch_or_tag_or_sha>] [--dest <path>] [--include-specs] [--force] [--cleanup-legacy|--no-cleanup-legacy]
 
 Options:
-  --repo            GitHub repository in owner/repo form (required)
+  --repo            GitHub repository (owner/repo, git@github.com:owner/repo.git, or https://github.com/owner/repo.git)
+                    default: zfeny/Roo_Template (or $ROO_BOOTSTRAP_DEFAULT_REPO)
   --ref             Branch/tag/commit-ish used for tarball download (default: main)
   --dest            Target project directory (default: current directory)
   --include-specs   Also sync _SPECs directory from template repo
   --force           Overwrite existing .roo/.roomodes/.roo_process in target
+  --cleanup-legacy  Remove legacy Roo process directories after sync (default: on)
+  --no-cleanup-legacy
+                    Keep legacy Roo process directories
+  GITHUB_TOKEN      Optional token for private repositories
   -h, --help        Show this help
 EOF
 }
@@ -23,6 +28,46 @@ REF="main"
 DEST="."
 INCLUDE_SPECS="0"
 FORCE="0"
+DEFAULT_REPO="${ROO_BOOTSTRAP_DEFAULT_REPO:-zfeny/Roo_Template}"
+CLEANUP_LEGACY="1"
+
+normalize_repo() {
+  local raw="$1"
+  local out=""
+
+  case "$raw" in
+    git@github.com:*)
+      out="${raw#git@github.com:}"
+      ;;
+    ssh://git@github.com/*)
+      out="${raw#ssh://git@github.com/}"
+      ;;
+    https://github.com/*)
+      out="${raw#https://github.com/}"
+      ;;
+    http://github.com/*)
+      out="${raw#http://github.com/}"
+      ;;
+    github.com/*)
+      out="${raw#github.com/}"
+      ;;
+    *)
+      out="$raw"
+      ;;
+  esac
+
+  out="${out%.git}"
+  out="${out#/}"
+  out="${out%/}"
+
+  if [[ ! "$out" =~ ^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$ ]]; then
+    echo "Invalid --repo format: $raw" >&2
+    echo "Expected owner/repo, git@github.com:owner/repo.git, or https://github.com/owner/repo.git" >&2
+    exit 1
+  fi
+
+  printf '%s' "$out"
+}
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -46,6 +91,14 @@ while [[ $# -gt 0 ]]; do
       FORCE="1"
       shift
       ;;
+    --cleanup-legacy)
+      CLEANUP_LEGACY="1"
+      shift
+      ;;
+    --no-cleanup-legacy)
+      CLEANUP_LEGACY="0"
+      shift
+      ;;
     -h|--help)
       usage
       exit 0
@@ -59,10 +112,11 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ -z "$REPO" ]]; then
-  echo "--repo is required" >&2
-  usage
-  exit 1
+  REPO="$DEFAULT_REPO"
+  echo "Using default template repository: $REPO"
 fi
+
+REPO="$(normalize_repo "$REPO")"
 
 if ! command -v tar >/dev/null 2>&1; then
   echo "tar is required" >&2
@@ -92,12 +146,39 @@ TMP_DIR="$(mktemp -d)"
 trap 'rm -rf "$TMP_DIR"' EXIT
 
 TARBALL="$TMP_DIR/repo.tar.gz"
-URL="https://codeload.github.com/${REPO}/tar.gz/refs/heads/${REF}"
+if [[ -n "${GITHUB_TOKEN:-}" ]]; then
+  URL="https://api.github.com/repos/${REPO}/tarball/${REF}"
+else
+  URL="https://codeload.github.com/${REPO}/tar.gz/${REF}"
+fi
 
 if [[ "$FETCHER" == "curl" ]]; then
-  curl -fsSL "$URL" -o "$TARBALL"
+  if [[ -n "${GITHUB_TOKEN:-}" ]]; then
+    curl -fsSL \
+      -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+      -H "Accept: application/vnd.github+json" \
+      "$URL" -o "$TARBALL"
+  else
+    curl -fsSL "$URL" -o "$TARBALL"
+  fi
 else
-  wget -q "$URL" -O "$TARBALL"
+  if [[ -n "${GITHUB_TOKEN:-}" ]]; then
+    wget -q \
+      --header="Authorization: Bearer ${GITHUB_TOKEN}" \
+      --header="Accept: application/vnd.github+json" \
+      "$URL" -O "$TARBALL"
+  else
+    wget -q "$URL" -O "$TARBALL"
+  fi
+fi
+
+if [[ ! -s "$TARBALL" ]]; then
+  echo "Failed to download repository tarball from: $URL" >&2
+  echo "Hints:" >&2
+  echo "  1) Use --repo as owner/repo (or a GitHub SSH/HTTPS URL)." >&2
+  echo "  2) Verify --ref exists (branch/tag/commit)." >&2
+  echo "  3) For private repos, export GITHUB_TOKEN first." >&2
+  exit 3
 fi
 
 tar -xzf "$TARBALL" -C "$TMP_DIR"
@@ -115,6 +196,38 @@ copy_item() {
     cp -R "$src" "$dst"
   else
     cp "$src" "$dst"
+  fi
+}
+
+cleanup_legacy_dirs() {
+  local root="$1"
+  local removed=()
+  local legacy_dirs=(
+    ".roo_template"
+    "01_spec_locked"
+    "02_templates"
+    "03_work_orders"
+    "04_context_packs"
+    "05_src"
+    "06_quality"
+    "07_delivery_packs"
+    "08_review_reports"
+    "09_automations"
+    "10_docs"
+  )
+
+  for d in "${legacy_dirs[@]}"; do
+    if [[ -e "$root/$d" ]]; then
+      rm -rf "$root/$d"
+      removed+=("$d")
+    fi
+  done
+
+  if [[ ${#removed[@]} -gt 0 ]]; then
+    echo "Removed legacy Roo directories:"
+    for d in "${removed[@]}"; do
+      echo "  - $d"
+    done
   fi
 }
 
@@ -137,6 +250,10 @@ else
 fi
 
 mkdir -p "$DEST_ABS/src"
+
+if [[ "$CLEANUP_LEGACY" == "1" ]]; then
+  cleanup_legacy_dirs "$DEST_ABS"
+fi
 
 echo "Roo bootstrap completed: $DEST_ABS"
 echo "Installed: .roo, .roomodes, .roo_process"
