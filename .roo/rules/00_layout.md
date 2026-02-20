@@ -5,6 +5,7 @@
 2. Process artifacts MUST stay under `.roo_process/`.
 3. Optional frozen specs MUST stay under `_SPECs/`.
 4. Product code lives under `src/`.
+5. Historical/maintenance archives MUST stay under root `archive/` (not under `.roo_process/`).
 
 ## Prohibited
 1. Do not create or use the legacy template root directory.
@@ -12,3 +13,4 @@
 
 ## Recovery
 1. Move misplaced process files into `.roo_process/` before continuing.
+2. Move misplaced archive files into root `archive/` before continuing.

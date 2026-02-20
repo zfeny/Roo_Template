@@ -72,7 +72,7 @@ if [[ ! -f "$ROOMODES" ]]; then
 fi
 
 TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
-BACKUP_DIR="$ROOT/.roo_process/archive/migrations/$TIMESTAMP/tools_backup"
+BACKUP_DIR="$ROOT/archive/migrations/$TIMESTAMP/tools_backup"
 
 update_roomodes() {
   local file="$1"

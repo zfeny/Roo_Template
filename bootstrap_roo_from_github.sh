@@ -6,7 +6,7 @@ usage() {
 Bootstrap Roo workflow assets from a GitHub repository.
 
 Usage:
-  bootstrap_roo_from_github.sh [--repo <owner/repo|github-url>] [--ref <branch_or_tag_or_sha>] [--dest <path>] [--include-specs] [--force] [--cleanup-legacy|--no-cleanup-legacy]
+  bootstrap_roo_from_github.sh [--repo <owner/repo|github-url>] [--ref <branch_or_tag_or_sha>] [--dest <path>] [--include-specs] [--include-archive] [--archive-root <path>] [--force] [--cleanup-legacy|--no-cleanup-legacy]
 
 Options:
   --repo            GitHub repository (owner/repo, git@github.com:owner/repo.git, or https://github.com/owner/repo.git)
@@ -14,6 +14,8 @@ Options:
   --ref             Branch/tag/commit-ish used for tarball download (default: main)
   --dest            Target project directory (default: current directory)
   --include-specs   Also sync _SPECs directory from template repo
+  --include-archive Also sync archive directory from template repo
+  --archive-root    Target archive root path (default: archive)
   --force           Overwrite existing .roo/.roomodes/.roo_process in target
   --cleanup-legacy  Remove legacy Roo process directories after sync (default: on)
   --no-cleanup-legacy
@@ -27,9 +29,11 @@ REPO=""
 REF="main"
 DEST="."
 INCLUDE_SPECS="0"
+INCLUDE_ARCHIVE="0"
 FORCE="0"
 DEFAULT_REPO="${ROO_BOOTSTRAP_DEFAULT_REPO:-zfeny/Roo_Template}"
 CLEANUP_LEGACY="1"
+ARCHIVE_ROOT="archive"
 
 normalize_repo() {
   local raw="$1"
@@ -87,6 +91,14 @@ while [[ $# -gt 0 ]]; do
       INCLUDE_SPECS="1"
       shift
       ;;
+    --include-archive)
+      INCLUDE_ARCHIVE="1"
+      shift
+      ;;
+    --archive-root)
+      ARCHIVE_ROOT="${2:-}"
+      shift 2
+      ;;
     --force)
       FORCE="1"
       shift
@@ -110,6 +122,11 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
+
+if [[ -z "$ARCHIVE_ROOT" ]]; then
+  echo "--archive-root cannot be empty" >&2
+  exit 1
+fi
 
 if [[ -z "$REPO" ]]; then
   REPO="$DEFAULT_REPO"
@@ -141,6 +158,11 @@ for p in .roo .roomodes .roo_process; do
     exit 2
   fi
 done
+
+if [[ "$INCLUDE_ARCHIVE" == "1" && -e "$DEST_ABS/$ARCHIVE_ROOT" && "$FORCE" != "1" ]]; then
+  echo "Target already has $ARCHIVE_ROOT. Re-run with --force to overwrite." >&2
+  exit 2
+fi
 
 TMP_DIR="$(mktemp -d)"
 trap 'rm -rf "$TMP_DIR"' EXIT
@@ -199,6 +221,68 @@ copy_item() {
   fi
 }
 
+rescue_process_archive() {
+  local root="$1"
+  local archive_root="$2"
+  local process_root="$root/.roo_process"
+  local source="$process_root/archive"
+  local target="$root/$archive_root"
+  local timestamp
+  local migration_dir
+  local conflict_dir
+  local report
+  local moved_count=0
+  local conflict_count=0
+
+  if [[ ! -d "$source" ]]; then
+    return
+  fi
+
+  timestamp="$(date +%Y%m%d-%H%M%S)"
+  migration_dir="$target/migrations/$timestamp"
+  conflict_dir="$migration_dir/conflicts_from_bootstrap"
+  report="$migration_dir/bootstrap_archive_rescue_report.md"
+
+  mkdir -p "$target" "$migration_dir"
+
+  while IFS= read -r -d '' entry; do
+    rel="${entry#$source/}"
+    dst="$target/$rel"
+
+    if [[ -e "$dst" ]]; then
+      mkdir -p "$conflict_dir/$(dirname "$rel")"
+      mv "$entry" "$conflict_dir/$rel"
+      ((conflict_count+=1))
+    else
+      mkdir -p "$(dirname "$dst")"
+      mv "$entry" "$dst"
+      ((moved_count+=1))
+    fi
+  done < <(find "$source" -mindepth 1 -type f -print0)
+
+  while IFS= read -r -d '' dir; do
+    rel="${dir#$source/}"
+    dst="$target/$rel"
+    if [[ ! -e "$dst" ]]; then
+      mkdir -p "$dst"
+    fi
+  done < <(find "$source" -mindepth 1 -type d -empty -print0)
+
+  rm -rf "$source"
+
+  cat > "$report" <<REPORT
+# Bootstrap Archive Rescue Report
+
+- Source: legacy process archive path
+- Target: $archive_root
+- Moved files: $moved_count
+- Conflict files: $conflict_count
+- Conflict directory: ${archive_root}/migrations/$timestamp/conflicts_from_bootstrap
+REPORT
+
+  echo "Rescued legacy process archive to $archive_root (moved=$moved_count conflicts=$conflict_count)"
+}
+
 cleanup_legacy_dirs() {
   local root="$1"
   local removed=()
@@ -231,6 +315,10 @@ cleanup_legacy_dirs() {
   fi
 }
 
+if [[ "$FORCE" == "1" ]]; then
+  rescue_process_archive "$DEST_ABS" "$ARCHIVE_ROOT"
+fi
+
 for p in .roo .roomodes .roo_process; do
   if [[ ! -e "$SRC_ROOT/$p" ]]; then
     echo "Template missing required path: $p" >&2
@@ -238,6 +326,14 @@ for p in .roo .roomodes .roo_process; do
   fi
   copy_item "$SRC_ROOT/$p" "$DEST_ABS/$p"
 done
+
+if [[ "$INCLUDE_ARCHIVE" == "1" ]]; then
+  if [[ -d "$SRC_ROOT/archive" ]]; then
+    copy_item "$SRC_ROOT/archive" "$DEST_ABS/$ARCHIVE_ROOT"
+  else
+    mkdir -p "$DEST_ABS/$ARCHIVE_ROOT"
+  fi
+fi
 
 if [[ "$INCLUDE_SPECS" == "1" ]]; then
   if [[ -d "$SRC_ROOT/_SPECs" ]]; then
@@ -257,6 +353,11 @@ fi
 
 echo "Roo bootstrap completed: $DEST_ABS"
 echo "Installed: .roo, .roomodes, .roo_process"
+if [[ "$INCLUDE_ARCHIVE" == "1" ]]; then
+  echo "Archive synced: $ARCHIVE_ROOT"
+else
+  echo "Archive untouched by default"
+fi
 if [[ "$INCLUDE_SPECS" == "1" ]]; then
   echo "_SPECs synced from template"
 else

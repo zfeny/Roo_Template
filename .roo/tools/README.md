@@ -14,6 +14,13 @@ This directory contains JavaScript custom tools for Roo.
 2. Shell operators and command chaining are rejected.
 3. Tool arguments are validated before command execution.
 
+## CLI Input Note
+These tool files accept exactly one JSON argument. They are not argparse-style CLIs.
+Use:
+- `node .roo/tools/wo_kickoff.js '{"wo":"WO-20260220-001","slug":"demo"}'`
+Do not use:
+- `node .roo/tools/wo_kickoff.js --help`
+
 ## JSON Output Contract
 Each tool returns:
 - `status`: `ok` or `fail`

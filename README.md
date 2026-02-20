@@ -6,6 +6,7 @@
 - `_SPECs/`：Spec 入口（可为空占位）
 - `.roo/`、`.roomodes`：Roo 运行配置与 mode/rule/skill 定义
 - `.roo_process/`：流程资产（模板、工单、上下文、质量、证据、变更、审查、自动化）
+- `archive/`：历史/维护归档资产（与 `.roo_process/` 运行期资产隔离）
 - `src/`：业务代码目录
 
 ## 统一流程入口
@@ -50,6 +51,8 @@
 ## 跨服务器快速拉取
 - 脚本：`./bootstrap_roo_from_github.sh`
 - 用途：从 GitHub 模板仓库同步 `.roo`、`.roomodes`、`.roo_process` 到任意项目目录（可选同步 `_SPECs`）。
+- 默认不覆盖本地 `archive/`；仅在显式 `--include-archive` 时同步模板归档。
+- `--force` 覆盖前会自动把目标仓 legacy process archive 抢救迁移到 `archive/`。
 
 ## 存量仓 v3 工具迁移
 - 脚本：`./migrate_tools_v3.sh`

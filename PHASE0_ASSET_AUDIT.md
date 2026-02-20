@@ -21,15 +21,15 @@
 - `changes/*` -> `.roo_process/changes/*`
 - `evidence/*` -> `.roo_process/evidence/*`
 - `scripts/*` -> `.roo_process/scripts/*`
-- `.github/workflows/*` -> `.roo_process/archive/legacy_automations_snapshot/github_workflows/workflows/*`
+- `.github/workflows/*` -> `archive/legacy_automations_snapshot/github_workflows/workflows/*`
 
 ## 3) 遗留脚本/模板拆解决策
 - 保留并迁移：`review_gate.py`（作为统一 Gate 引擎）
 - 合并：Review Gate 与关键校验逻辑合并到 `.roo_process/scripts/review_gate.py`
-- 归档：legacy Bash / hook / make 脚本迁入 `.roo_process/archive/legacy_automations_snapshot/`
-- 归档：根目录 `Makefile` 迁入 `.roo_process/archive/legacy_automations_snapshot/Makefile.legacy_root`
+- 归档：legacy Bash / hook / make 脚本迁入 `archive/legacy_automations_snapshot/`
+- 归档：根目录 `Makefile` 迁入 `archive/legacy_automations_snapshot/Makefile.legacy_root`
 - 废弃入口：根目录 `changes/ evidence/ scripts/ specs/ legacy_template_root/`（已迁移或归档）
-- 归档：整套旧模板快照 -> `.roo_process/archive/legacy_template_snapshot/`
+- 归档：整套旧模板快照 -> `archive/legacy_template_snapshot/`
 
 ## 4) 约束结果
 - 根目录流程目录已收敛到 `_SPECs/` + `.roo_process/`。

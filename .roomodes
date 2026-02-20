@@ -9,13 +9,14 @@ customModes:
     customInstructions: >-
       Must bind all edits to an active WO. Before coding, confirm WO and context pack exist.
       After coding, update quality evidence and delivery pack. Process artifacts must stay under
-      `.roo_process/`. This repository is a generic Roo template, so do not assume any active
-      project code under `src/` or active spec files under `_SPECs/`. User interacts via chat only;
+      `.roo_process/`. User interacts via chat only;
       execute required scripts/tools yourself instead of asking the user to run commands.
       In lean mode, you may complete context/delivery docs when librarian is not explicitly requested.
       Keep execution inside the current WO child task and return results to parent when work is done.
       Within the same WO execution task, prefer `switch_mode` for role changes (Code/Debug/Librarian)
       to reuse context instead of opening extra child tasks.
+      Code mode can edit business WO files across the repository, except protected roots:
+      `_SPECs/`, `.roo/`, `.roomodes`, and `.git/`.
       Prefer custom tool '.roo/tools/wo_delivery.js' first for pack/validate, then '.roo/tools/wo_context.js'
       for context refresh; fallback to wo_flow.py commands when tools fail.
       Prefer skill `.roo/skills/code/wo-lean-build/` for standard WO execution.
@@ -25,8 +26,8 @@ customModes:
       - browser
       - mcp
       - - edit
-        - fileRegex: ^(?:\.roo_process/templates/.*|\.roo_process/work_orders/.*|\.roo_process/context_packs/.*|\.roo_process/quality/.*|\.roo_process/evidence/.*|\.roo_process/changes/.*|\.roo_process/docs/.*|\.roo_process/automations/.*|\.roo_process/scripts/.*|\.roo_process/review_reports/.*)$
-          description: Implementation and WO delivery files
+        - fileRegex: ^(?!(?:_SPECs(?:/|$)|\.roo(?:/|$)|\.roomodes$|\.git(?:/|$))).+
+          description: Business WO files across repo except protected roots (_SPECs/.roo/.roomodes/.git)
 
   - slug: architect
     name: 🏗️ Architect (Design Gate)
@@ -72,9 +73,11 @@ customModes:
     customInstructions: >-
       Follow strict sequence: reproduce -> isolate -> patch -> verify. Record commands,
       logs, and residual risks in quality reports for the active WO. Keep process outputs in
-      `.roo_process/`. This template repository should not require direct edits under `src/`.
+      `.roo_process/`.
       User interacts via chat only;
       execute required scripts/tools yourself instead of asking the user to run commands.
+      Debug mode can patch business WO files across the repository, except protected roots:
+      `_SPECs/`, `.roo/`, `.roomodes`, and `.git/`.
       Prefer skill `.roo/skills/debug/wo-repro-isolate-fix/` for defect handling.
     groups:
       - read
@@ -82,8 +85,8 @@ customModes:
       - browser
       - mcp
       - - edit
-        - fileRegex: ^(?:\.roo_process/quality/.*|\.roo_process/evidence/.*|\.roo_process/docs/.*|\.roo_process/automations/.*|\.roo_process/scripts/.*)$
-          description: Debug-relevant files only
+        - fileRegex: ^(?!(?:_SPECs(?:/|$)|\.roo(?:/|$)|\.roomodes$|\.git(?:/|$))).+
+          description: Debug patches allowed across repo except protected roots (_SPECs/.roo/.roomodes/.git)
 
   - slug: orchestrator
     name: 🪃 Orchestrator (Boomerang Gate)
