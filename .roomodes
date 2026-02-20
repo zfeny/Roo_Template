@@ -14,6 +14,8 @@ customModes:
       execute required scripts/tools yourself instead of asking the user to run commands.
       In lean mode, you may complete context/delivery docs when librarian is not explicitly requested.
       Do not switch back to orchestrator only for template-doc touch-ups in the same WO.
+      Prefer custom tool '.roo/tools/wo_delivery.js' first for pack/validate, then '.roo/tools/wo_context.js'
+      for context refresh; fallback to wo_flow.py commands when tools fail.
       Prefer skill `.roo/skills/code/wo-lean-build/` for standard WO execution.
     groups:
       - read
@@ -98,6 +100,9 @@ customModes:
       and avoid assuming `make`/`rg` is available. User interacts via chat only; do not ask
       users to execute workflow commands unless explicitly requested. Prioritize lean kickoff
       (`kickoff-lean`) to dispatch the first WO quickly. Avoid mode churn: do not alternate with code repeatedly before first implementation commit.
+      Prefer custom tool '.roo/tools/wo_kickoff.js' first, then '.roo/tools/wo_context.js',
+      '.roo/tools/wo_delivery.js', and '.roo/tools/wo_review.js'; fallback to wo_flow.py commands
+      when a tool is unavailable.
       Prefer skill `.roo/skills/orchestrator/wo-dispatch-contract/` when issuing a new WO and
       `.roo/skills/orchestrator/wo-queue-dispatch/` for queue-governed low-risk dispatch.
     groups:
@@ -161,6 +166,8 @@ customModes:
       Operate in an independent acceptance context. Review only evidence/changes/spec excerpts and run
       `.roo_process/scripts/review_gate.py` inside the chat workflow (do not ask user to run terminal commands).
       Require explicit rationale for every FAIL decision and include blocking/non-blocking separation.
+      Prefer custom tool '.roo/tools/review_gate.js' first and '.roo/tools/wo_review.js' for scaffold
+      preparation; fallback to review_gate.py/wo_flow.py when tools fail.
       Prefer skill `.roo/skills/reviewer/wo-independent-acceptance/` for final verdicts.
     groups:
       - read

@@ -1,13 +1,13 @@
 # Repo Workflow
 
 ## 1) 生命周期
-1. 创建 WO 骨架并签出分支：`python3 .roo_process/scripts/wo_flow.py kickoff-lean --wo <WO_ID> --slug <slug>`。
-2. 生成最小上下文：`python3 .roo_process/scripts/wo_flow.py prepare-context --wo <WO_ID>`。
+1. 创建 WO 骨架并签出分支：优先 `.roo/tools/wo_kickoff.js`，失败回退 `python3 .roo_process/scripts/wo_flow.py kickoff-lean --wo <WO_ID> --slug <slug>`。
+2. 生成最小上下文：优先 `.roo/tools/wo_context.js`（mode=changed），失败回退 `python3 .roo_process/scripts/wo_flow.py prepare-context --wo <WO_ID>`。
 3. 施工实现：更新 `src/` 与必要过程文档。
 4. 更新质量证据：补齐 `.roo_process/quality/<WO_ID>/quality_report.md` 与 `commands.md`。
-5. 打包交付证据：`python3 .roo_process/scripts/wo_flow.py pack-delivery --wo <WO_ID>`。
-6. 准备审查骨架：`python3 .roo_process/scripts/wo_flow.py prepare-review --wo <WO_ID>`。
-7. 执行总校验：`python3 .roo_process/scripts/wo_flow.py validate-delivery --wo <WO_ID>`。
+5. 打包交付证据：优先 `.roo/tools/wo_delivery.js`（action=pack），失败回退 `python3 .roo_process/scripts/wo_flow.py pack-delivery --wo <WO_ID>`。
+6. 准备审查骨架：优先 `.roo/tools/wo_review.js`，失败回退 `python3 .roo_process/scripts/wo_flow.py prepare-review --wo <WO_ID>`。
+7. 执行总校验：优先 `.roo/tools/wo_delivery.js`（action=validate）和 `.roo/tools/review_gate.js`，失败回退 `python3 .roo_process/scripts/wo_flow.py validate-delivery --wo <WO_ID>`。
 
 ## 2) 分支建议
 - `wo/WO-YYYYMMDD-XXX-short`

@@ -5,6 +5,7 @@
 ## Engines
 - `../scripts/wo_flow.py`: WO 生命周期脚手架（kickoff/context/delivery/review/validate）。
 - `../scripts/review_gate.py`: 验收 Gate 引擎（证据、AC、tests、CR、SPEC 冻结）。
+- `../../.roo/tools/*.js`: v3 自定义工具入口（白名单执行 + 参数校验）。
 
 ## Trigger Source
 - 通过 Roo 对话中的 mode 切换或显式流程请求触发。

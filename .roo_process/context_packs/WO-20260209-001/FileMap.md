@@ -107,7 +107,7 @@
 - `.roo_process/automations/triggers.yaml`
 - `.roo_process/changes/CR-TEMPLATE.md`
 - `.roo_process/changes/CR-YYYYMMDD-001.md`
-- `.roo_process/docs/PHASE0_ASSET_AUDIT.md`
+- `PHASE0_ASSET_AUDIT.md`
 - `.roo_process/docs/README.md`
 - `.roo_process/docs/REVIEW_GATE.md`
 - `.roo_process/evidence/WO-20260209-001/evidence.json`
@@ -119,7 +119,6 @@
 - `.roo_process/evidence/_template/screenshots/.gitkeep`
 - `.roo_process/evidence/_template/summary.md`
 - `.roo_process/evidence/_template/tests.txt`
-- `.roo_process/scripts/bootstrap_roo_from_github.sh`
 - `.roo_process/scripts/review_gate.py`
 - `.roo_process/scripts/review_gate.sh`
 - `.roo_process/templates/acceptance_request.md`

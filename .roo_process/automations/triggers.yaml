@@ -1,4 +1,13 @@
 triggers:
+  custom_tools:
+    root: .roo/tools
+    core:
+      - wo_kickoff
+      - wo_context
+      - wo_delivery
+      - wo_review
+      - review_gate
+
   review_gate:
     mode: reviewer
     engine: .roo_process/scripts/review_gate.py
