@@ -1,20 +1,27 @@
 # Artifact Contract
 
-## Work Order (`.roo_template/03_work_orders/{WO}`)
-- `01_WorkOrder.md`: 目标、责任人、范围、分支。
-- `03_DoD.md`: 完成定义必须可验证。
+## Work Order (`.roo_process/work_orders/{WO}`)
+- `WorkOrder.md`: 目标、责任人、范围、分支。
+- `Scope.md`: In Scope / Out of Scope。
+- `DoD.md`: 完成定义，必须可验证。
 
-## Context Pack (`.roo_template/04_context_packs/{WO}`)
-- `01_ContextPack.md`: 背景与约束。
-- `02_FileMap.md`: 影响文件与职责映射。
-- `03_API_Contracts.md`: 接口变化摘要（如适用）。
+## Context Pack (`.roo_process/context_packs/{WO}`)
+- `ContextPack.md`: 背景与约束。
+- `FileMap.md`: 影响文件与职责映射。
+- `API_Contracts.md`: 接口变化摘要（如适用）。
+- `Decisions_Summary.md`: 关键决策与取舍。
 
-## Quality (`.roo_template/06_quality/04_reports/{WO}`)
-- `01_quality_report.md`: 各检查项 PASS/FAIL。
-- `02_commands.md`: 实际命令。
-- `03_logs/`: 原始输出。
+## Quality (`.roo_process/quality/{WO}`)
+- `quality_report.md`: 各检查项 PASS/FAIL。
+- `commands.md`: 实际命令。
+- `logs/`: 原始输出。
 
-## Delivery (`.roo_template/07_delivery_packs/{WO}`)
-- `03_SpecCoverage.md`: 条款覆盖映射。
-- `04_Verification.md`: 指向质量证据。
-- `05_RiskNotes.md`: 风险、影响面、回滚。
+## Delivery Evidence (`.roo_process/evidence/{WO}`)
+- `summary.md`: 变更摘要与 AC 映射。
+- `tests.txt`: Review Gate 执行命令清单。
+- `evidence.json`: 结构化证据索引（必备）。
+- `DeliveryPack.md`: 交付概览与引用。
+- `artifacts/`: `changes.diff` / `changes.patch` 等附件。
+
+## Review (`.roo_process/review_reports/{WO}`)
+- `Review.md`: 独立验收结论（PASS/FAIL + findings）。

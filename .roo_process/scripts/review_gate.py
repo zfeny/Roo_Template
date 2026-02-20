@@ -226,11 +226,11 @@ def main() -> int:
             if isinstance(data, dict) and req.issubset(data.keys()):
                 passed.append("evidence.json 字段完整")
             else:
-                warns.append("evidence.json 缺少推荐字段（feature_id/ac_ids/commands/artifacts）")
+                failed.append("evidence.json 缺少必填字段（feature_id/ac_ids/commands/artifacts）")
         except Exception as exc:  # noqa: BLE001
-            warns.append(f"evidence.json 解析失败: {exc}")
+            failed.append(f"evidence.json 解析失败: {exc}")
     else:
-        warns.append(f"可选 evidence.json 缺失: {ejson}")
+        failed.append(f"缺少 evidence.json: {ejson}")
 
     deviation = has_deviation(summary_text, commit_subject)
     cr_refs = sorted(set(CR_PATTERN.findall(summary_text + "\n" + commit_subject)))

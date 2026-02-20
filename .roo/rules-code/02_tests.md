@@ -1,5 +1,6 @@
 # Test Rules
 
-1. 新逻辑必须附测试或在质量报告中说明不测原因。
-2. 测试命令与结果必须写入 `.roo_template/06_quality/04_reports/{WO}/`。
-3. 失败项不得静默忽略，需在报告写明影响与后续计划。
+1. 新逻辑必须附测试，或在质量报告中说明不测原因。
+2. 测试命令写入 `.roo_process/evidence/{WO}/tests.txt`。
+3. 测试结果与失败影响写入 `.roo_process/quality/{WO}/quality_report.md`。
+4. 失败项不得静默忽略。

@@ -1,0 +1,4 @@
+interface:
+  display_name: "WO Lean Build"
+  short_description: "Lean WO implementation with quality evidence and gate checks."
+  default_prompt: "Implement the active WO, update test and quality evidence, then validate delivery gates."

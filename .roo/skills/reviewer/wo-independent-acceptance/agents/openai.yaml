@@ -1,0 +1,4 @@
+interface:
+  display_name: "WO Independent Acceptance"
+  short_description: "Run independent WO acceptance and issue PASS/FAIL findings."
+  default_prompt: "Review WO evidence independently, run gate checks, and write a PASS/FAIL verdict with blocking findings."

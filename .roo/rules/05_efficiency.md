@@ -1,14 +1,12 @@
 # Efficiency Policy
 
 1. Default context mode is changed-only:
-   - `bash .roo_template/09_automations/01_scripts/00_wo.sh prepare-context {WO}`
+   - `python3 .roo_process/scripts/wo_flow.py prepare-context --wo <WO_ID>`
    - Use full map only when needed: `prepare-context-all`.
-2. Default quality mode is fast for collaboration loops:
-   - `quality` = fast profile
-   - `quality-full` = full test suites before final review.
-3. Delivery artifacts default to `changes.diff`; generate `changes.patch` only when reviewers explicitly need patch format.
-4. Keep gates unchanged: review and merge checks remain mandatory.
-5. Prefer mode-local Roo Skills to reduce prompt repetition and mode churn:
-   - Orchestrator: `.roo/skills-orchestrator/wo-dispatch-contract/`
-   - Code: `.roo/skills-code/wo-lean-build/`
-   - Reviewer: `.roo/skills-reviewer/wo-independent-acceptance/`
+2. Delivery artifacts default to `changes.diff`; generate `changes.patch` only when reviewer requests it.
+3. Keep review and merge gates strict; optimize only execution path.
+4. Prefer mode-local Roo Skills to reduce prompt repetition and mode churn:
+   - Orchestrator: `.roo/skills/orchestrator/wo-dispatch-contract/`
+   - Orchestrator Queue: `.roo/skills/orchestrator/wo-queue-dispatch/`
+   - Code: `.roo/skills/code/wo-lean-build/`
+   - Reviewer: `.roo/skills/reviewer/wo-independent-acceptance/`

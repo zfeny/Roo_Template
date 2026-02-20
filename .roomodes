@@ -14,7 +14,7 @@ customModes:
       execute required scripts/tools yourself instead of asking the user to run commands.
       In lean mode, you may complete context/delivery docs when librarian is not explicitly requested.
       Do not switch back to orchestrator only for template-doc touch-ups in the same WO.
-      Prefer skill `wo-lean-build` for standard WO execution.
+      Prefer skill `.roo/skills/code/wo-lean-build/` for standard WO execution.
     groups:
       - read
       - command
@@ -34,6 +34,7 @@ customModes:
     customInstructions: >-
       Produce actionable plans with assumptions, alternatives, and acceptance impact.
       Keep implementation suggestions traceable to SPEC and WO constraints.
+      Prefer skill `.roo/skills/architect/wo-risk-splitter/` for multi-WO decomposition.
     groups:
       - read
       - browser
@@ -70,6 +71,7 @@ customModes:
       `.roo_process/`. This template repository should not require direct edits under `src/`.
       User interacts via chat only;
       execute required scripts/tools yourself instead of asking the user to run commands.
+      Prefer skill `.roo/skills/debug/wo-repro-isolate-fix/` for defect handling.
     groups:
       - read
       - command
@@ -96,7 +98,8 @@ customModes:
       and avoid assuming `make`/`rg` is available. User interacts via chat only; do not ask
       users to execute workflow commands unless explicitly requested. Prioritize lean kickoff
       (`kickoff-lean`) to dispatch the first WO quickly. Avoid mode churn: do not alternate with code repeatedly before first implementation commit.
-      Prefer skill `wo-dispatch-contract` when issuing a new WO.
+      Prefer skill `.roo/skills/orchestrator/wo-dispatch-contract/` when issuing a new WO and
+      `.roo/skills/orchestrator/wo-queue-dispatch/` for queue-governed low-risk dispatch.
     groups:
       - read
       - command
@@ -118,7 +121,7 @@ customModes:
       Do not create wo branches unless escalation fallback is explicitly required and documented in risk notes.
       Use internal automation assets under `.roo_process/automations/` and `.roo_process/scripts/`.
       User interacts via chat only; execute commands yourself.
-      Prefer skill `wo-context-boost` only when lean context is insufficient.
+      Prefer skill `.roo/skills/librarian/wo-context-boost/` only when lean context is insufficient.
     groups:
       - read
       - command
@@ -138,6 +141,7 @@ customModes:
     customInstructions: >-
       Prefer deterministic command sets. Output must include commands, logs, and verdicts.
       User interacts via chat only; execute commands yourself.
+      Prefer skill `.roo/skills/qa-runner/wo-quality-executor/` for deterministic WO checks.
     groups:
       - read
       - command
@@ -157,6 +161,7 @@ customModes:
       Operate in an independent acceptance context. Review only evidence/changes/spec excerpts and run
       `.roo_process/scripts/review_gate.py` inside the chat workflow (do not ask user to run terminal commands).
       Require explicit rationale for every FAIL decision and include blocking/non-blocking separation.
+      Prefer skill `.roo/skills/reviewer/wo-independent-acceptance/` for final verdicts.
     groups:
       - read
       - command

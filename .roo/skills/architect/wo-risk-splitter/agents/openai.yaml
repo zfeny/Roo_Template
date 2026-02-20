@@ -1,0 +1,4 @@
+interface:
+  display_name: "WO Risk Splitter"
+  short_description: "Plan risk-oriented WO decomposition with explicit interfaces."
+  default_prompt: "Split the request into auditable WO streams with dependency, risk, and acceptance mapping."

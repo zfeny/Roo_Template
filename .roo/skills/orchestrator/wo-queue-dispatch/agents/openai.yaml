@@ -1,0 +1,4 @@
+interface:
+  display_name: "WO Queue Dispatch"
+  short_description: "Dispatch low-risk WO actions through a governed queue."
+  default_prompt: "Queue low-risk WO operations for speed while requiring approval for high-risk actions."

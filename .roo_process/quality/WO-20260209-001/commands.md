@@ -1,0 +1,1 @@
+- PASS: git rev-parse --is-inside-work-tree (log: .roo_process/quality/WO-20260209-001/logs/qa-skill/test_01.log)

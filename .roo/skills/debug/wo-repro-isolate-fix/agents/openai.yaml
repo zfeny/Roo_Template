@@ -1,0 +1,4 @@
+interface:
+  display_name: "WO Repro Isolate Fix"
+  short_description: "Debug WO defects with reproduce-isolate-fix discipline."
+  default_prompt: "Reproduce the issue for the WO, isolate root cause, apply minimal fix, and document verification evidence."

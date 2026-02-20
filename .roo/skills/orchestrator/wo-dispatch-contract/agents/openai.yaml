@@ -1,0 +1,4 @@
+interface:
+  display_name: "WO Dispatch Contract"
+  short_description: "Kick off a WO with branch issuance and explicit role ownership."
+  default_prompt: "Issue a new WO using kickoff-lean, complete WorkOrder role assignments, and dispatch implementation."

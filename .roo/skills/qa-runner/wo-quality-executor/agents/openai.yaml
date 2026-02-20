@@ -1,0 +1,4 @@
+interface:
+  display_name: "WO Quality Executor"
+  short_description: "Run deterministic WO quality checks and capture evidence."
+  default_prompt: "Execute WO test commands, record logs, and update objective quality reports."

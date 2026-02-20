@@ -7,3 +7,47 @@ triggers:
       - strict
     output:
       - .roo_process/review_reports/
+
+  wo_flow_kickoff:
+    mode: orchestrator
+    engine: .roo_process/scripts/wo_flow.py
+    command: kickoff-lean
+    input:
+      - wo
+      - slug
+    output:
+      - .roo_process/work_orders/
+      - .roo_process/context_packs/
+      - .roo_process/evidence/
+
+  wo_flow_context:
+    mode: librarian
+    engine: .roo_process/scripts/wo_flow.py
+    command:
+      - prepare-context
+      - prepare-context-all
+    input:
+      - wo
+    output:
+      - .roo_process/context_packs/
+
+  wo_flow_delivery:
+    mode: code
+    engine: .roo_process/scripts/wo_flow.py
+    command:
+      - pack-delivery
+      - validate-delivery
+    input:
+      - wo
+    output:
+      - .roo_process/evidence/
+      - .roo_process/quality/
+
+  wo_flow_review:
+    mode: reviewer
+    engine: .roo_process/scripts/wo_flow.py
+    command: prepare-review
+    input:
+      - wo
+    output:
+      - .roo_process/review_reports/

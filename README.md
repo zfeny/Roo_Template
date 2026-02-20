@@ -1,22 +1,39 @@
-# Roo Workflow Refactor Baseline
+# Roo Workflow Refactor Baseline (Skills v2)
 
-此仓库已重构为“根目录零流程污染”模式。
+此仓库已升级为“根目录零流程污染 + Skills v2”模式。
 
 ## 根目录约定
-- `_SPECs/`：唯一 Spec 入口（可为空占位，不预置内容）
-- `.roo/`、`.roomodes`：Roo 运行配置
-- `.roo_process/`：所有流程资产（模板、工单、证据、变更单、自动化、审计文档）
+- `_SPECs/`：Spec 入口（可为空占位）
+- `.roo/`、`.roomodes`：Roo 运行配置与 mode/rule/skill 定义
+- `.roo_process/`：流程资产（模板、工单、上下文、质量、证据、变更、审查、自动化）
+- `src/`：业务代码目录
 
-## 用户交互方式（零手动终端）
-- 不要求用户手动执行 Bash/终端命令。
-- 在 Roo 对话中切换到 `orchestrator` / `reviewer`（或对应模式）即可触发流程。
-- Review 验收由 agent 在对话流程内自动调用 `.roo_process/scripts/review_gate.py`。
-- 模式配置默认不直接绑定 `src/` 与 `_SPECs/` 下的具体文件内容。
+## 统一流程入口
+- `python3 .roo_process/scripts/wo_flow.py kickoff-lean --wo <WO_ID> --slug <slug>`
+- `python3 .roo_process/scripts/wo_flow.py prepare-context --wo <WO_ID>`
+- `python3 .roo_process/scripts/wo_flow.py prepare-context-all --wo <WO_ID>`
+- `python3 .roo_process/scripts/wo_flow.py pack-delivery --wo <WO_ID>`
+- `python3 .roo_process/scripts/wo_flow.py prepare-review --wo <WO_ID>`
+- `python3 .roo_process/scripts/wo_flow.py validate-delivery --wo <WO_ID>`
 
-## 追溯
-- 重构迁移与处置决策：`.roo_process/docs/PHASE0_ASSET_AUDIT.md`
-- Review Gate 规范：`.roo_process/docs/REVIEW_GATE.md`
+## Gate 引擎
+- 验收 Gate：`.roo_process/scripts/review_gate.py`
+- `evidence.json` 为必备证据（缺失或字段不完整即 FAIL）
+
+## Skills v2 目录
+- `.roo/skills/orchestrator/`
+- `.roo/skills/code/`
+- `.roo/skills/librarian/`
+- `.roo/skills/reviewer/`
+- `.roo/skills/qa-runner/`
+- `.roo/skills/debug/`
+- `.roo/skills/architect/`
+
+## 协作策略文档
+- `.roo_process/docs/QUEUE_POLICY.md`
+- `.roo_process/docs/TODO_POLICY.md`
+- `.roo_process/docs/WORKTREE_POLICY.md`
 
 ## 跨服务器快速拉取
-- 脚本：`./bootstrap_roo_from_github.sh`（根目录）
-- 用途：从 GitHub 模板仓库一次性同步 `.roo`、`.roomodes`、`.roo_process` 到任意项目目录（可选同步 `_SPECs`）。
+- 脚本：`./bootstrap_roo_from_github.sh`
+- 用途：从 GitHub 模板仓库同步 `.roo`、`.roomodes`、`.roo_process` 到任意项目目录（可选同步 `_SPECs`）。

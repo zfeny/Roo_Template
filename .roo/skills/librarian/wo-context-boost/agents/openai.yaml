@@ -1,0 +1,4 @@
+interface:
+  display_name: "WO Context Boost"
+  short_description: "Deepen WO context artifacts when risk exceeds lean baseline."
+  default_prompt: "Expand context for the active WO using full mapping and decision documentation only where risk requires it."
