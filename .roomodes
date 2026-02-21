@@ -165,8 +165,8 @@ customModes:
       - browser
       - mcp
       - - edit
-        - fileRegex: ^(?:\.roo_process/work_orders/.*\.md|\.roo_process/context_packs/.*\.md|\.roo_process/evidence/.*\.md|\.roo_process/docs/.*\.md|\.roo_process/changes/.*\.md)$
-          description: Context and documentation artifacts only
+        - fileRegex: ^(?:\.roo_process/work_orders/.*\.md|\.roo_process/context_packs/.*\.md|\.roo_process/evidence/.*\.md|\.roo_process/docs/.*\.md|\.roo_process/changes/.*\.md|_llmdoc/.*)$
+          description: Context and documentation artifacts, including all _llmdoc assets
 
   - slug: qa-runner
     name: 🧪 QA Runner (Evidence Only)
