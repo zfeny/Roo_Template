@@ -14,9 +14,10 @@ Use this skill when issuing a new WO for implementation.
 4. Complete `.roo_process/work_orders/<WO_ID>/WorkOrder.md` with objective, scope, DoD, and role assignment.
 5. Generate minimal context: `python3 .roo_process/scripts/wo_flow.py prepare-context --wo <WO_ID>`.
 6. Dispatch implementation via Boomerang child task (`new_task`) starting in Librarian with WO/context/evidence paths.
-7. In the same WO execution child task, role changes should use `switch_mode` (Librarian -> Code -> Debug as needed) to reuse context.
-8. When implementation is complete, return to Orchestrator parent and then dispatch Reviewer via a new child task.
-9. After review closure, only mark current milestone done; do not mark program complete unless all milestones are closed.
+7. Require Librarian pre-code stage: 3 stale-point web searches + `_llmdoc` update-doc, then `switch_mode` to Code.
+8. After Code development, `switch_mode` back to Librarian for `_llmdoc` post-code update.
+9. When implementation is complete, return to Orchestrator parent and then dispatch Reviewer via a new child task.
+10. After review closure, only mark current milestone done; do not mark program complete unless all milestones are closed.
 
 ## Output Checklist
 - `.roo_process/work_orders/<WO_ID>/WorkOrder.md` complete.

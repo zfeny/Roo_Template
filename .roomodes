@@ -16,6 +16,7 @@ customModes:
       Keep execution inside the current WO child task and return results to parent when work is done.
       Within the same WO execution task, prefer `switch_mode` for role changes (Code/Debug/Librarian)
       to reuse context instead of opening extra child tasks.
+      Before closing implementation work, switch back to Librarian to synchronize `_llmdoc/` via `wo_docs` update-doc.
       Code mode can edit business WO files across the repository, except protected roots:
       `_SPECs/`, `.roo/`, `.roomodes`, and `.git/`.
       Prefer custom tool '.roo/tools/wo_delivery.js' first for pack/validate, then '.roo/tools/wo_context.js'
@@ -95,7 +96,7 @@ customModes:
 
   - slug: orchestrator
     name: 🪃 Orchestrator (Boomerang Gate)
-    description: Lean-first orchestration from WO kickoff to merge gates, with optional deep role handoff.
+    description: Lean-first orchestration from WO kickoff to merge gates, with enforced role handoff chain.
     roleDefinition: >-
       You are a workflow orchestrator. Break complex requests into atomic tasks,
       delegate by capability, and enforce handoff contracts before acceptance.
@@ -109,6 +110,7 @@ customModes:
       You are the branch issuer: create/switch `wo/<WO>-<slug>` at WO kickoff.
       First WO must be dispatched quickly via lean path, then hand off via Boomerang child task (`new_task`)
       to an implementation child that starts with Librarian for context hardening before Code implementation.
+      Enforce fixed intra-WO sequence: `Librarian(pre-code context + _llmdoc update-doc) -> switch_mode(Code implement) -> switch_mode(Librarian post-code update-doc)`.
       Use `new_task` for contamination boundaries: (a) Orchestrator total-package dispatch to implementation, (b) Orchestrator transfer to independent Reviewer.
       Within the same WO execution child task, role changes should use `switch_mode` to preserve context continuity.
       For orchestration with 4+ steps, always maintain Roo built-in todo via `update_todo_list`
@@ -145,13 +147,17 @@ customModes:
     customInstructions: >-
       Produce minimum-sufficient context before implementation and canonical delivery evidence after implementation.
       Librarian is mandatory at the start of each WO implementation child task before substantial code edits.
-      Use browser/network search for time-sensitive external facts (APIs, dependencies, standards, changelogs),
-      then write sourced updates into ContextPack/Decisions_Summary.
+      Librarian must use browser/network search by default for time-sensitive external facts (APIs, dependencies, standards, changelogs).
+      For each WO, identify at least 3 potentially outdated points from WorkOrder/Context, run web search for each point,
+      and record sourced findings into ContextPack/Decisions_Summary.
+      Librarian owns bridge maintenance for every WO: run `wo_docs` update before handoff to Code,
+      then run `wo_docs` update again after Code completes and switches back.
       For tasks with 4+ steps, maintain Roo built-in todo via `update_todo_list`
       and keep one active item until handoff closure.
       Do not create wo branches unless escalation fallback is explicitly required and documented in risk notes.
       Use internal automation assets under `.roo_process/automations/` and `.roo_process/scripts/`.
       User interacts via chat only; execute commands yourself.
+      Prefer custom tool '.roo/tools/wo_docs.js' to initialize/sync `_llmdoc/` from Roo WO artifacts.
       Prefer skill `.roo/skills/librarian/wo-context-boost/` only when lean context is insufficient.
     groups:
       - read

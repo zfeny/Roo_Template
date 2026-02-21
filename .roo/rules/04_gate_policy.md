@@ -5,12 +5,14 @@
 1. `.roo_process/work_orders/{WO}/WorkOrder.md` 存在且非空。
 2. `WorkOrder.md` 明确 `Role Assignment`，且 Orchestrator/Code/Reviewer 非 `TBD`。
 3. `.roo_process/context_packs/{WO}/ContextPack.md` 存在（可最小版）。
+4. `_llmdoc/03-work-orders/{WO}.md` 已由 Librarian 完成首次同步（pre-code）。
 
 ## Gate B: 准入验收
 满足以下条件才允许 Reviewer 结论：
 1. `.roo_process/quality/{WO}/quality_report.md` 存在。
 2. `.roo_process/evidence/{WO}/summary.md`、`tests.txt`、`evidence.json`、`DeliveryPack.md` 齐全。
-3. `python3 .roo_process/scripts/wo_flow.py validate-delivery --wo {WO}` 返回 PASS。
+3. `_llmdoc/03-work-orders/{WO}.md` 已完成 post-code 同步。
+4. `python3 .roo_process/scripts/wo_flow.py validate-delivery --wo {WO}` 返回 PASS。
 
 ## Gate C: 准入合并（Git）
 满足以下条件才允许并入 `main`：

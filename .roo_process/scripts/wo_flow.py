@@ -183,6 +183,12 @@ def kickoff_lean(wo: str, slug: str) -> int:
     ensure_quality(wo)
     ensure_evidence(wo)
 
+    # Default-enable _llmdoc skeleton for each WO kickoff.
+    llmdoc_init = run(["python3", str(ROO_PROCESS / "scripts" / "llmdoc_bridge.py"), "init-doc"], capture=True)
+    if llmdoc_init.returncode != 0:
+        sys.stderr.write(llmdoc_init.stderr)
+        return llmdoc_init.returncode
+
     if in_git_repo():
         target = branch_name(wo, slug)
         has_branch = run(["git", "show-ref", "--verify", f"refs/heads/{target}"], capture=True).returncode == 0
@@ -282,6 +288,7 @@ def validate_delivery(wo: str) -> int:
         ROO_PROCESS / "evidence" / wo / "tests.txt",
         ROO_PROCESS / "evidence" / wo / "evidence.json",
         ROO_PROCESS / "evidence" / wo / "DeliveryPack.md",
+        ROOT / "_llmdoc" / "03-work-orders" / f"{wo}.md",
     ]
 
     missing = [str(p.relative_to(ROOT)) for p in required if not p.exists()]

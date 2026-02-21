@@ -6,6 +6,7 @@
 - `_SPECs/`：Spec 入口（可为空占位）
 - `.roo/`、`.roomodes`：Roo 运行配置与 mode/rule/skill 定义
 - `.roo_process/`：流程资产（模板、工单、上下文、质量、证据、变更、审查、自动化）
+- `_llmdoc/`：文档知识树（默认启用，资料员负责维护）
 - `archive/`：历史/维护归档资产（与 `.roo_process/` 运行期资产隔离）
 - `src/`：业务代码目录
 
@@ -16,7 +17,7 @@
 - `python3 .roo_process/scripts/wo_flow.py pack-delivery --wo <WO_ID>`
 - `python3 .roo_process/scripts/wo_flow.py prepare-review --wo <WO_ID>`
 - `python3 .roo_process/scripts/wo_flow.py validate-delivery --wo <WO_ID>`
-- 默认协作链路：`Orchestrator(parent) -> new_task(Implementation child from Librarian) -> switch_mode(Code/Debug) -> return parent -> new_task(Reviewer child) -> return parent`
+- 默认协作链路：`Orchestrator(parent) -> new_task(Implementation child from Librarian) -> Librarian(pre-code search + _llmdoc update) -> switch_mode(Code) -> switch_mode(Librarian post-code update) -> return parent -> new_task(Reviewer child) -> return parent`
 - 总包需维护 `.roo_process/work_orders/PROGRAM-<date>/TODO.md`，单个 WO 完成不等于项目完成。
 - PROGRAM TODO 可从 `.roo_process/templates/program_todo.md` 初始化。
 
@@ -42,8 +43,18 @@
   - `.roo/tools/wo_delivery.js`
   - `.roo/tools/wo_review.js`
   - `.roo/tools/review_gate.js`
+  - `.roo/tools/wo_docs.js`（_llmdoc bridge：`init-doc` / `update-doc`）
 - 安全策略：白名单命令构造 + 参数校验 + 禁止 shell 拼接。
 - 回退策略：工具失败时回退到 `.roo_process/scripts/wo_flow.py` / `.roo_process/scripts/review_gate.py`。
+
+## _llmdoc 集成（默认启用 + 强制流程）
+- 目标：把 TokenRollAI `cc-plugin` 的文档优先思路映射到 Roo 工作流。
+- 文档：`.roo_process/docs/LLMDOC_BRIDGE.md`
+- 初始化：`node .roo/tools/wo_docs.js '{"action":"init-doc"}'`
+- 同步 WO：`node .roo/tools/wo_docs.js '{"action":"update-doc","wo":"<WO_ID>"}'`
+- 责任归属：由 Librarian 在 WO 交接给 Code 前、以及 Code 完成后切回 Librarian 时维护 `_llmdoc/`。
+- 说明：`_llmdoc/` 仅作导航与知识组织，流程事实仍以 `.roo_process/` 为权威来源。
+- 兼容：若仓库仍有旧 `llmdoc/`，`llmdoc_bridge.py init-doc` 会自动迁移为 `_llmdoc/`。
 
 ## 协作策略文档
 - `.roo_process/docs/QUEUE_POLICY.md`

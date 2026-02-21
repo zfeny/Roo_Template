@@ -9,7 +9,7 @@ Orchestrator 负责项目级编排与 WO 下发控制，优先让首个 WO 快�
 3. 快速拆分首 WO：形成首个可独立验收 WO，并写入 PROGRAM TODO 对应里程碑。
 4. 下发开工令：`python3 .roo_process/scripts/wo_flow.py kickoff-lean --wo <WO_ID> --slug <slug>`。
 5. 最小上下文：`python3 .roo_process/scripts/wo_flow.py prepare-context --wo <WO_ID>`。
-6. 默认链路：`Orchestrator(parent) -> new_task(Implementation child starts in Librarian) -> switch_mode(Code/Debug as needed) -> return parent -> new_task(Reviewer child) -> return parent`。
+6. 默认链路：`Orchestrator(parent) -> new_task(Implementation child starts in Librarian) -> Librarian(3 stale-point web search + _llmdoc pre-code update) -> switch_mode(Code) -> switch_mode(Librarian post-code update) -> return parent -> new_task(Reviewer child) -> return parent`。
 7. 发起独立验收：交付 evidence + diff/patch 给 Reviewer。
 8. 决策合并：仅 PASS 进入 `main`；FAIL 开 `-R1/-R2` 整改 WO。
 9. 合并后仅更新当前 WO 里程碑状态，不得直接宣布项目完成；继续派发下一个 WO 或明确待办。

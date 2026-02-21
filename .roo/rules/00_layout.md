@@ -6,10 +6,12 @@
 3. Optional frozen specs MUST stay under `_SPECs/`.
 4. Product code lives under `src/`.
 5. Historical/maintenance archives MUST stay under root `archive/` (not under `.roo_process/`).
+6. `_llmdoc/` knowledge tree is default-enabled and MUST stay under root `_llmdoc/` (not under `.roo_process/`).
 
 ## Prohibited
 1. Do not create or use the legacy template root directory.
 2. Do not create root-level process folders such as `03_work_orders/`, `04_context_packs/`, `06_quality/`, `07_delivery_packs/`, `08_review_reports/`.
+3. Do not place _llmdoc bridge outputs under `.roo_process/`.
 
 ## Recovery
 1. Move misplaced process files into `.roo_process/` before continuing.

@@ -5,6 +5,7 @@
 - `TODO_POLICY.md`：长任务 Todo 强制策略
 - `WORKTREE_POLICY.md`：并行 WO 的 worktree 规范
 - `TOOLS_POLICY.md`：自定义工具优先级、白名单与审计契约
+- `LLMDOC_BRIDGE.md`：`_llmdoc/` 文档系统与 Roo 流程映射
 - `AB_VALIDATION.md`：A/B 验证指标与记录模板
 
 说明：

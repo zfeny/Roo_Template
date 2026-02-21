@@ -4,6 +4,7 @@ const { spawnSync } = require('node:child_process')
 const ROOT = process.cwd()
 const WO_FLOW_SCRIPT = '.roo_process/scripts/wo_flow.py'
 const REVIEW_GATE_SCRIPT = '.roo_process/scripts/review_gate.py'
+const LLMDOC_BRIDGE_SCRIPT = '.roo_process/scripts/llmdoc_bridge.py'
 
 const WO_FLOW_SUBCOMMANDS = new Set([
   'kickoff-lean',
@@ -12,6 +13,11 @@ const WO_FLOW_SUBCOMMANDS = new Set([
   'pack-delivery',
   'prepare-review',
   'validate-delivery',
+])
+
+const LLMDOC_SUBCOMMANDS = new Set([
+  'init-doc',
+  'update-doc',
 ])
 
 function buildWoFlowArgs({ subcommand, wo, slug }) {
@@ -36,6 +42,18 @@ function buildReviewGateArgs({ wo, strict, specPaths }) {
   return args
 }
 
+function buildLlmdocArgs({ subcommand, wo }) {
+  if (!LLMDOC_SUBCOMMANDS.has(subcommand)) {
+    throw new Error(`Subcommand not allowed: ${subcommand}`)
+  }
+  const args = ['python3', LLMDOC_BRIDGE_SCRIPT, subcommand]
+  if (subcommand === 'update-doc') {
+    if (!wo) throw new Error('update-doc requires wo')
+    args.push('--wo', wo)
+  }
+  return args
+}
+
 function isAllowedArgs(args) {
   if (!Array.isArray(args) || args.length < 3) return false
   if (args[0] !== 'python3') return false
@@ -46,6 +64,10 @@ function isAllowedArgs(args) {
 
   if (args[1] === REVIEW_GATE_SCRIPT) {
     return true
+  }
+
+  if (args[1] === LLMDOC_BRIDGE_SCRIPT) {
+    return LLMDOC_SUBCOMMANDS.has(args[2])
   }
 
   return false
@@ -93,6 +115,7 @@ function artifactPathsForWo(wo) {
 module.exports = {
   buildWoFlowArgs,
   buildReviewGateArgs,
+  buildLlmdocArgs,
   runWhitelisted,
   artifactPathsForWo,
 }

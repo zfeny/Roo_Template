@@ -25,3 +25,8 @@
 
 ## Review (`.roo_process/review_reports/{WO}`)
 - `Review.md`: 独立验收结论（PASS/FAIL + findings）。
+
+## _llmdoc Bridge (`_llmdoc/`)
+- `03-work-orders/{WO}.md`: WO 文档导航（由 bridge 脚本/工具维护）。
+- `03-work-orders/INDEX.md`: WO 状态索引。
+- 注意：`_llmdoc/` 不是验收权威，权威仍在 `.roo_process/*`。

@@ -4,12 +4,12 @@
 Use Roo custom tools as the first-class execution entrypoint for WO orchestration and acceptance, while keeping script fallback for resilience.
 
 ## Tool-First Order
-1. Prefer `.roo/tools/*.js` for kickoff/context/delivery/review/gate operations.
-2. If tool execution fails, fallback to `.roo_process/scripts/wo_flow.py` or `.roo_process/scripts/review_gate.py`.
+1. Prefer `.roo/tools/*.js` for kickoff/context/delivery/review/gate/docs operations.
+2. If tool execution fails, fallback to `.roo_process/scripts/wo_flow.py`, `.roo_process/scripts/review_gate.py`, or `.roo_process/scripts/llmdoc_bridge.py`.
 3. Record fallback reason in evidence (`summary.md` or `Review.md`).
 4. Hybrid handoff contract:
    - Boundary crossing: use child tasks (`new_task`) for Orchestrator->Implementation and Orchestrator->Reviewer.
-   - Intra-WO implementation: use `switch_mode` inside the active child task.
+   - Intra-WO implementation: enforce `Librarian(pre-code) -> Code -> Librarian(post-code)` via `switch_mode` inside the active child task.
 
 ## Security Controls
 1. Commands must be constructed from allowlisted templates only.
@@ -21,6 +21,8 @@ Use Roo custom tools as the first-class execution entrypoint for WO orchestratio
 2. Todo: tools only provide WO todo metadata warnings; Roo built-in single-session todo must be enforced by mode instructions (`update_todo_list`).
 3. Program Todo: orchestrator must maintain `.roo_process/work_orders/PROGRAM-<date>/TODO.md` outside tool auto-generation.
 4. Worktree: tool output warns when multiple worktrees are detected and evidence isolation is required.
+5. `_llmdoc` bridge is default-enabled: Librarian must run `wo_docs.js` pre-code and post-code for each WO.
+6. `wo_docs.js` only syncs documentation index paths and does not replace `.roo_process/*` as source of truth.
 
 ## Audit Contract
 Tool responses must include:

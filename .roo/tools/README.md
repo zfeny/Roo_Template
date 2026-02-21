@@ -9,6 +9,8 @@ This directory contains JavaScript custom tools for Roo.
 - `wo_review.js`: reviewer scaffold preparation
 - `review_gate.js`: acceptance gate execution
   - 默认冻结检查目录为 `_SPECs`，可用 `specPaths` 覆盖。
+- `wo_docs.js`: _llmdoc bridge (`init-doc` / `update-doc`)
+  - Used by Librarian as a mandatory step before Code handoff and after Code completion.
 
 ## Security Model
 1. Commands are constructed via allowlisted templates only.
@@ -38,4 +40,6 @@ node .roo/tools/wo_context.js '{"wo":"WO-20260220-001","mode":"changed"}'
 node .roo/tools/wo_delivery.js '{"wo":"WO-20260220-001","action":"pack"}'
 node .roo/tools/wo_review.js '{"wo":"WO-20260220-001","action":"prepare-review"}'
 node .roo/tools/review_gate.js '{"wo":"WO-20260220-001","strict":true}'
+node .roo/tools/wo_docs.js '{"action":"init-doc"}'
+node .roo/tools/wo_docs.js '{"action":"update-doc","wo":"WO-20260220-001"}'
 ```
